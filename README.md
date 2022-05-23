@@ -34,6 +34,7 @@ You should be able to run the main batch file as Admin and:
     * Your workstation almost completely configured:
         * Windows settings changed to match your chosen settings
         * Application settings changed to match your chosen settings
-   
-* Windows 10/11 Support
+
+## Future Objectives
+* Windows 11 Support
 </ul>

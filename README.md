@@ -10,6 +10,7 @@ Everything you need to set up your workstation the way you want it (Almost compl
 
 # Objectives 
 <ul>
+
 ## Profile Creation
 * Profiles should be able to install applications and configure windows/app settings in a predefined order
 

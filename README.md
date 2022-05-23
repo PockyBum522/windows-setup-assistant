@@ -4,7 +4,7 @@ GUI to easily create and save automated configuration/app install profiles that 
 Everything you need to set up your workstation the way you want it (Almost completely automatically) after installing Windows!
 
 # Prerequisites
-* A Windows 10 or Windows 11 Installation that is not configured with your preferred settings or applications.
+* A Windows 10 Installation that is not configured with your preferred settings or applications.
 
 * Internet on said machine
 
@@ -34,4 +34,6 @@ You should be able to run the main batch file as Admin and:
     * Your workstation almost completely configured:
         * Windows settings changed to match your chosen settings
         * Application settings changed to match your chosen settings
+   
+* Windows 10/11 Support
 </ul>

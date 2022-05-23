@@ -35,6 +35,6 @@ You should be able to run the main batch file as Admin and:
         * Windows settings changed to match your chosen settings
         * Application settings changed to match your chosen settings
 
-## Future Objectives
+# Future Objectives
 * Windows 11 Support
 </ul>

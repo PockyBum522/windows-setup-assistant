@@ -13,7 +13,7 @@ As soon as you finish setup and get to a desktop, you should be able to run the 
 
 * When it's finished, with no interaction on your part after the initial prompts stage, you should have:
     * Windows completely up-to-date, if desired
-    * All applications you want, installed
+    * Any applications you want, installed
     * Your workstation almost completely configured:
-        * All Windows settings changed to match your chosen settings
-        * All application settings changed to match your chosen settings
+        * Windows settings changed to match your chosen settings
+        * Application settings changed to match your chosen settings

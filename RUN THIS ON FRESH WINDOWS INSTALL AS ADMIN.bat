@@ -1,39 +1,44 @@
 @echo off
 
-IF %ERRORLEVEL% EQU 0 (
+cacls "%systemroot%\system32\config\system" 1>nul 2>&1
+
+if "%errorlevel%" equ "0" (
    
-   echo ---------------------------------------------------
-   echo NOTICE: TEMPORARY MEASURES FOR RUNNING APPLICATION
-   echo ---------------------------------------------------
-   echo.
-   echo In order to ensure that no user interaction is needed, we need to do a few things:
-   echo 1. UAC Needs to be set to "Never Notify"
-   echo 2. Automatic logon to your user account needs to be set so that reboots may take place with no interaction
-   echo.
-   echo Once the application has finished, you will be prompted to ask if 
-   echo you want to set UAC and automatic logon back to their default settings
-   echo.
-   echo Once you have read this, press any key to continue and 
-   echo this script will assist you with setting these settings...
-   echo.
+    echo ---------------------------------------------------
+    echo NOTICE: TEMPORARY MEASURES FOR RUNNING APPLICATION
+    echo ---------------------------------------------------
+    echo.
+    echo In order to ensure that no user interaction is needed, we need to do a few things:
+    echo.
+    echo 1. UAC Needs to be set to "Never Notify"
+    echo 2. Automatic logon to your user account needs to be set up so that reboots may take place with no interaction
+    echo.
+    echo Once the application has finished, you will be prompted to ask if 
+    echo you want to set UAC and automatic logon back to their default settings
+    echo.
+    echo Once you have read this, this script will assist you with setting these settings
+    echo.
 
-   pause
+    pause
 
-) ELSE (
+) else (
 
-   echo -------------------------------------------------------------
-   echo ERROR: YOU ARE NOT RUNNING THIS WITH ADMINISTRATOR PRIVILEGES.
-   echo -------------------------------------------------------------
-   echo. 
-   echo If you're seeing this, it means you don't have admin privileges!
-   echo You will need to restart this program with Administrator privileges by right-clicking and selecting "Run As Administrator"
-   echo. 
-   echo Press any key to exit. Make sure to Run As Administrator next time!
-   echo. 
+    echo -------------------------------------------------------------
+    echo ERROR: YOU ARE NOT RUNNING THIS WITH ADMINISTRATOR PRIVILEGES
+    echo -------------------------------------------------------------
+    echo. 
+    echo If you're seeing this, it means you don't have admin privileges!
+    echo.
+    echo You will need to restart this program with Administrator 
+    echo privileges by right-clicking and selecting "Run As Administrator"
+    echo. 
+    echo Make sure to Run As Administrator next time!
+    echo. 
+    echo Press any key to exit . . .
 
-   pause
+    pause> nul
 
-   EXIT /B 1   
+    exit /B 1   
 )
 
 echo.
@@ -53,6 +58,33 @@ echo If Chocolatey was previously installed, checking for updates
 echo.
 
 choco upgrade chocolatey
+
+choco upgrade autologon
+
+echo.
+echo -------------------------------------
+echo SET UAC TO NEVER NOTIFY, TEMPORARILY
+echo -------------------------------------
+echo.
+echo In the window that pops up, please set UAC to "Never Notify" by 
+echo dragging the slider all the way to the bottom. When you are finished, press ok.
+echo.
+
+useraccountcontrolsettings
+
+autologon64
+
+echo.
+echo -----------------------------------------------------
+echo SET USER ACCOUNT TO AUTOMATICALLY LOGON, TEMPORARILY
+echo -----------------------------------------------------
+echo.
+echo In the window that pops up, please enter the password for this 
+echo user account and click "Enable" to save and activate automatic logon. 
+echo.
+echo Once finished, press any key to continue . . .
+
+pause> nul
 
 echo.
 echo Installing latest Dot NET SDK
@@ -83,18 +115,17 @@ echo Now that all dependencies are installed, running main application
 echo.
 
 :: %~dp0 is shorthand for full path script is currently running from
-:: Run Application Here
+:: Run C# GUI Here
 
-echo. ------------------------------------------------------
-echo. APPLICATION HAS FINISHED CONFIGURATION OF THIS MACHINE
-echo. ------------------------------------------------------
+echo ------------------------------------------------------
+echo APPLICATION HAS FINISHED CONFIGURATION OF THIS MACHINE
+echo ------------------------------------------------------
 echo.
-echo. Your workstation is now configured per your chosen settings profile.
+echo Your workstation is now configured per your chosen profile.
 echo.
-echo. You can press any key to exit.
-echo.
+echo Press any key to exit . . .
 
-pause
+pause> nul
 
 EXIT /B 1   
 

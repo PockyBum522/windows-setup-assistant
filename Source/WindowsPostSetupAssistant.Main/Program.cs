@@ -53,11 +53,12 @@ public static class Program
         }
     }
 
-    [STAThread]
     private static void LaunchGui()
     {
         var uiMainWindow = new MainWindow();
 
+        uiMainWindow.DataContext = new MainWindowViewModel();
+        
         uiMainWindow.ShowDialog();
     }
 }

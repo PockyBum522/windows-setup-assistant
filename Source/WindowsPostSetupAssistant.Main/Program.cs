@@ -1,4 +1,6 @@
-﻿using WindowsPostSetupAssistant.UI;
+﻿using System;
+using WindowsPostSetupAssistant.UI;
+using WindowsPostSetupAssistant.UI.MainWindowDependencies;
 
 namespace WindowsPostSetupAssistant.Main;
 
@@ -6,7 +8,7 @@ public static class Program
 {
     private static string ExecuteProfileArgument => "executeProfile";
     private static string ChooseProfileArgument => "chooseProfile";
-    
+
     [STAThread]
     public static void Main()
     {
@@ -54,10 +56,8 @@ public static class Program
     [STAThread]
     private static void LaunchGui()
     {
-        var thisApp = new App();
+        var uiMainWindow = new MainWindow();
 
-        thisApp.InitializeComponent();
-
-        thisApp.Run();
+        uiMainWindow.ShowDialog();
     }
 }

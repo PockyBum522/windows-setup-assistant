@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsPostSetupAssistant.UI", "WindowsPostSetupAssistant.UI\WindowsPostSetupAssistant.UI.csproj", "{D5896FC5-E351-46DF-B56F-B8DE43CB833B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsPostSetupAssistant.Main", "WindowsPostSetupAssistant.Main\WindowsPostSetupAssistant.Main.csproj", "{70A7F522-9221-4D83-9358-17CA32D0E0DE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsPostSetupAssistant.Main", "WindowsPostSetupAssistant.Main\WindowsPostSetupAssistant.Main.csproj", "{315750F3-9D08-4F2A-B8E8-7C445C25A320}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -14,9 +14,9 @@ Global
 		{D5896FC5-E351-46DF-B56F-B8DE43CB833B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5896FC5-E351-46DF-B56F-B8DE43CB833B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5896FC5-E351-46DF-B56F-B8DE43CB833B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{70A7F522-9221-4D83-9358-17CA32D0E0DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{70A7F522-9221-4D83-9358-17CA32D0E0DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{70A7F522-9221-4D83-9358-17CA32D0E0DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{70A7F522-9221-4D83-9358-17CA32D0E0DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{315750F3-9D08-4F2A-B8E8-7C445C25A320}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{315750F3-9D08-4F2A-B8E8-7C445C25A320}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{315750F3-9D08-4F2A-B8E8-7C445C25A320}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{315750F3-9D08-4F2A-B8E8-7C445C25A320}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,13 +1,15 @@
-﻿namespace WindowsPostSetupAssistant.Main;
+﻿using System;
+
+namespace WindowsPostSetupAssistant.Main;
 
 public class ArgumentsParser
 {
     public bool ArgumentPresent(string argumentName)
     {
-        // Check each argument on the exe
+        // Check each argument passed from command line
         foreach (var argument in Environment.GetCommandLineArgs())
         {
-            var argumentMatches = argument.Contains(argumentName.ToLower());
+            var argumentMatches = argument.ToLower().Contains(argumentName.ToLower());
             
             if (argumentMatches)
             {

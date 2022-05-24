@@ -11,8 +11,6 @@ namespace WindowsPostSetupAssistant.UI.MainWindowDependencies
         public MainWindow()
         {
             InitializeComponent();
-
-            DataContext = new MainWindowViewModel();
         }
     }
 }

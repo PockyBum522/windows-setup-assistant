@@ -1,8 +1,8 @@
-﻿<Application x:Class="WindowsPostSetupAssistant.App"
+﻿<Application x:Class="WindowsPostSetupAssistant.UI.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:WindowsPostSetupAssistant"
-             StartupUri="MainWindow.xaml">
+             xmlns:local="clr-namespace:WindowsPostSetupAssistant" 
+             StartupUri="MainWindowDependencies/MainWindow.xaml">
     <Application.Resources>
          
     </Application.Resources>

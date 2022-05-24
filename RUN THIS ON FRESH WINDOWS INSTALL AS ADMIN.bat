@@ -115,13 +115,30 @@ echo Now that all dependencies are installed, running main application
 echo.
 
 :: %~dp0 is shorthand for full path script is currently running from
-:: Run C# GUI Here
-
-echo ------------------------------------------------------
-echo APPLICATION HAS FINISHED CONFIGURATION OF THIS MACHINE
-echo ------------------------------------------------------
 echo.
-echo Your workstation is now configured per your chosen profile.
+echo Checking for: "%~dp0Source\WindowsPostSetupAssistant.Main\bin\Release\net6.0-windows\WindowsPostSetupAssistant.Main.exe"
+echo.
+
+:: Check if release build exists, run if it does
+if exist "%~dp0Source\WindowsPostSetupAssistant.Main\bin\Release\net6.0-windows\*" (
+    "%~dp0Source\WindowsPostSetupAssistant.Main\bin\Release\net6.0-windows\WindowsPostSetupAssistant.Main.exe" /chooseProfile
+) else (
+    :: Check if debug build exists, run if it does
+    if exist "%~dp0Source\WindowsPostSetupAssistant.Main\bin\Debug\net6.0-windows\*" (
+        "%~dp0Source\WindowsPostSetupAssistant.Main\bin\Debug\net6.0-windows\WindowsPostSetupAssistant.Main.exe" /chooseProfile
+    ) else (
+        echo.
+        echo ERROR: No release or debug build present at "%~dp0Source\WindowsPostSetupAssistant.Main\bin\Release\ (or Debug)". Please build using Visual Studio before running this batch script.
+        echo.
+    )
+)
+
+echo -------------------------------------------------------
+echo APPLICATION HAS FINISHED CONFIGURATION OF THIS MACHINE
+echo -------------------------------------------------------
+echo.
+echo If there are no errors above, your
+echo workstation is now configured per your chosen profile.
 echo.
 echo Press any key to exit . . .
 

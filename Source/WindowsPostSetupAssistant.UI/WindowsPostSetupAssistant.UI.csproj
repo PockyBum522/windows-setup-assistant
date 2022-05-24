@@ -5,6 +5,8 @@
         <TargetFramework>net6.0-windows</TargetFramework>
         <Nullable>enable</Nullable>
         <UseWPF>true</UseWPF>
+        <PlatformTarget>x64</PlatformTarget>
+        <StartupObject>WindowsPostSetupAssistant.UI.App</StartupObject>
     </PropertyGroup>
 
 </Project>

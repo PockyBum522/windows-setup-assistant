@@ -1,7 +1,7 @@
 # Windows Post-Setup Assistant
 GUI to easily create and save automated configuration/app install profiles that can quickly be applied to fresh installations of Windows. 
 
-Everything you need to set up your workstation the way you want it (Almost completely automatically) after installing Windows!
+Everything you need to set up your workstation the way you want it (automatically) after installing Windows!
 
 # Prerequisites
 * A Windows 10 Installation that is not configured with your preferred settings or applications.

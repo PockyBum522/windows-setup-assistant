@@ -1,4 +1,5 @@
 global using WindowsPostSetupAssistant.Main.Interfaces;
+using NSubstitute;
 using WindowsPostSetupAssistant.Main;
 
 namespace WindowsPostSetupAssistant.UnitTests.Main.Tests;
@@ -6,18 +7,17 @@ namespace WindowsPostSetupAssistant.UnitTests.Main.Tests;
 public class ArgumentsParserTests
 {
     private ArgumentsParser? _sut;
-    private readonly Mock<ICommandLineInterface> _commandLineInterfaceMock = new ();
+    private readonly ICommandLineInterface _commandLineInterfaceMock = Substitute.For<ICommandLineInterface>();
 
     [SetUp]
     public void Setup()
     {
-        _sut = new ArgumentsParser(_commandLineInterfaceMock.Object);
+        _sut = new ArgumentsParser(_commandLineInterfaceMock);
 
         var fakeCommandLineInput = 
             new[] { "/chooseProfile", "/secondArgument", "secondArgumentValue", "/lastArgument" };
-        
-        _commandLineInterfaceMock.Setup(x => x.GetCommandLineArgs())
-            .Returns(fakeCommandLineInput);
+
+        _commandLineInterfaceMock.GetCommandLineArgs().Returns(fakeCommandLineInput);
     }
     
     [Test]

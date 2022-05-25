@@ -2,30 +2,26 @@
 
 public class CommandLineInterfaceTests
 {
-    private ICommandLineInterface? _sut;
-    private readonly Mock<ICommandLineInterface> _commandLineMock = new();
+    private readonly ICommandLineInterface _commandLineMock = Substitute.For<ICommandLineInterface>();
 
     [SetUp]
     public void SetUp()
     {
         var fakeArgs = new[] { "/hello", "/thisWorld", "fakeValue", "/lastCommand" };
 
-        _commandLineMock.Setup(x => x.GetCommandLineArgs())
-            .Returns(fakeArgs);
-
-        _sut = _commandLineMock.Object;
+        _commandLineMock.GetCommandLineArgs().Returns(fakeArgs);
     }
     
     [Test]
     public void Sut_AfterSetup_ShouldNotBeNull()
     {
-        _sut.Should().NotBeNull();
+        _commandLineMock.Should().NotBeNull();
     }
     
     [Test]
     public void Test_ShouldSimulate_CommandLineArguments()
     {
-        var result = _sut?.GetCommandLineArgs();
+        var result = _commandLineMock?.GetCommandLineArgs();
 
         result.Should().Equal("/hello", "/thisWorld", "fakeValue", "/lastCommand");
     }

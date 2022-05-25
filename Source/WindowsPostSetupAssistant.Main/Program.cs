@@ -12,7 +12,7 @@ public static class Program
     [STAThread]
     public static void Main()
     {
-        var argumentsParser = new ArgumentsParser();
+        var argumentsParser = new ArgumentsParser(new CommandLineInterface());
 
         // Check if both are present and warn user they are mutually exclusive
         if (argumentsParser.ArgumentPresent(ExecuteProfileArgument) &&

@@ -1,13 +1,21 @@
 ﻿using System;
+using WindowsPostSetupAssistant.Main.Interfaces;
 
 namespace WindowsPostSetupAssistant.Main;
 
 public class ArgumentsParser
 {
+    private readonly ICommandLineInterface _commandLineInterface;
+
+    public ArgumentsParser(ICommandLineInterface commandLineInterface)
+    {
+        _commandLineInterface = commandLineInterface;
+    }
+    
     public bool ArgumentPresent(string argumentName)
     {
         // Check each argument passed from command line
-        foreach (var argument in Environment.GetCommandLineArgs())
+        foreach (var argument in _commandLineInterface.GetCommandLineArgs())
         {
             var argumentMatches = argument.ToLower().Contains(argumentName.ToLower());
             
@@ -22,20 +30,20 @@ public class ArgumentsParser
     
     public string GetArgumentValue(string argumentName)
     {
-        var numberOfArguments = Environment.GetCommandLineArgs().Length;
+        var numberOfArguments = _commandLineInterface.GetCommandLineArgs().Length;
         
         for (var i = 0; i < numberOfArguments; i++)
         {
-            var argument = Environment.GetCommandLineArgs()[i];
+            var argument = _commandLineInterface.GetCommandLineArgs()[i];
 
             // If it doesn't match, continue
             if (!argument.ToLower().Contains(argumentName.ToLower())) continue;
             
             // Otherwise, continue if there's nothing to the right of this argument:
-            if (i + 1 > numberOfArguments) continue;
+            if (i + 1 >= numberOfArguments) continue;
             
             // Otherwise:
-            var nextArgument = Environment.GetCommandLineArgs()[i + 1];
+            var nextArgument = _commandLineInterface.GetCommandLineArgs()[i + 1];
 
             // If next argument is another argument, return empty string
             if (nextArgument.Contains('/')) return "";

@@ -1,8 +1,7 @@
-global using WindowsPostSetupAssistant.Main.Interfaces;
-using NSubstitute;
-using WindowsPostSetupAssistant.Main;
+using WindowsPostSetupAssistant.Main.CommandLine;
+using WindowsPostSetupAssistant.Main.Interfaces;
 
-namespace WindowsPostSetupAssistant.UnitTests.Main.Tests;
+namespace WindowsPostSetupAssistant.UnitTests.Main.Tests.CommandLineTests;
 
 public class ArgumentsParserTests
 {

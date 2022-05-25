@@ -1,7 +1,7 @@
 ﻿using System;
 using WindowsPostSetupAssistant.Main.Interfaces;
 
-namespace WindowsPostSetupAssistant.Main;
+namespace WindowsPostSetupAssistant.Main.CommandLine;
 
 public class CommandLineInterface : ICommandLineInterface
 {

@@ -1,4 +1,5 @@
 ﻿using System;
+using WindowsPostSetupAssistant.Main.CommandLine;
 using WindowsPostSetupAssistant.UI;
 using WindowsPostSetupAssistant.UI.MainWindowDependencies;
 

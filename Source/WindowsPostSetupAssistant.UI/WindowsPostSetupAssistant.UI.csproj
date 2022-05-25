@@ -9,4 +9,8 @@
         <StartupObject>WindowsPostSetupAssistant.UI.UnusedEntryPoint</StartupObject>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\WindowsPostSetupAssistant.Core\WindowsPostSetupAssistant.Core.csproj" />
+    </ItemGroup>
+
 </Project>

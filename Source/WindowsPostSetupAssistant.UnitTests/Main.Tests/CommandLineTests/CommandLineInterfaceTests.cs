@@ -1,27 +1,29 @@
-﻿namespace WindowsPostSetupAssistant.UnitTests.Main.Tests;
+﻿using WindowsPostSetupAssistant.Main.Interfaces;
+
+namespace WindowsPostSetupAssistant.UnitTests.Main.Tests.CommandLineTests;
 
 public class CommandLineInterfaceTests
 {
-    private readonly ICommandLineInterface _commandLineMock = Substitute.For<ICommandLineInterface>();
+    private readonly ICommandLineInterface _sut = Substitute.For<ICommandLineInterface>();
 
     [SetUp]
     public void SetUp()
     {
         var fakeArgs = new[] { "/hello", "/thisWorld", "fakeValue", "/lastCommand" };
 
-        _commandLineMock.GetCommandLineArgs().Returns(fakeArgs);
+        _sut.GetCommandLineArgs().Returns(fakeArgs);
     }
     
     [Test]
     public void Sut_AfterSetup_ShouldNotBeNull()
     {
-        _commandLineMock.Should().NotBeNull();
+        _sut.Should().NotBeNull();
     }
     
     [Test]
     public void Test_ShouldSimulate_CommandLineArguments()
     {
-        var result = _commandLineMock?.GetCommandLineArgs();
+        var result = _sut?.GetCommandLineArgs();
 
         result.Should().Equal("/hello", "/thisWorld", "fakeValue", "/lastCommand");
     }

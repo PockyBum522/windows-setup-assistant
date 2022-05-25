@@ -19,21 +19,21 @@ public class MainWindowViewModel
 
     private void InitializeWindowsThemesCard()
     {
-        var cardActions = new List<IConfigurationAction>();
-
-        var firstAction = new BasicConfigurationAction()
-        {
-            
-        };
-        
-        cardActions.Add();
-        
-        Cards.Add(
-            new Card()
-            {
-                Title = "",
-                CardActions = 
-            }
-        );
+        // var cardActions = new List<IConfigurationAction>();
+        //
+        // var firstAction = new BasicConfigurationAction()
+        // {
+        //     
+        // };
+        //
+        // cardActions.Add();
+        //
+        // Cards.Add(
+        //     new Card()
+        //     {
+        //         Title = "",
+        //         CardActions = 
+        //     }
+        // );
     }
 }

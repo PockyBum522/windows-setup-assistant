@@ -3,10 +3,118 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WindowsPostSetupAssistant"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MainWindow" Height="900" Width="800">
 
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5*" />
+            <RowDefinition Height="70" />
+        </Grid.RowDefinitions>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+        
+        <StackPanel>
+            
+            <GroupBox Header="Windows 10 Theme Options" Margin="5, 5, 0, 0" BorderBrush="Black" BorderThickness="2" MinHeight="200">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="41" />
+                        <ColumnDefinition Width="41" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Optional checkboxes column -->
+                    <GroupBox Header="OPT" Margin="0, 5, 2, 0" BorderBrush="Black" BorderThickness="1" MinHeight="200" >
+                        <StackPanel>
+                            <CheckBox IsChecked="False" HorizontalAlignment="Center" Margin="0, 6, 0, 0"/>
+                            <CheckBox IsChecked="False" HorizontalAlignment="Center" Margin="0, 6, 0, 0"/>
+                            <CheckBox IsChecked="False" HorizontalAlignment="Center" Margin="0, 6, 0, 0"/>
+                            <CheckBox IsChecked="False" HorizontalAlignment="Center" Margin="0, 6, 0, 0"/>
+                            <CheckBox IsChecked="False" HorizontalAlignment="Center" Margin="0, 6, 0, 0"/>
+                        </StackPanel>
+                    </GroupBox>
+                    
+                    <!-- Enabled checkboxes column -->
+                    <GroupBox Grid.Column="1" Header="ON" Margin="2, 5, 0, 0" BorderBrush="Black" BorderThickness="1" MinHeight="200">
+                        <StackPanel>
+                            <CheckBox IsChecked="True" HorizontalAlignment="Center" Margin="0, 6, 0, 0"/>
+                            <CheckBox IsChecked="True" HorizontalAlignment="Center" Margin="0, 6, 0, 0"/>
+                            <CheckBox IsChecked="True" HorizontalAlignment="Center" Margin="0, 6, 0, 0"/>
+                            <CheckBox IsChecked="True" HorizontalAlignment="Center" Margin="0, 6, 0, 0"/>
+                            <CheckBox IsChecked="True" HorizontalAlignment="Center" Margin="0, 6, 0, 0"/>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <!-- Descriptions -->
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Margin="5,25,0,0" Text="Enable dark theme" />
+                        
+                        <TextBlock Margin="5,5,0,0" Text="Enable window transparency" />
+                        
+                        <DockPanel Margin="5,5,0,0">
+                            <TextBlock Text="Set accent color to (hex): " />
+                            <TextBox HorizontalAlignment="Right" MinWidth="130" Margin="5,0,0,0" />
+                        </DockPanel>
+                        
+                        <DockPanel Margin="5,5,0,0">
+                            <TextBlock Text="Set start menu color to (hex): " />
+                            <TextBox HorizontalAlignment="Right" MinWidth="130" Margin="5,0,0,0" />
+                        </DockPanel>
+                        
+                        <DockPanel Margin="5,5,0,0">
+                            <TextBlock Text="Set wallpaper to (path): " />
+                            <TextBox HorizontalAlignment="Right" MinWidth="130" Margin="5,0,0,0" />
+                        </DockPanel>
+                    </StackPanel>
+                </Grid>
+            </GroupBox>
+            
+            <GroupBox Header="Windows 10 Taskbar Options" Margin="5, 5, 0, 0" BorderBrush="Black" BorderThickness="2" MinHeight="200">
+                <StackPanel>
+                    <CheckBox Content="Disable news and interests" Margin="5,5,0,2" IsChecked="True" />
+                    
+                    <DockPanel Margin="5,0">
+                        <CheckBox Content="Set search to show as: " IsChecked="True" Margin="0, 0,10,0" />    
+                        <ComboBox MinWidth="180" SelectedIndex="0">
+                            <ComboBoxItem Content="Hidden" />  
+                            <ComboBoxItem Content="Show search icon" />  
+                            <ComboBoxItem Content="Show search box" />
+                        </ComboBox>
+                    </DockPanel>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Header="Install Applications" Margin="5, 5, 0, 0" BorderBrush="Black" BorderThickness="2" MinHeight="200">
+                <StackPanel>
+                    <DockPanel Margin="0,2,0,0">
+                        <CheckBox Content="Chrome" Margin="5" IsChecked="True" />
+                        <Button HorizontalAlignment="Right" MinWidth="20" Content="Installation Options..." Padding="3" MaxHeight="22"/>
+                    </DockPanel>
+                    <DockPanel Margin="0">
+                        <CheckBox Content="FireFox" Margin="5" IsChecked="True" />
+                        <Button HorizontalAlignment="Right" MinWidth="20" Content="Installation Options..." Padding="3" MaxHeight="22"/>
+                    </DockPanel>
+                    <DockPanel Margin="0">
+                        <CheckBox Content="NotePad++" Margin="5" IsChecked="True" />
+                        <Button HorizontalAlignment="Right" MinWidth="20" Content="Installation Options..." Padding="3" MaxHeight="22"/>
+                    </DockPanel>
+                    <DockPanel Margin="0">
+                        <CheckBox Content="Visual Studio Code" Margin="5" IsChecked="True" />
+                        <Button HorizontalAlignment="Right" MinWidth="20" Content="Installation Options..." Padding="3" MaxHeight="22"/>
+                    </DockPanel>
+                </StackPanel>
+            </GroupBox>
+            
+        </StackPanel>
+        
+        <UniformGrid Grid.Row="1" Grid.Column="0" Margin="10" Rows="1" Columns="3">
+            <Button Content="Save" Margin="5"></Button>
+            <Button Content="Load" Margin="5"></Button>
+            <Button Content="Execute" Margin="5"></Button>
+        </UniformGrid>
     </Grid>
 </Window>

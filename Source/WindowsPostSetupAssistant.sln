@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsPostSetupAssistant.U
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsPostSetupAssistant.IntegrationTests", "WindowsPostSetupAssistant.IntegrationTests\WindowsPostSetupAssistant.IntegrationTests.csproj", "{D52E1F4C-4A47-4270-AAFC-245F6792DE9B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PostSetupAssistant", "PostSetupAssistant", "{A1E8CBF4-BE26-4A91-803D-2BC4F95E5D22}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{3AAD1FC4-4D95-40BC-93E9-8155D39F3154} = {E8736F1E-DBB1-435A-8978-EA3BA0825ADB}
 		{D52E1F4C-4A47-4270-AAFC-245F6792DE9B} = {E8736F1E-DBB1-435A-8978-EA3BA0825ADB}
+		{C3AE0662-2263-4EC5-B31E-9AAE9CA119DF} = {A1E8CBF4-BE26-4A91-803D-2BC4F95E5D22}
+		{315750F3-9D08-4F2A-B8E8-7C445C25A320} = {A1E8CBF4-BE26-4A91-803D-2BC4F95E5D22}
+		{D5896FC5-E351-46DF-B56F-B8DE43CB833B} = {A1E8CBF4-BE26-4A91-803D-2BC4F95E5D22}
 	EndGlobalSection
 EndGlobal

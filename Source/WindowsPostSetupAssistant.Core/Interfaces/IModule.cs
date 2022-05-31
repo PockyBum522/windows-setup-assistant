@@ -1,8 +1,10 @@
-﻿namespace WindowsPostSetupAssistant.Core.Interfaces;
+﻿using WindowsPostSetupAssistant.Core.Logic.Modules;
+
+namespace WindowsPostSetupAssistant.Core.Interfaces;
 
 public interface IModule
 {
-    public string Arguments { get; set; }
+    public object Arguments { get; set; }
     
     public bool ValidateArguments { get; }
     

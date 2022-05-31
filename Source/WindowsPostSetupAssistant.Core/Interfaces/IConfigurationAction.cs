@@ -2,10 +2,10 @@
 
 public interface IConfigurationAction
 {
-    public string Description { get; set; }
+    public string Description { get; }
     
-    bool MarkedAsOptional { get; set; }
-    bool Enabled { get; set; }
+    public bool MarkedAsOptional { get; set; }
+    public bool Enabled { get; set; }
 
-    public Action Execute { get; set; }
+    public Guid AssociatedModuleGuid { get; }
 }

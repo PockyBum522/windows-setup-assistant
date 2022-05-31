@@ -12,6 +12,8 @@ public class InstallWslModule : IModule
         _logger = logger;
     }
 
+    public Guid ModuleGuid => new Guid("6869A2A6-2A7D-4616-B59C-2DE31651A58D");
+    
     public object Arguments { get; set; } = DistrosEnum.Uninitialized;
 
     public bool ValidateArguments => CheckArguments();

@@ -1,13 +1,23 @@
 ﻿using WindowsPostSetupAssistant.Core.Interfaces;
 
-namespace WindowsPostSetupAssistant.Core.Models.ConfigurationActions;
+namespace WindowsPostSetupAssistant.Core.UIModels.ConfigurationActions;
 
 public class BasicConfigurationAction : IConfigurationAction
 {
-    public string Description { get; set; } = "";
+    public BasicConfigurationAction
+    (
+        string description, 
+        Guid associatedModuleGuid
+    )
+    {
+        Description = description;
+        AssociatedModuleGuid = associatedModuleGuid;
+    }
+    
+    public string Description { get; }
     
     public bool MarkedAsOptional { get; set; }
     public bool Enabled { get; set; }
     
-    public Action Execute { get; set; }
+    public Guid AssociatedModuleGuid { get; }
 }

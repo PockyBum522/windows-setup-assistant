@@ -1,6 +1,6 @@
 ﻿using WindowsPostSetupAssistant.Core.Interfaces;
 
-namespace WindowsPostSetupAssistant.Core.Models;
+namespace WindowsPostSetupAssistant.Core.UIModels;
 
 public class Card
 {

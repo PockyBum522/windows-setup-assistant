@@ -13,6 +13,7 @@ public class MainWindowViewModel
     public MainWindowViewModel()
     {
         InitializeWindowsThemesCard();
+        InitializeWindows10TaskbarCard();
     }
 
     private void InitializeWindowsThemesCard()
@@ -23,7 +24,7 @@ public class MainWindowViewModel
             new BasicConfigurationAction() { Description = "Enable dark theme" });
 
         cardActions.Add(
-            new BasicConfigurationAction() { Description = "Enable windows transparency" });
+            new BasicConfigurationAction() { Description = "Enable windows transparency", MarkedAsOptional = true});
 
         cardActions.Add(
             new TextInputConfigurationAction() { Description = "Set accent color to (hex):" });
@@ -41,5 +42,28 @@ public class MainWindowViewModel
         };
         
         Cards.Add(windowsThemeSettingsCard);
+    }
+    
+    private void InitializeWindows10TaskbarCard()
+    {
+        var cardActions = new List<IConfigurationAction>();
+        
+        cardActions.Add(
+            new BasicConfigurationAction() { Description = "Disable news and interests" });
+
+        cardActions.Add(
+            new DropdownConfigurationAction()
+            {
+                Description = "Set search icon to show as:",
+                DropdownOptions = {"Hidden", "Show search Icon", "Show search box"}
+            });
+
+        var windowsTaskbarSettingsCard = new Card()
+        {
+            Title = "Windows 10 Taskbar Settings",
+            CardActions = cardActions
+        };
+        
+        Cards.Add(windowsTaskbarSettingsCard);
     }
 }

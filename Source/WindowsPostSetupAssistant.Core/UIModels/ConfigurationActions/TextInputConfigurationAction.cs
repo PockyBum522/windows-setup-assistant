@@ -10,9 +10,6 @@ public class TextInputConfigurationAction : IConfigurationAction
     public bool Enabled { get; set; }
 
     public string UserInput { get; set; } = "";
-    
-    public void ExecuteAction()
-    {
-        throw new NotImplementedException();
-    }
+
+    public Action Execute { get; set; }
 }

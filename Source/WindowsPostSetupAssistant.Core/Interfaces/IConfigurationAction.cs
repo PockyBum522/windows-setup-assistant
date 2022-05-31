@@ -6,6 +6,6 @@ public interface IConfigurationAction
     
     bool MarkedAsOptional { get; set; }
     bool Enabled { get; set; }
-    
-    void ExecuteAction();
+
+    public Action Execute { get; set; }
 }

@@ -10,6 +10,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{E8736F1E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsPostSetupAssistant.UnitTests", "WindowsPostSetupAssistant.UnitTests\WindowsPostSetupAssistant.UnitTests.csproj", "{3AAD1FC4-4D95-40BC-93E9-8155D39F3154}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsPostSetupAssistant.IntegrationTests", "WindowsPostSetupAssistant.IntegrationTests\WindowsPostSetupAssistant.IntegrationTests.csproj", "{D52E1F4C-4A47-4270-AAFC-245F6792DE9B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,8 +34,13 @@ Global
 		{3AAD1FC4-4D95-40BC-93E9-8155D39F3154}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3AAD1FC4-4D95-40BC-93E9-8155D39F3154}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3AAD1FC4-4D95-40BC-93E9-8155D39F3154}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D52E1F4C-4A47-4270-AAFC-245F6792DE9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D52E1F4C-4A47-4270-AAFC-245F6792DE9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D52E1F4C-4A47-4270-AAFC-245F6792DE9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D52E1F4C-4A47-4270-AAFC-245F6792DE9B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{3AAD1FC4-4D95-40BC-93E9-8155D39F3154} = {E8736F1E-DBB1-435A-8978-EA3BA0825ADB}
+		{D52E1F4C-4A47-4270-AAFC-245F6792DE9B} = {E8736F1E-DBB1-435A-8978-EA3BA0825ADB}
 	EndGlobalSection
 EndGlobal

@@ -6,10 +6,17 @@
         <Nullable>enable</Nullable>
         <UseWPF>true</UseWPF>
         <StartupObject>WindowsPostSetupAssistant.Main.Program</StartupObject>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
     </PropertyGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\WindowsPostSetupAssistant.UI\WindowsPostSetupAssistant.UI.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Serilog" Version="2.11.0" />
+      <PackageReference Include="Serilog.Sinks.Debug" Version="2.0.0" />
+      <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
     </ItemGroup>
 
 </Project>

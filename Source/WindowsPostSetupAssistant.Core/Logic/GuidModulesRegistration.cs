@@ -24,9 +24,8 @@ public class GuidModulesRegistration
             return new InstallChocolateyApplication(_logger);
         }
         
-        var errorMessage = $"Could not locate module associated with GUID: {guidToLookup}";
+        _logger.Error("Could not locate module associated with GUID: {GuidToLookup}", guidToLookup);
         
-        Console.WriteLine(errorMessage);
-        throw new ArgumentException(errorMessage);
+        throw new ArgumentException($"Could not locate module associated with GUID: {guidToLookup}");
     }
 }

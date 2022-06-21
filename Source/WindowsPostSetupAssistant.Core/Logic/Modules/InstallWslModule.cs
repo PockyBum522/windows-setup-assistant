@@ -29,7 +29,10 @@ public class InstallWslModule : IModule
                           $"{nameof(CheckArguments)} full arguments are: {Arguments}{Environment.NewLine}" +
                           Environment.NewLine;
             
-            Console.WriteLine(message);
+            _logger.Error("Arguments for {ThisType} were not able to be verified, full arguments " +
+                          "are: {EnvironmentArguments}", 
+                nameof(GetType),
+                          (string)Arguments);
             
             throw new ArgumentException(message);
         }
@@ -39,6 +42,9 @@ public class InstallWslModule : IModule
         {
             var installWslProcess = Process.Start("choco upgrade wsl2");
             
+            _logger.Information("In module: {ThisType}", nameof(GetType));
+            _logger.Information("About to run: choco upgrade wsl2");
+            
             installWslProcess.WaitForExit();
         }
         
@@ -46,6 +52,9 @@ public class InstallWslModule : IModule
         {
             var installDebianProcess = Process.Start("choco upgrade wsl-debiangnulinux --ignore-checksums --force");
 
+            _logger.Information("In module: {ThisType}", nameof(GetType));
+            _logger.Information("About to run: choco upgrade wsl-debiangnulinux --ignore-checksums --force");
+            
             installDebianProcess.WaitForExit();
         }
     }

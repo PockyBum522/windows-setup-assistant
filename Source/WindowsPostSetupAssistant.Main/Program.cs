@@ -1,4 +1,9 @@
 ﻿using System;
+using System.Security.Permissions;
+using System.Security.Principal;
+using Serilog;
+using Serilog.Core;
+using WindowsPostSetupAssistant.Core;
 using WindowsPostSetupAssistant.Main.CommandLine;
 using WindowsPostSetupAssistant.UI;
 using WindowsPostSetupAssistant.UI.MainWindowDependencies;
@@ -7,12 +12,31 @@ namespace WindowsPostSetupAssistant.Main;
 
 public static class Program
 {
+    private static readonly Logger Logger;
     private static string ExecuteProfileArgument => "executeProfile";
     private static string ChooseProfileArgument => "chooseProfile";
 
+    static Program()
+    {
+        Logger = new LoggerConfiguration()
+            .Enrich.WithProperty("Application", "SerilogTestContext")
+            //.MinimumLevel.Information()
+            .MinimumLevel.Debug()
+            .WriteTo.File(ApplicationPaths.LogPath, rollingInterval: RollingInterval.Day)
+            .WriteTo.Debug()
+            .CreateLogger();
+    }
+    
     [STAThread]
     public static void Main()
     {
+        WindowsIdentity id = WindowsIdentity.GetCurrent();
+        WindowsPrincipal principal = new WindowsPrincipal(id);
+        var runningAsAdmin = principal.IsInRole(WindowsBuiltInRole.Administrator);
+
+        if (!runningAsAdmin) throw new Exception("This application must be run as administrator. " +
+            "Please re-run application with administrator priveleges");
+
         var argumentsParser = new ArgumentsParser(new CommandLineInterface());
 
         // Check if both are present and warn user they are mutually exclusive
@@ -56,10 +80,11 @@ public static class Program
 
     private static void LaunchGui()
     {
-        var uiMainWindow = new MainWindow();
+        var uiMainWindow = new MainWindow
+        {
+            DataContext = new MainWindowViewModel(Logger)
+        };
 
-        uiMainWindow.DataContext = new MainWindowViewModel();
-        
         uiMainWindow.ShowDialog();
     }
 }

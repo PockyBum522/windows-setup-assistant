@@ -19,6 +19,11 @@ public class GuidModulesRegistration
             return new InstallWslModule(_logger);
         }
         
+        if (guidToLookup == new InstallChocolateyApplication(_logger).ModuleGuid)
+        {
+            return new InstallChocolateyApplication(_logger);
+        }
+        
         var errorMessage = $"Could not locate module associated with GUID: {guidToLookup}";
         
         Console.WriteLine(errorMessage);

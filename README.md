@@ -38,3 +38,15 @@ You should be able to run the main batch file as Admin and:
 
 # Future Objectives
 * Windows 11 Support
+
+# Usage:
+<ul>
+
+## Adding a new module:
+
+* Add a new class under WindowsPostSetupAssistant.Core.Modules
+* Implement IModule
+* For ModuleGuid, generate a new GUID (Without {} ) and paste it in. You should end up with: public Guid ModuleGuid => new Guid("AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE");
+* Set up ValidateArguments to point to a bool method that returns true if Arguments is valid, false otherwise
+* Execute should point to a method that does what the module needs to do, using Arguments to do it, if applicable
+</ul>

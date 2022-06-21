@@ -34,7 +34,7 @@ public class ArgumentsParserTests
     }
 
     [Test]
-    public void ArgumentPresent_WhenArgumentPresent_ShouldReturnTrueRegardlessOfCpitalization()
+    public void ArgumentPresent_WhenArgumentPresent_ShouldReturnTrueRegardlessOfCapitalization()
     {
         var result = _sut?.ArgumentPresent("/cHOOsePrOfIlE");
         

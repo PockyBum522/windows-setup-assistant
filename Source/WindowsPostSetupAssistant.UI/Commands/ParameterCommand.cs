@@ -24,7 +24,7 @@ namespace WindowsPostSetupAssistant.UI.Commands
         /// </summary>
         /// <param name="parameter">Required for ICommand, is discarded</param>
         /// <returns>Always true</returns>
-        public bool CanExecute(object parameter)
+        public bool CanExecute(object? parameter)
         {
             return true;
         }
@@ -33,16 +33,18 @@ namespace WindowsPostSetupAssistant.UI.Commands
         /// Executes the current command
         /// </summary>
         /// <param name="parameter">Passed parameter from UI</param>
-        public void Execute(object parameter)
+        public void Execute(object? parameter)
         {
-            _exec.Invoke(parameter);
+            _exec.Invoke(parameter!);
         }
         
-#pragma warning disable 67
         /// <summary>
-        /// Fires when CanExecute changes state
+        /// Fires when CanExecute changes state, which never happens since we always have it set to true
         /// </summary>
-        public event EventHandler CanExecuteChanged;
-#pragma warning restore 67
+        public event EventHandler? CanExecuteChanged
+        {
+            add { throw new NotSupportedException(); }
+            remove { }
+        }
     }
 }

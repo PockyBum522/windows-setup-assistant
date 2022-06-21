@@ -88,7 +88,7 @@ public class MainWindowViewModel
     
     private void InitializeInstallersCard()
     {
-        DeserializeFromTestJson();
+        //DeserializeFromTestJson();
 
         //SerializeTestCards();
     }

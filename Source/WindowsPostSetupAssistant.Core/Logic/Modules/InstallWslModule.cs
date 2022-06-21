@@ -37,25 +37,39 @@ public class InstallWslModule : IModule
             throw new ArgumentException(message);
         }
 
-        // Otherwise, if arguments are checked and safe:
         if (Arguments.Equals(DistrosEnum.Ubuntu.ToString()))
         {
-            var installWslProcess = Process.Start("choco upgrade wsl2");
-            
+            // Otherwise, if arguments are checked:
+            var installChocolateyAppProcess = new Process();
+
+            installChocolateyAppProcess.StartInfo.FileName = "choco";
+            installChocolateyAppProcess.StartInfo.Arguments = $"upgrade wsl2";
+            installChocolateyAppProcess.StartInfo.Verb = "runas";
+            installChocolateyAppProcess.StartInfo.UseShellExecute = true;
+
             _logger.Information("In module: {ThisType}", nameof(GetType));
             _logger.Information("About to run: choco upgrade wsl2");
-            
-            installWslProcess.WaitForExit();
+        
+            installChocolateyAppProcess.Start();
+            installChocolateyAppProcess.WaitForExit();
         }
         
         if (Arguments.Equals(DistrosEnum.Debian.ToString()))
         {
-            var installDebianProcess = Process.Start("choco upgrade wsl-debiangnulinux --ignore-checksums --force");
+            // Otherwise, if arguments are checked:
+            var installChocolateyAppProcess = new Process();
+
+            installChocolateyAppProcess.StartInfo.FileName = "choco";
+            installChocolateyAppProcess.StartInfo.Arguments = $"upgrade wsl-debiangnulinux --ignore-checksums --force";
+            installChocolateyAppProcess.StartInfo.Verb = "runas";
+            installChocolateyAppProcess.StartInfo.UseShellExecute = true;
 
             _logger.Information("In module: {ThisType}", nameof(GetType));
-            _logger.Information("About to run: choco upgrade wsl-debiangnulinux --ignore-checksums --force");
-            
-            installDebianProcess.WaitForExit();
+            _logger.Information(
+                "About to run: choco upgrade wsl-debiangnulinux --ignore-checksums --force");
+        
+            installChocolateyAppProcess.Start();
+            installChocolateyAppProcess.WaitForExit();
         }
     }
     

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows.Input;
+using Newtonsoft.Json;
 using Serilog;
 using WindowsPostSetupAssistant.Core.Interfaces;
 using WindowsPostSetupAssistant.Core.Logic;
@@ -86,6 +88,27 @@ public class MainWindowViewModel
     
     private void InitializeInstallersCard()
     {
+        DeserializeFromTestJson();
+
+        //SerializeTestCards();
+    }
+
+    private void DeserializeFromTestJson()
+    {
+        var testJsonString = File.ReadAllText(@"D:\Dropbox\Documents\Desktop\test.json");
+
+        Cards = JsonConvert.DeserializeObject<List<Card>>(
+                    testJsonString, 
+                    new JsonSerializerSettings
+        {
+            TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Auto,
+            NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore,
+        })
+        ?? throw new Exception("Could not deserialize from json");
+    }
+
+    private void SerializeTestCards()
+    {
         var cardActions = new List<IConfigurationAction>();
 
         cardActions.Add(
@@ -118,8 +141,18 @@ public class MainWindowViewModel
         };
         
         Cards.Add(installersTestCard);
+
+        var jsonSerializerSettings = new JsonSerializerSettings() { 
+            TypeNameHandling = TypeNameHandling.All,
+            Formatting = Formatting.Indented
+        };
+        
+        var testJsonString = JsonConvert.SerializeObject(Cards, jsonSerializerSettings);
+        
+        File.WriteAllText(@"D:\Dropbox\Documents\Desktop\test.json", testJsonString);
+
     }
-    
+
     private void ExecuteProfile()
     {
         foreach (var card in Cards)

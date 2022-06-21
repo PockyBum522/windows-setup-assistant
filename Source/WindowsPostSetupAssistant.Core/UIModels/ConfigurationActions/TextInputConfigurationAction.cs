@@ -7,11 +7,13 @@ public class TextInputConfigurationAction : IConfigurationAction
     public TextInputConfigurationAction    
     (
         string description, 
-        Guid associatedModuleGuid
+        Guid associatedModuleGuid,
+        object? argumentsForModule = null
     )
     {
         Description = description;
         AssociatedModuleGuid = associatedModuleGuid;
+        ArgumentsForModule = argumentsForModule;
     }
 
     public string Description { get; }
@@ -20,6 +22,8 @@ public class TextInputConfigurationAction : IConfigurationAction
     public bool Enabled { get; set; }
 
     public string UserInput { get; set; } = "";
-
+    
+    public object? ArgumentsForModule { get; set; }
+    
     public Guid AssociatedModuleGuid { get; }
 }

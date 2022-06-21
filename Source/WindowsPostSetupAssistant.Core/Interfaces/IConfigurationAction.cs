@@ -6,6 +6,8 @@ public interface IConfigurationAction
     
     public bool MarkedAsOptional { get; set; }
     public bool Enabled { get; set; }
-
+    
+    public object? ArgumentsForModule { get; set; }
+    
     public Guid AssociatedModuleGuid { get; }
 }

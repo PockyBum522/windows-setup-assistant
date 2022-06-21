@@ -8,12 +8,14 @@ public class DropdownConfigurationAction : IConfigurationAction
     (
         string description, 
         List<string> dropdownOptions,
-        Guid associatedModuleGuid
+        Guid associatedModuleGuid,
+        object? argumentsForModule = null
     )
     {
         Description = description;
         DropdownOptions = dropdownOptions;
         AssociatedModuleGuid = associatedModuleGuid;
+        ArgumentsForModule = argumentsForModule;
     }
     
     public string Description { get; set; }
@@ -22,6 +24,8 @@ public class DropdownConfigurationAction : IConfigurationAction
     public bool Enabled { get; set; }
 
     public List<string> DropdownOptions { get; }
+
+    public object? ArgumentsForModule { get; set; }
     
     public Guid AssociatedModuleGuid { get; }
 }

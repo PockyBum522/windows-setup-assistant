@@ -82,25 +82,27 @@ public class MainWindowViewModel
                 dropdownOptions: new List<string> { "Ubuntu", "Debian" },
                 associatedModuleGuid: new Guid("6869A2A6-2A7D-4616-B59C-2DE31651A58D")
             ));
-        
+
         cardActions.Add(
             new BasicConfigurationAction(
                 description: "Install Chrome",
-                associatedModuleGuid: new Guid("AB69A2A6-2A7D-4616-B59C-2DE31651A58D")
+                argumentsForModule: "googlechrome",
+                associatedModuleGuid: new Guid("62369EAC-8C58-43A0-82FF-7468B875F0D8")
             ));
         
         cardActions.Add(
             new BasicConfigurationAction(
                 description: "Install Notepad++",
-                associatedModuleGuid: new Guid("AB69A2A6-2A7D-4616-B59C-2DE3AB51A58D")
+                argumentsForModule: "notepadplusplus",
+                associatedModuleGuid: new Guid("62369EAC-8C58-43A0-82FF-7468B875F0D8")
             ));
 
-        var windowsTaskbarSettingsCard = new Card()
+        var installersTestCard = new Card()
         {
             Title = "Install",
             CardActions = cardActions
         };
         
-        Cards.Add(windowsTaskbarSettingsCard);
+        Cards.Add(installersTestCard);
     }
 }

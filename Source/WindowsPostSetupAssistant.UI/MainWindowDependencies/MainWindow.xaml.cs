@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 
 namespace WindowsPostSetupAssistant.UI.MainWindowDependencies
 {
@@ -7,7 +8,6 @@ namespace WindowsPostSetupAssistant.UI.MainWindowDependencies
     /// </summary>
     public partial class MainWindow : Window
     {
-
         public MainWindow()
         {
             InitializeComponent();

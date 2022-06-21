@@ -1,17 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Input;
+using Serilog;
 using WindowsPostSetupAssistant.Core.Interfaces;
+using WindowsPostSetupAssistant.Core.Logic;
 using WindowsPostSetupAssistant.Core.UIModels;
 using WindowsPostSetupAssistant.Core.UIModels.ConfigurationActions;
+using WindowsPostSetupAssistant.UI.Commands;
 
 namespace WindowsPostSetupAssistant.UI.MainWindowDependencies;
 
 public class MainWindowViewModel
 {
-    public List<Card> Cards = new();
+    private readonly ILogger _logger;
+    public ICommand CommandExecuteProfile => new SimpleCommand(ExecuteProfile);
     
-    public MainWindowViewModel()
+    private readonly GuidModulesRegistration _guidModulesRegistry;
+    
+    public List<Card> Cards = new();
+
+    public MainWindowViewModel(ILogger logger)
     {
+        _logger = logger;
+
+        _guidModulesRegistry = new GuidModulesRegistration(_logger);
+        
         // InitializeWindowsThemesCard();
         
         // InitializeWindows10TaskbarCard();
@@ -80,6 +93,7 @@ public class MainWindowViewModel
             (
                 description: "Install Windows Subsystem for Linux",
                 dropdownOptions: new List<string> { "Ubuntu", "Debian" },
+                argumentsForModule: "Debian",
                 associatedModuleGuid: new Guid("6869A2A6-2A7D-4616-B59C-2DE31651A58D")
             ));
 
@@ -104,5 +118,31 @@ public class MainWindowViewModel
         };
         
         Cards.Add(installersTestCard);
+    }
+    
+    private void ExecuteProfile()
+    {
+        foreach (var card in Cards)
+        {
+            _logger.Information("Getting actions in card: {CardTitle}", card.Title);
+            
+            ExecuteAllCardActions(card);
+        }
+    }
+
+    private void ExecuteAllCardActions(Card card)
+    {
+        foreach (var cardAction in card.CardActions)
+        {
+            _logger.Information(
+                "Resolving card action: {ActionDescription}", cardAction.Description);
+
+            var moduleForAction = 
+                _guidModulesRegistry.GetAssociatedModule(cardAction.AssociatedModuleGuid);
+            
+            moduleForAction.Arguments = cardAction.ArgumentsForModule!;
+            
+            moduleForAction.Execute.Invoke();
+        }
     }
 }

@@ -1,6 +1,4 @@
-﻿using WindowsPostSetupAssistant.Core.Logic.Modules;
-
-namespace WindowsPostSetupAssistant.Core.Interfaces;
+﻿namespace WindowsPostSetupAssistant.Core.Interfaces;
 
 public interface IModule
 {

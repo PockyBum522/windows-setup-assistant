@@ -26,7 +26,7 @@
         <UniformGrid Grid.Row="1" Grid.Column="0" Margin="10" Rows="1" Columns="3">
             <Button Content="Save" Margin="5"></Button>
             <Button Content="Load" Margin="5"></Button>
-            <Button Content="Execute" Margin="5" Command="{Binding CommandExecuteProfile}"></Button>
+            <Button Content="Execute" Margin="5" Command="{Binding CommandExecuteProfile}" />
         </UniformGrid>
     </Grid>
 </Window>

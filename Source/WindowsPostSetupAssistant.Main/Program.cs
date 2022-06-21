@@ -1,21 +1,34 @@
 ﻿using System;
-using System.Security.Permissions;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Security.Principal;
+using System.Threading;
+using System.Threading.Tasks;
 using Serilog;
 using Serilog.Core;
 using WindowsPostSetupAssistant.Core;
 using WindowsPostSetupAssistant.Main.CommandLine;
-using WindowsPostSetupAssistant.UI;
 using WindowsPostSetupAssistant.UI.MainWindowDependencies;
 
 namespace WindowsPostSetupAssistant.Main;
 
 public static class Program
 {
-    private static readonly Logger Logger;
     private static string ExecuteProfileArgument => "executeProfile";
     private static string ChooseProfileArgument => "chooseProfile";
+    
+    private static readonly Logger Logger;
+    private static string[] _args;
 
+    [DllImport("kernel32.dll")]
+    static extern IntPtr GetConsoleWindow();
+
+    [DllImport("user32.dll")]
+    static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+    
     static Program()
     {
         Logger = new LoggerConfiguration()
@@ -28,15 +41,22 @@ public static class Program
     }
     
     [STAThread]
-    public static void Main()
+    public static void Main(string[] args)
     {
-        WindowsIdentity id = WindowsIdentity.GetCurrent();
-        WindowsPrincipal principal = new WindowsPrincipal(id);
-        var runningAsAdmin = principal.IsInRole(WindowsBuiltInRole.Administrator);
-
-        if (!runningAsAdmin) throw new Exception("This application must be run as administrator. " +
-            "Please re-run application with administrator priveleges");
-
+        _args = args;
+        
+#if DEBUG
+        // Only restart for admin elevation if in release mode
+#else
+        if (!CheckIfRunningAsAdministrator())
+        {
+            Logger.Information("Application is not running as administrator, restarting...");
+            RerunThisApplicationAsAdministrator();   
+        }
+        
+        Logger.Information("Application running as administrator"); 
+#endif
+        
         var argumentsParser = new ArgumentsParser(new CommandLineInterface());
 
         // Check if both are present and warn user they are mutually exclusive
@@ -52,6 +72,8 @@ public static class Program
             Console.WriteLine("Please modify arguments.");
             Console.WriteLine("Program will now exit.");
 
+            Console.ReadLine();
+
             Environment.Exit(0);
         }
         
@@ -59,6 +81,8 @@ public static class Program
         if (!argumentsParser.ArgumentPresent(ExecuteProfileArgument) &&
             !argumentsParser.ArgumentPresent(ChooseProfileArgument))
         {
+            HideConsoleWindow();
+            
             LaunchGui();
         }
 
@@ -67,6 +91,8 @@ public static class Program
             Console.WriteLine();
             Console.WriteLine("======== RUNNING CHOOSE PROFILE HERE ========");
             Console.WriteLine();
+            
+            Console.ReadLine();
         }
         
         if (argumentsParser.ArgumentPresent(ExecuteProfileArgument))
@@ -75,9 +101,54 @@ public static class Program
             Console.WriteLine("======== EXECUTE SELECTED PROFILE HERE ========");
             Console.WriteLine($"Selected profile passed is: {argumentsParser.GetArgumentValue(ExecuteProfileArgument)}");
             Console.WriteLine();
+            
+            Console.ReadLine();
         }
     }
 
+    private static void HideConsoleWindow()
+    {
+        const int SW_HIDE = 0;
+        
+        var handle = GetConsoleWindow();
+
+        ShowWindow(handle, SW_HIDE);
+    }
+    
+    [STAThread]
+    private static void RerunThisApplicationAsAdministrator()
+    {
+        var executableFullPath = Assembly.GetExecutingAssembly().Location
+            .Replace(".dll", ".exe");
+
+        Logger.Information("Running from: {ExeName}", executableFullPath ?? "");
+        
+        var thisAppNewProcess = new Process();
+        
+        thisAppNewProcess.StartInfo.FileName = executableFullPath;
+        thisAppNewProcess.StartInfo.Arguments = string.Join(" ", _args);
+        thisAppNewProcess.StartInfo.Verb = "runas";
+        thisAppNewProcess.StartInfo.UseShellExecute = true;
+        
+        Logger.Information("About to restart: {ApplicationPath}", executableFullPath);
+        thisAppNewProcess.Start();
+        
+        Logger.Information("Exiting old process");
+        Environment.Exit(0);
+    }
+    
+    [STAThread]
+    private static bool CheckIfRunningAsAdministrator()
+    {
+        var id = WindowsIdentity.GetCurrent();
+        var principal = new WindowsPrincipal(id);
+        
+        var runningAsAdmin = principal.IsInRole(WindowsBuiltInRole.Administrator);
+
+        return runningAsAdmin;
+    }
+    
+    [STAThread]
     private static void LaunchGui()
     {
         var uiMainWindow = new MainWindow

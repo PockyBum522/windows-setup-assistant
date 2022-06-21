@@ -6,7 +6,6 @@
         <Nullable>enable</Nullable>
         <UseWPF>true</UseWPF>
         <StartupObject>WindowsPostSetupAssistant.Main.Program</StartupObject>
-        <ApplicationManifest>app.manifest</ApplicationManifest>
         <Configurations>Release;Debug</Configurations>
         <Platforms>x64</Platforms>
     </PropertyGroup>

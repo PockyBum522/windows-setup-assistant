@@ -38,12 +38,19 @@ public class InstallChocolateyApplication : IModule
         }
 
         // Otherwise, if arguments are checked:
-        var installChocolateyApp = Process.Start($"choco upgrade {Arguments}");
+        var installChocolateyAppProcess = new Process();
+
+        installChocolateyAppProcess.StartInfo.FileName = "choco";
+        installChocolateyAppProcess.StartInfo.Arguments = $"upgrade {Arguments}";
+        installChocolateyAppProcess.StartInfo.Verb = "runas";
+        installChocolateyAppProcess.StartInfo.UseShellExecute = true;
 
         _logger.Information("In module: {ThisType}", nameof(GetType));
         _logger.Information("About to run: choco upgrade {Arguments}", (string)Arguments);
-
-        installChocolateyApp.WaitForExit();
+        
+        installChocolateyAppProcess.Start();
+        
+        installChocolateyAppProcess.WaitForExit();
     }
     
     private bool CheckArguments()

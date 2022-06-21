@@ -38,7 +38,7 @@ public class InstallWslModule : IModule
         }
 
         // Otherwise, if arguments are checked and safe:
-        if (Arguments.Equals(DistrosEnum.Ubuntu))
+        if (Arguments.Equals(DistrosEnum.Ubuntu.ToString()))
         {
             var installWslProcess = Process.Start("choco upgrade wsl2");
             
@@ -48,7 +48,7 @@ public class InstallWslModule : IModule
             installWslProcess.WaitForExit();
         }
         
-        if (Arguments.Equals(DistrosEnum.Debian))
+        if (Arguments.Equals(DistrosEnum.Debian.ToString()))
         {
             var installDebianProcess = Process.Start("choco upgrade wsl-debiangnulinux --ignore-checksums --force");
 
@@ -61,7 +61,7 @@ public class InstallWslModule : IModule
     
     private bool CheckArguments()
     {
-        if (Arguments.Equals(DistrosEnum.Uninitialized)) return false;
+        if (Arguments.Equals(DistrosEnum.Uninitialized.ToString())) return false;
         
         return true;
     }

@@ -49,4 +49,9 @@ You should be able to run the main batch file as Admin and:
 * For ModuleGuid, generate a new GUID (Without {} ) and paste it in. You should end up with: public Guid ModuleGuid => new Guid("AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE");
 * Set up ValidateArguments to point to a bool method that returns true if Arguments is valid, false otherwise
 * Execute should point to a method that does what the module needs to do, using Arguments to do it, if applicable
+
+## Terminology:
+
+* A card is a UI element that contains one or more IConfigurationAction(s)
+* IModule is what gets looked up by an action. IModule is what actually applies the configuration action on the computer.
 </ul>

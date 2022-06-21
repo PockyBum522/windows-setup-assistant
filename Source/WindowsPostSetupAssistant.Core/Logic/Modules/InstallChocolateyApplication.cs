@@ -29,13 +29,19 @@ public class InstallChocolateyApplication : IModule
                           $"{nameof(CheckArguments)} full arguments are: {Arguments}{Environment.NewLine}" +
                           Environment.NewLine;
             
-            Console.WriteLine(message);
+            _logger.Error("Arguments for {ThisType} were not able to be verified, full arguments " +
+                          "are: {EnvironmentArguments}", 
+                nameof(GetType),
+                (string)Arguments);
             
             throw new ArgumentException(message);
         }
 
         // Otherwise, if arguments are checked:
         var installChocolateyApp = Process.Start($"choco upgrade {Arguments}");
+
+        _logger.Information("In module: {ThisType}", nameof(GetType));
+        _logger.Information("About to run: choco upgrade {Arguments}", (string)Arguments);
 
         installChocolateyApp.WaitForExit();
     }

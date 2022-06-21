@@ -25,7 +25,7 @@ public class InstallWslModule : IModule
         if (!ValidateArguments)
         {
             var message = $"{Environment.NewLine}ERROR: {Environment.NewLine}" +
-                          $"Arguments for InstallWslModule were not able to be verified by " +
+                          $"Arguments for {nameof(GetType)} were not able to be verified by " +
                           $"{nameof(CheckArguments)} full arguments are: {Arguments}{Environment.NewLine}" +
                           Environment.NewLine;
             
@@ -47,8 +47,6 @@ public class InstallWslModule : IModule
             var installDebianProcess = Process.Start("choco upgrade wsl-debiangnulinux --ignore-checksums --force");
 
             installDebianProcess.WaitForExit();
-            
-            
         }
     }
     

@@ -43,7 +43,7 @@ namespace WindowsPostSetupAssistant.UI.Commands
         /// </summary>
         public event EventHandler? CanExecuteChanged
         {
-            add { throw new NotSupportedException(); }
+            add { }
             remove { }
         }
     }

@@ -45,7 +45,7 @@ public class SimpleCommand : ICommand
     /// </summary>
     public event EventHandler? CanExecuteChanged
     {
-        add { throw new NotSupportedException(); }
+        add { }
         remove { }
     }
 }

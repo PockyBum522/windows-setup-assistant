@@ -1,0 +1,38 @@
+[
+  {
+    "DisplayName": "TeamViewer v11",
+    "FileName": "TeamViewer_11.exe",
+    "Arguments": "",
+    "AutoHotkeyMacro": "",
+    "DesktopShortcutExePath": "",
+    "StartMenuShortcutExePath": ""
+  },
+  {
+    "DisplayName": "7-Zip",
+    "ChocolateyId": "7Zip",
+    "Arguments": "",
+    "DesktopShortcutExePath": "",
+    "StartMenuShortcutExePath": ""
+  },
+  {
+    "DisplayName": "Google Chrome",
+    "ChocolateyId": "googlechrome",
+    "Arguments": "",
+    "DesktopShortcutExePath": "",
+    "StartMenuShortcutExePath": ""
+  },
+  {
+    "DisplayName": "Yubico Authenticator (Modified)",
+    "ArchiveFilename": "Yubico Authenticator.7z",
+    "DestinationPath": "C:\\PortableApplications\\Yubico Authenticator\\",
+    "DesktopShortcutExePath": "",
+    "StartMenuShortcutExePath": ""
+  },
+  {
+    "DisplayName": "CLCL",
+    "FolderName": "CLCL",
+    "DestinationPath": "C:\\PortableApplications\\CLCL\\",
+    "DesktopShortcutExePath": "",
+    "StartMenuShortcutExePath": ""
+  }
+]

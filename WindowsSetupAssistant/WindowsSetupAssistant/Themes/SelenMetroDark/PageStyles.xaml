@@ -1,0 +1,12 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Resources.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <Style x:Key="StandardPage" TargetType="Page">
+        <Setter Property="Background" Value="{StaticResource DarkBackground}"/>
+        <Setter Property="Foreground" Value="{StaticResource Foreground}"/>
+    </Style>
+</ResourceDictionary>

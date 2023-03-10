@@ -25,7 +25,6 @@ namespace WindowsSetupAssistant
                 LogAppBasePath,
                 "Script.log");
         
-        
         public static string PortableAppsDestinationDirectory => 
                 @"C:\PortableApplications"; 
         

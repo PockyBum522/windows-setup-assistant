@@ -154,12 +154,16 @@ if "%1" neq "ELEV" (
     
 	del "C:\Users\David\AppData\Roaming\NuGet\NuGet.Config"
 	
-	dotnet restore "%~dp0Resources\Secondary CSharp Loader\WindowsSetupAssistant.csproj"
+	dotnet restore "%~dp0WindowsSetupAssistant\WindowsSetupAssistant.csproj"
 	
-	dotnet build "%~dp0Resources\Secondary CSharp Loader\WindowsSetupAssistant.csproj"
+	dotnet build "%~dp0WindowsSetupAssistant\WindowsSetupAssistant.csproj"
 
-	"%~dp0Resources\Secondary CSharp Loader\bin\Debug\net7.0-windows\WindowsSetupAssistant.exe"
-    
+	echo .
+	echo Running: "%~dp0WindowsSetupAssistant\bin\Debug\net7.0-windows\WindowsSetupAssistant.exe"
+    echo .
+	
+	"%~dp0WindowsSetupAssistant\bin\Debug\net7.0-windows\WindowsSetupAssistant.exe"
+	
 	echo.
     echo Finished configuring this computer.
 	echo.

@@ -123,12 +123,14 @@ public partial class CurrentState : ObservableObject
     {
         Console.WriteLine("Exiting script temporarily. will reboot and re-run admin bat file on next startup...");
     
-        Process.Start("powershell", "-C shutdown /r /t 5");
+        Process.Start("powershell", "-C shutdown /r /t 60");
         
         while (Process.GetProcessesByName("powershell").Length < 1)
         {
             Thread.Sleep(1000);    
         }
+        
+        Thread.Sleep(1000);    
         
         Environment.Exit(0);
     }
@@ -140,7 +142,7 @@ public partial class CurrentState : ObservableObject
     {
         var message = @"ONLY CLICK YES IF YOU HAVE CLICKED THROUGH ALL VISIBLE INSTALLERS AND THEY HAVE FINISHED!!!
 
-(This is only if you chose to install applications with a non-silent installer, of course.)
+(This is only if you selected to install applications with a non-silent installer, of course.)
 
 Are you ready to reboot the computer?";
         

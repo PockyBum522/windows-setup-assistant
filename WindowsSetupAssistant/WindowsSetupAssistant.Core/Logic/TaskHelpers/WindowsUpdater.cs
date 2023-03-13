@@ -35,9 +35,7 @@ public class WindowsUpdater
             Import-Module PSWindowsUpdate
 
             Add-WUServiceManager -ServiceID "7971f918-a847-4430-9279-4a52d1efe18d" -AddServiceFlag 7 -Confirm:$false
-            
-            Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
-            
+                        
             Get-WindowsUpdate -Criteria 'IsInstalled=0 and DeploymentAction=*' -MicrosoftUpdate -NotTitle 'Windows 11' -Verbose -Install -AcceptAll -RecurseCycle 3 -AutoReboot
             
             Start-Sleep -Seconds 60

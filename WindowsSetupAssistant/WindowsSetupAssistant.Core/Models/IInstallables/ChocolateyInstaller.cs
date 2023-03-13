@@ -9,17 +9,6 @@ namespace WindowsSetupAssistant.Core.Models.IInstallables;
 /// </summary>
 public class ChocolateyInstaller : IInstallable
 {
-    private ILogger _logger;
-    
-    /// <summary>
-    /// Constructor for dependency injection
-    /// </summary>
-    /// <param name="logger">Injected ILogger to use</param>
-    public ChocolateyInstaller(ILogger logger)
-    {
-        _logger = logger;
-    }
-
     /// <summary>
     /// The ID of the package at https://community.chocolatey.org/packages (basically whatever would come after choco install)
     /// </summary>
@@ -36,9 +25,15 @@ public class ChocolateyInstaller : IInstallable
     public string Parameters { get; set; } = "";
     
     /// <inheritdoc/>
-    public void ExecuteInstall()
+    public string DisplayName { get; set; } = "";
+    
+    /// <inheritdoc/>
+    public bool IsSelected { get; set; }
+
+    /// <inheritdoc/>
+    public void ExecuteInstall(ILogger logger)
     {
-        _logger.Information("Installing {PackageName} with Chocolatey", ChocolateyId);
+        logger.Information("Installing {PackageName} with Chocolatey", ChocolateyId);
 
         var procInfo = new ProcessStartInfo();
 

@@ -10,17 +10,6 @@ namespace WindowsSetupAssistant.Core.Models.IInstallables;
 /// </summary>
 public class ExecutableInstaller : IInstallable
 {
-    private ILogger _logger;
-    
-    /// <summary>
-    /// Constructor for dependency injection
-    /// </summary>
-    /// <param name="logger">Injected ILogger to use</param>
-    public ExecutableInstaller(ILogger logger)
-    {
-        _logger = logger;
-    }
-    
     /// <summary>
     /// Path to the .exe or .msi
     /// </summary>
@@ -37,7 +26,13 @@ public class ExecutableInstaller : IInstallable
     public string AutoHotkeyMacro { get; set; } = "";
     
     /// <inheritdoc/>
-    public void ExecuteInstall()
+    public string DisplayName { get; set; } = "";
+    
+    /// <inheritdoc/>
+    public bool IsSelected { get; set; }
+    
+    /// <inheritdoc/>
+    public void ExecuteInstall(ILogger logger)
     {
         var executableInstallerPath =
             FileSearcher.ReverseWalkDirectoriesFind(ApplicationPaths.ThisApplicationRunFromDirectoryPath, FileName, 8);

@@ -12,17 +12,6 @@ namespace WindowsSetupAssistant.Core.Models.IInstallables;
 /// </summary>
 public class ArchiveInstaller : IInstallable
 {
-    private ILogger _logger;
-    
-    /// <summary>
-    /// Constructor for dependency injection
-    /// </summary>
-    /// <param name="logger">Injected ILogger to use</param>
-    public ArchiveInstaller(ILogger logger)
-    {
-        _logger = logger;
-    }
-    
     /// <summary>
     /// Path to the folder containing the portable application
     /// </summary>
@@ -34,9 +23,15 @@ public class ArchiveInstaller : IInstallable
     public string DestinationPath { get; set; } = "";
 
     /// <inheritdoc/>
-    public void ExecuteInstall()
+    public string DisplayName { get; set; } = "";
+    
+    /// <inheritdoc/>
+    public bool IsSelected { get; set; }
+
+    /// <inheritdoc/>
+    public void ExecuteInstall(ILogger logger)
     {        
-        _logger.Information("Running {ThisName}", System.Reflection.MethodBase.GetCurrentMethod()?.Name);
+        logger.Information("Running {ThisName}", System.Reflection.MethodBase.GetCurrentMethod()?.Name);
         
         Directory.CreateDirectory(Path.GetDirectoryName(DestinationPath) ?? throw new DirectoryNotFoundException());
         
@@ -54,8 +49,8 @@ public class ArchiveInstaller : IInstallable
         
         var arguments = $"""e {archiveToInstallPath} -o"{DestinationPath}" -r""";
         
-        _logger.Debug("Extracting Archive: {ArchiveToInstallPath}", archiveToInstallPath);
-        _logger.Debug("With arguments: {Args}", arguments);
+        logger.Debug("Extracting Archive: {ArchiveToInstallPath}", archiveToInstallPath);
+        logger.Debug("With arguments: {Args}", arguments);
         
         var sevenZipExecutablePath =
             Path.Join(

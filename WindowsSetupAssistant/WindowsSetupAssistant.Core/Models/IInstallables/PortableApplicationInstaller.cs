@@ -10,17 +10,6 @@ namespace WindowsSetupAssistant.Core.Models.IInstallables;
 /// </summary>
 public class PortableApplicationInstaller : IInstallable
 {
-    private ILogger _logger;
-    
-    /// <summary>
-    /// Constructor for dependency injection
-    /// </summary>
-    /// <param name="logger">Injected ILogger to use</param>
-    public PortableApplicationInstaller(ILogger logger)
-    {
-        _logger = logger;
-    }
-    
     /// <summary>
     /// Name of the folder containing the portable application, must be located in \Resources\Portable Applications\
     /// </summary>
@@ -42,9 +31,15 @@ public class PortableApplicationInstaller : IInstallable
     /// if no shortcut desired
     /// </summary>
     public string StartMenuShortcutExePath { get; set; } = "";
+
+    /// <inheritdoc/>
+    public string DisplayName { get; set; } = "";
     
     /// <inheritdoc/>
-    public void ExecuteInstall()
+    public bool IsSelected { get; set; }
+    
+    /// <inheritdoc/>
+    public void ExecuteInstall(ILogger logger)
     {
         var searchInPath =
             Path.Join(
@@ -60,8 +55,8 @@ public class PortableApplicationInstaller : IInstallable
         
         Directory.CreateDirectory(DestinationPath);
         
-        _logger.Debug("Copying portable app: {SourceFolderPath}", folderToInstallPath);
-        _logger.Debug("To directory: {DestinationFolder}", DestinationPath);
+        logger.Debug("Copying portable app: {SourceFolderPath}", folderToInstallPath);
+        logger.Debug("To directory: {DestinationFolder}", DestinationPath);
         
         if (Directory.Exists(folderToInstallPath))
         {

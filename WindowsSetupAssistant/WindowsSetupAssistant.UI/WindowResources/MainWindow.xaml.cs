@@ -6,7 +6,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using Serilog;
 using WindowsSetupAssistant.Core;
 using WindowsSetupAssistant.Core.Interfaces;
@@ -45,8 +44,6 @@ public partial class MainWindow
         _currentState = new(_logger);
         
         DataContext = _currentState.MainWindowPartialViewModel;
-
-        //SetUpDummyInstallableApplications();
         
         LoadAvailableInstallersFromJsonFile();
         
@@ -58,64 +55,6 @@ public partial class MainWindow
         
         // Otherwise:
         CheckStageAndWorkOnRerun();
-    }
-    
-    
-    private void SetUpDummyInstallableApplications()
-    {
-        var installableApps = new List<IInstallable>();
-        
-        installableApps.Add(new ExecutableInstaller(_logger)
-        {
-            DisplayName = "TeamViewer v11",
-            FileName = "TeamViewer_11.exe"
-        });
-
-        installableApps.Add(new ChocolateyInstaller(_logger)
-        {
-            DisplayName = "7-Zip",
-            ChocolateyId = "7Zip"
-        });
-
-        installableApps.Add(new ChocolateyInstaller(_logger)
-        {
-            DisplayName = "Google Chrome",
-            ChocolateyId = "googlechrome"
-        });
-
-        installableApps.Add(new ArchiveInstaller(_logger)
-        {
-            DisplayName = "Yubico Authenticator (Modified)",
-            DestinationPath = @"C:\PortableApplications\Yubico Authenticator\",
-            ArchiveFilename = "Yubico Authenticator.7z"
-        });
-
-        installableApps.Add(new PortableApplicationInstaller(_logger)
-        {
-            DisplayName = "CLCL",
-            FolderName = "CLCL",
-            DestinationPath = @"C:\PortableApplications\CLCL\"
-        });
-
-        var serializer = new JsonSerializer
-        {
-            TypeNameHandling = TypeNameHandling.Auto
-        };
-
-        Console.WriteLine(ApplicationPaths.ResourcePaths.InstallsFileJsonPath);
-        
-        using var jsonStateFileWriter = new StreamWriter(ApplicationPaths.ResourcePaths.InstallsFileJsonPath);
-
-        using var jsonStateWriter = new JsonTextWriter(jsonStateFileWriter) { Formatting = Formatting.Indented };
-
-        serializer.Serialize(jsonStateWriter, installableApps);
-
-
-        // var jsonStateRaw = File.ReadAllText(StatePath);
-        //
-        // MainWindowPartialViewModel =
-        //     JsonConvert.DeserializeObject<MainWindowPartialViewModel>(jsonStateRaw, settings) ??
-        //     new MainWindowPartialViewModel();
     }
     
     private void ClearAll_OnClick(object sender, RoutedEventArgs e)
@@ -276,13 +215,13 @@ public partial class MainWindow
     private void WorkAllApplicationInstallCheckboxes()
     {
         // Install 7zip no matter what because we need it later for the portable apps
-        new ChocolateyInstaller(_logger){ChocolateyId = "7Zip"}.ExecuteInstall();
+        new ChocolateyInstaller(){ChocolateyId = "7Zip"}.ExecuteInstall(_logger);
 
         foreach (var installer in _currentState.MainWindowPartialViewModel.AvailableInstalls)
         {
             if (!installer.IsSelected) continue;
 
-            installer.ExecuteInstall();
+            installer.ExecuteInstall(_logger);
         }
         
         // TODO: Associate 7zFM.exe with .7z and .zip files

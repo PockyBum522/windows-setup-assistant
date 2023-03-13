@@ -1,11 +1,16 @@
-﻿namespace WindowsSetupAssistant.Core.Interfaces;
+﻿using Serilog;
 
-public class IInstallable
+namespace WindowsSetupAssistant.Core.Interfaces;
+
+/// <summary>
+/// Interface for installable things to implement (ArchiveInstaller, ChocolateyInstaller, ...)
+/// </summary>
+public interface IInstallable
 {
     /// <summary>
     /// The name to display to the user next to a checkbox in this application
     /// </summary>
-    public string DisplayName { get; set; } = "";
+    public string DisplayName { get; set; }
     
     /// <summary>
     /// Should we install this when the user clicks execute all installs
@@ -15,5 +20,5 @@ public class IInstallable
     /// <summary>
     /// Runs the actual installation
     /// </summary>
-    public void ExecuteInstall() { }
+    public void ExecuteInstall(ILogger logger);
 }

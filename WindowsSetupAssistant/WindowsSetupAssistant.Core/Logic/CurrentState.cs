@@ -76,7 +76,8 @@ public class CurrentState
     {
         var serializer = new JsonSerializer
         {
-            NullValueHandling = NullValueHandling.Ignore
+            NullValueHandling = NullValueHandling.Ignore,
+            TypeNameHandling = TypeNameHandling.Auto
         };
 
         using var jsonStateFileWriter = new StreamWriter(StatePath);

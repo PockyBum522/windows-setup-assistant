@@ -1,7 +1,7 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using WindowsSetupAssistant.Core.Interfaces;
-using WindowsSetupAssistant.Core.Models.IInstallables;
 
 namespace WindowsSetupAssistant.Core.Models.ViewModels;
 

@@ -3,15 +3,25 @@ using Serilog;
 
 namespace WindowsSetupAssistant.Core.Logic.TaskHelpers;
 
+/// <summary>
+/// Helper for updating windows through windows update
+/// </summary>
 public class WindowsUpdater
 {
     private readonly ILogger _logger;
 
+    /// <summary>
+    /// Constructor for dependency injection
+    /// </summary>
+    /// <param name="logger">Injected ILogger to use</param>
     public WindowsUpdater(ILogger logger)
     {
         _logger = logger;
     }
 
+    /// <summary>
+    /// Updates windows through Windows update
+    /// </summary>
     public void UpdateWindows()
     {
         _logger.Information("Running {ThisName}", System.Reflection.MethodBase.GetCurrentMethod()?.Name);

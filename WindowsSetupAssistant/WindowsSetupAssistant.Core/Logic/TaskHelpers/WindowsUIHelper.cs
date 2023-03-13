@@ -6,15 +6,26 @@ using Serilog;
 
 namespace WindowsSetupAssistant.Core.Logic.TaskHelpers;
 
+/// <summary>
+/// Methods for changing Windows UI-specific settings
+/// </summary>
 public class WindowsUiHelper
 {
     private readonly ILogger _logger;
 
+    /// <summary>
+    /// Constructor for dependency injection
+    /// </summary>
+    /// <param name="logger">Injected ILogger to use</param>
     public WindowsUiHelper(ILogger logger)
     {
         _logger = logger;
     }
 
+    /// <summary>
+    /// Changes Windows theme, title bars, and accent color to dark and disables transparency
+    /// </summary>
+    /// <exception cref="NullReferenceException">Throws if registry access error</exception>
     public void ChangeWindowsThemeToDark()
     {
         _logger.Information("Running {ThisName}", System.Reflection.MethodBase.GetCurrentMethod()?.Name);
@@ -49,6 +60,10 @@ public class WindowsUiHelper
         //dwmKey.SetValue("AccentColor", 4282927692);
     }
 
+    /// <summary>
+    /// Sets Windows wallpaper to the dark "Camping under the stars" wallpaper, which is less blinding than the default
+    /// </summary>
+    /// <exception cref="NullReferenceException">Throws if registry access error</exception>
     public void SetWallpaperToDarkDefaultWallpaper()
     {
         _logger.Information("Running {ThisName}", System.Reflection.MethodBase.GetCurrentMethod()?.Name);
@@ -78,6 +93,10 @@ public class WindowsUiHelper
         SystemParametersInfo(20, 0, tempPath, 0x01 | 0x02);
     }
 
+    /// <summary>
+    /// Turns off news and interests on taskbar
+    /// </summary>
+    /// <exception cref="NullReferenceException">Throws if registry access error</exception>
     public void DisableNewsAndInterestsOnTaskbar()
     {
         _logger.Information("Running {ThisName}", System.Reflection.MethodBase.GetCurrentMethod()?.Name);
@@ -87,10 +106,10 @@ public class WindowsUiHelper
         key?.SetValue("ShellFeedsTaskbarViewMode", 2);
     }
     
-    [DllImport("user32.dll", SetLastError=true)]
-    public static extern bool SetSysColors(int cElements, int [] lpaElements, int [] lpaRgbValues);
-    public const int ColorDesktop = 1;
-
+    /// <summary>
+    /// Sets active and inactive window title bars to dark colors
+    /// </summary>
+    /// <exception cref="NullReferenceException">Throws if registry access error</exception>
     public void BlackActiveAndInactiveTitleBars()
     {
         _logger.Information("Running {ThisName}", System.Reflection.MethodBase.GetCurrentMethod()?.Name);
@@ -114,6 +133,10 @@ public class WindowsUiHelper
         accentKey.SetValue("AccentColor", BitConverter.ToInt32(BitConverter.GetBytes(0xff484a4cu), 0), RegistryValueKind.DWord);
     }
 
+    /// <summary>
+    /// Sets better folder view options. This needs to be broken out to individual checkboxes in MainWindow
+    /// </summary>
+    /// <exception cref="NullReferenceException">Throws if registry access error</exception>
     public void SetFolderViewOptions()
     {
         _logger.Information("Running {ThisName}", System.Reflection.MethodBase.GetCurrentMethod()?.Name);
@@ -156,6 +179,10 @@ public class WindowsUiHelper
         key.SetValue("TaskbarSizeMove", 0);
     }
     
+    /// <summary>
+    /// Collapses the search in taskbar to just an icon 
+    /// </summary>
+    /// <exception cref="NullReferenceException">Throws on registry access error</exception>
     public void CollapseSearchOnTaskbarToIcon()
     {
         _logger.Information("Running {ThisName}", System.Reflection.MethodBase.GetCurrentMethod()?.Name);
@@ -167,6 +194,10 @@ public class WindowsUiHelper
         key.SetValue("SearchboxTaskbarMode", 1);
     }
     
+    /// <summary>
+    /// Collapses the search in taskbar to completely hidden 
+    /// </summary>
+    /// <exception cref="NullReferenceException">Throws on registry access error</exception>
     public void CollapseSearchOnTaskbarToHidden()
     {
         _logger.Information("Running {ThisName}", System.Reflection.MethodBase.GetCurrentMethod()?.Name);
@@ -177,7 +208,11 @@ public class WindowsUiHelper
         
         key.SetValue("SearchboxTaskbarMode", 0);
     }
-
+    
+    
+    /// <summary>
+    /// Deletes files on the desktop that match each pattern in patternsToDeleteWithoutWildcards
+    /// </summary>
     public void CleanDesktopOfAllFilesMatching(string[] patternsToDeleteWithoutWildcards)
     {
         var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);

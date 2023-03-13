@@ -144,6 +144,11 @@ public class WindowsSettingsHelper
         Process.Start(processStartInfo)?.WaitForExit();
     }
    
+    /// <summary>
+    /// Makes it so computer doesn't generate thumbnails on network locations, which prevents Thumbs.db files that
+    /// annoyingly cannot be deleted or moved
+    /// </summary>
+    /// <exception cref="NullReferenceException">Throws if registry access problem</exception>
     public void DisableNetworkThumbnails()
     {
         _logger.Information("Running {ThisName}", System.Reflection.MethodBase.GetCurrentMethod()?.Name);

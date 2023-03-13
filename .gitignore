@@ -6,6 +6,9 @@
 # Jetbrains rider folders
 .idea/
 
+# All installer files
+WindowsSetupAssistant\Resources\Installers\*
+
 # User-specific files (Jetbrains Rider)
 *.DotSettings.user
 

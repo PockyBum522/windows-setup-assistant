@@ -5,6 +5,7 @@ using System.Windows.Threading;
 using Autofac;
 using Serilog;
 using WindowsSetupAssistant.Core.Logic;
+using WindowsSetupAssistant.Core.Models.IInstallables;
 using WindowsSetupAssistant.Core.Models.ViewModels;
 using WindowsSetupAssistant.UI.WindowResources;
 
@@ -108,12 +109,10 @@ public class DiContainerBuilder
     
     private void RegisterInstallerModels()
     {
-        // _builder.RegisterType<ArchiveInstaller>().AsSelf();
-        // _builder.RegisterType<ChocolateyInstaller>().AsSelf();
-        // _builder.RegisterType<ExecutableInstaller>().AsSelf();
-        // _builder.RegisterType<PortableApplicationInstaller>().AsSelf();
-        //
-        // _builder.RegisterType<BaseInstaller>().AsSelf();
+        _builder.RegisterType<ArchiveInstaller>().AsSelf();
+        _builder.RegisterType<ChocolateyInstaller>().AsSelf();
+        _builder.RegisterType<ExecutableInstaller>().AsSelf();
+        _builder.RegisterType<PortableApplicationInstaller>().AsSelf();
     }
     
     private void RegisterUiDependencies()

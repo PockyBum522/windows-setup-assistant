@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
+using WindowsSetupAssistant.Core.Interfaces;
 using WindowsSetupAssistant.Core.Models.IInstallables;
 
 namespace WindowsSetupAssistant.Core.Models.ViewModels;
@@ -35,5 +36,5 @@ public partial class MainWindowPartialViewModel : ObservableObject
     [ObservableProperty] private string _textHostname = "";
     
     // Application installers
-    [ObservableProperty] private ObservableCollection<BaseInstaller> _availableInstalls = new();
+    [ObservableProperty] private ObservableCollection<IInstallable> _availableInstalls = new();
 }

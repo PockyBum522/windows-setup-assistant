@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Serilog;
+using WindowsSetupAssistant.Core.Interfaces;
 using WindowsSetupAssistant.Core.Logic;
 
 namespace WindowsSetupAssistant.Core.Models.IInstallables;
@@ -7,7 +8,7 @@ namespace WindowsSetupAssistant.Core.Models.IInstallables;
 /// <summary>
 /// Contains the information needed to install an executable install file
 /// </summary>
-public class ExecutableInstaller : BaseInstaller
+public class ExecutableInstaller : IInstallable
 {
     private ILogger _logger;
     
@@ -36,7 +37,7 @@ public class ExecutableInstaller : BaseInstaller
     public string AutoHotkeyMacro { get; set; } = "";
     
     /// <inheritdoc/>
-    public override void ExecuteInstall()
+    public void ExecuteInstall()
     {
         var executableInstallerPath =
             FileSearcher.ReverseWalkDirectoriesFind(ApplicationPaths.ThisApplicationRunFromDirectoryPath, FileName, 8);

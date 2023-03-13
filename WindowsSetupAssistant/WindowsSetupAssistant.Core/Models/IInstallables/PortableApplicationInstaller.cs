@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using Serilog;
+using WindowsSetupAssistant.Core.Interfaces;
 
 namespace WindowsSetupAssistant.Core.Models.IInstallables;
 
@@ -7,7 +8,7 @@ namespace WindowsSetupAssistant.Core.Models.IInstallables;
 /// Model for deserializing JSON representing a portable application folder to copy according to the settings
 /// stored in the JSON for that particular installer
 /// </summary>
-public class PortableApplicationInstaller : BaseInstaller
+public class PortableApplicationInstaller : IInstallable
 {
     private ILogger _logger;
     
@@ -43,7 +44,7 @@ public class PortableApplicationInstaller : BaseInstaller
     public string StartMenuShortcutExePath { get; set; } = "";
     
     /// <inheritdoc/>
-    public override void ExecuteInstall()
+    public void ExecuteInstall()
     {
         var searchInPath =
             Path.Join(

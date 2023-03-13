@@ -1,12 +1,13 @@
 ﻿using System.Diagnostics;
 using Serilog;
+using WindowsSetupAssistant.Core.Interfaces;
 
 namespace WindowsSetupAssistant.Core.Models.IInstallables;
 
 /// <summary>
 /// Represents an application that will be installed through Chocolatey windows package manager
 /// </summary>
-public class ChocolateyInstaller : BaseInstaller
+public class ChocolateyInstaller : IInstallable
 {
     private ILogger _logger;
     
@@ -35,7 +36,7 @@ public class ChocolateyInstaller : BaseInstaller
     public string Parameters { get; set; } = "";
     
     /// <inheritdoc/>
-    public override void ExecuteInstall()
+    public void ExecuteInstall()
     {
         _logger.Information("Installing {PackageName} with Chocolatey", ChocolateyId);
 

@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Serilog;
 using WindowsSetupAssistant.Core;
+using WindowsSetupAssistant.Core.Interfaces;
 using WindowsSetupAssistant.Core.Logic;
 using WindowsSetupAssistant.Core.Logic.TaskHelpers;
 using WindowsSetupAssistant.Core.Models.Enums;
@@ -44,6 +45,8 @@ public partial class MainWindow
         _currentState = new(_logger);
         
         DataContext = _currentState.MainWindowPartialViewModel;
+
+        //SetUpDummyInstallableApplications();
         
         LoadAvailableInstallersFromJsonFile();
         
@@ -60,7 +63,7 @@ public partial class MainWindow
     
     private void SetUpDummyInstallableApplications()
     {
-        var installableApps = new List<BaseInstaller>();
+        var installableApps = new List<IInstallable>();
         
         installableApps.Add(new ExecutableInstaller(_logger)
         {
@@ -96,8 +99,7 @@ public partial class MainWindow
 
         var serializer = new JsonSerializer
         {
-            NullValueHandling = NullValueHandling.Ignore,
-            TypeNameHandling = TypeNameHandling.All
+            TypeNameHandling = TypeNameHandling.Auto
         };
 
         Console.WriteLine(ApplicationPaths.ResourcePaths.InstallsFileJsonPath);
@@ -217,13 +219,14 @@ public partial class MainWindow
     private void LoadAvailableInstallersFromJsonFile()
     {
         var availableInstallsJsonRaw = File.ReadAllText(ApplicationPaths.ResourcePaths.InstallsFileJsonPath);
-        
-        var availableInstalls = JsonConvert.DeserializeObject<List<BaseInstaller>>(availableInstallsJsonRaw, new JsonSerializerSettings
-        {
-            TypeNameHandling = TypeNameHandling.Auto,
-            SerializationBinder = new DefaultSerializationBinder()
-        });
 
+        var jsonSerializerSettings = new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.Auto
+        };
+
+        var availableInstalls = JsonConvert.DeserializeObject<List<IInstallable>>(availableInstallsJsonRaw, jsonSerializerSettings);
+        
         if (availableInstalls is null) throw new NullReferenceException();
         
         foreach (var availableInstall in availableInstalls)

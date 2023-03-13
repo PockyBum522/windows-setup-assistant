@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using Serilog;
+using WindowsSetupAssistant.Core.Interfaces;
 
 namespace WindowsSetupAssistant.Core.Models.IInstallables;
 
@@ -9,7 +10,7 @@ namespace WindowsSetupAssistant.Core.Models.IInstallables;
 /// Contains data for an archive in the \Resources\Portable Applications\ folder
 /// Mostly what to show for the display name and where to install it if the user selects it
 /// </summary>
-public class ArchiveInstaller : BaseInstaller
+public class ArchiveInstaller : IInstallable
 {
     private ILogger _logger;
     
@@ -33,7 +34,7 @@ public class ArchiveInstaller : BaseInstaller
     public string DestinationPath { get; set; } = "";
 
     /// <inheritdoc/>
-    public override void ExecuteInstall()
+    public void ExecuteInstall()
     {        
         _logger.Information("Running {ThisName}", System.Reflection.MethodBase.GetCurrentMethod()?.Name);
         

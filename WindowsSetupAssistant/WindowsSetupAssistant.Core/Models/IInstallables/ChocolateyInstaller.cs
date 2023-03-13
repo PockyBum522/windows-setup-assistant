@@ -35,8 +35,6 @@ public partial class ChocolateyInstaller : ObservableObject, IInstallable
     {
         logger.Information("Installing {PackageName} with Chocolatey", ChocolateyId);
 
-        var procInfo = new ProcessStartInfo();
-
         var argsString = $"upgrade {ChocolateyId}";
 
         if (!string.IsNullOrWhiteSpace(Arguments))
@@ -48,13 +46,26 @@ public partial class ChocolateyInstaller : ObservableObject, IInstallable
         {
             argsString += $" --params '{Parameters}'";
         }
-
-        procInfo.Arguments = argsString;
-
-        procInfo.FileName = "choco";
-
-        var proc = Process.Start(procInfo);
-
-        proc?.WaitForExit();   
+        
+        var installProcess = new Process();
+        
+        installProcess.StartInfo.FileName = "cmd.exe";
+        installProcess.StartInfo.Arguments = $"/c choco {argsString}"; // Note the /c command, this is important for waitforexit
+        installProcess.StartInfo.UseShellExecute = false;
+        installProcess.StartInfo.RedirectStandardOutput = true;
+        installProcess.StartInfo.RedirectStandardError = true;
+        
+        installProcess.Start();
+        
+        var stdOutput = installProcess.StandardOutput.ReadToEnd();
+        
+        var errorOutput = installProcess.StandardError.ReadToEnd();
+        
+        installProcess.WaitForExit();
+        
+        logger.Information("Chocolatey installer standard output: {StdOutput}", stdOutput);
+        
+        if (!string.IsNullOrWhiteSpace(errorOutput))
+            logger.Warning("Chocolatey installer ERROR output: {ErrorOutput}", errorOutput);
     }
 }

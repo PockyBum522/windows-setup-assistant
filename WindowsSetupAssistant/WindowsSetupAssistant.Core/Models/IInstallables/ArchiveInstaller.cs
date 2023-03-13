@@ -40,12 +40,15 @@ public partial class ArchiveInstaller : ObservableObject, IInstallable
                 ApplicationPaths.SetupAssistantRootDir,
                 "WindowsSetupAssistant",
                 "Resources",
-                "Installer Archives");
+                "Installer Archives")
+            .Replace("/", @"\");
         
         var archiveToInstallPath =
             Path.Join(
                 searchInPath,
                 ArchiveFilename);
+        
+        archiveToInstallPath = Path.GetFullPath(archiveToInstallPath);
         
         var arguments = $"""e {archiveToInstallPath} -o"{DestinationPath}" -r""";
         

@@ -38,7 +38,7 @@ public class WindowsUpdater
                         
             Get-WindowsUpdate -Criteria 'IsInstalled=0 and DeploymentAction=*' -MicrosoftUpdate -NotTitle 'Windows 11' -Verbose -Install -AcceptAll -RecurseCycle 3 -AutoReboot
             
-            Start-Sleep -Seconds 60
+            Start-Sleep -Seconds 120
 
             Write-Host "Updated windows"
             """;

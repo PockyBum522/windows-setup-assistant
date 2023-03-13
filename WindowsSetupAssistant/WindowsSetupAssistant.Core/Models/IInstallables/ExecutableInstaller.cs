@@ -43,7 +43,7 @@ public partial class ExecutableInstaller : ObservableObject, IInstallable
             CreateNoWindow = true,
             FileName = executableInstallerPath
         };
-
+        
         Process.Start(executableInstallerStartInfo);
     }
 }

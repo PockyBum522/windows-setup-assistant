@@ -39,20 +39,23 @@ public partial class PortableApplicationInstaller : ObservableObject, IInstallab
     [ObservableProperty] private bool _isSelected;
     
     /// <inheritdoc/>
-    public void ExecuteInstall(ILogger logger)
+    public void ExecuteInstall(ILogger logger) 
     {
         var searchInPath =
             Path.Join(
                 ApplicationPaths.SetupAssistantRootDir,
                 "WindowsSetupAssistant",
                 "Resources",
-                "Portable Applications");
-        
+                "Portable Applications")
+                .Replace("/", @"\");
+
         var folderToInstallPath =
             Path.Join(
                 searchInPath,
                 FolderName);
         
+        folderToInstallPath = Path.GetFullPath(folderToInstallPath);
+            
         Directory.CreateDirectory(DestinationPath);
         
         logger.Debug("Copying portable app: {SourceFolderPath}", folderToInstallPath);

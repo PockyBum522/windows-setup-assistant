@@ -222,6 +222,8 @@ public partial class MainWindow
         var timeHelper = new TimeHelper(_logger);
 
         if (_currentState.MainWindowPartialViewModel.IsCheckedSetSystemTimeZoneToEastern) timeHelper.SetSystemTimeZone("Eastern Standard Time");
+        
+        if (_currentState.MainWindowPartialViewModel.IsCheckedSyncSystemTime) timeHelper.SyncSystemTime();
     }
     
     private void WorkAllWindowsSettingsRelatedCheckboxes()
@@ -360,6 +362,10 @@ public partial class MainWindow
         // Windows settings
         _currentState.MainWindowPartialViewModel.IsCheckedDisableSleepWhenOnAc = loadedProfileState.IsCheckedDisableSleepWhenOnAc;
         _currentState.MainWindowPartialViewModel.IsCheckedDisableNetworkThumbnails = loadedProfileState.IsCheckedDisableNetworkThumbnails;
+        
+        // Time settings
+        _currentState.MainWindowPartialViewModel.IsCheckedSyncSystemTime = loadedProfileState.IsCheckedSyncSystemTime;
+        _currentState.MainWindowPartialViewModel.IsCheckedSetSystemTimeZoneToEastern = loadedProfileState.IsCheckedSetSystemTimeZoneToEastern;
 
         // New hostname    
         _currentState.MainWindowPartialViewModel.TextHostname = loadedProfileState.TextHostname;

@@ -154,15 +154,15 @@ if "%1" neq "ELEV" (
     
 	del "C:\Users\David\AppData\Roaming\NuGet\NuGet.Config"
 	
-	dotnet restore "%~dp0WindowsSetupAssistant\WindowsSetupAssistant.csproj"
+	dotnet restore "%~dp0WindowsSetupAssistant.Main\WindowsSetupAssistant.Main.csproj"
 	
-	dotnet build "%~dp0WindowsSetupAssistant\WindowsSetupAssistant.csproj"
+	dotnet build "%~dp0WindowsSetupAssistant.Main\WindowsSetupAssistant.Main.csproj"
 
 	echo .
-	echo Running: "%~dp0WindowsSetupAssistant\bin\Debug\net7.0-windows\WindowsSetupAssistant.exe"
+	echo Running: "%~dp0WindowsSetupAssistant.Main\bin\Debug\net7.0-windows\WindowsSetupAssistant.Main.exe"
     echo .
 	
-	"%~dp0WindowsSetupAssistant\bin\Debug\net7.0-windows\WindowsSetupAssistant.exe"
+	"%~dp0WindowsSetupAssistant\WindowsSetupAssistant.Main\bin\Debug\net7.0-windows\WindowsSetupAssistant.exe"
 	
 	echo.
     echo Finished configuring this computer.

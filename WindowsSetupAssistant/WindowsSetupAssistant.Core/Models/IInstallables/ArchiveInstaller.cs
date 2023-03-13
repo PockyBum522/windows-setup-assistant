@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Serilog;
 using WindowsSetupAssistant.Core.Interfaces;
 
@@ -10,7 +11,7 @@ namespace WindowsSetupAssistant.Core.Models.IInstallables;
 /// Contains data for an archive in the \Resources\Portable Applications\ folder
 /// Mostly what to show for the display name and where to install it if the user selects it
 /// </summary>
-public class ArchiveInstaller : IInstallable
+public partial class ArchiveInstaller : ObservableObject, IInstallable
 {
     /// <summary>
     /// Path to the folder containing the portable application
@@ -24,9 +25,8 @@ public class ArchiveInstaller : IInstallable
 
     /// <inheritdoc/>
     public string DisplayName { get; set; } = "";
-    
-    /// <inheritdoc/>
-    public bool IsSelected { get; set; }
+
+    [ObservableProperty] private bool _isSelected;
 
     /// <inheritdoc/>
     public void ExecuteInstall(ILogger logger)

@@ -215,27 +215,27 @@
             </StackPanel>
         
             <!-- Application Settings -->
-            <StackPanel>
-                
-                <TextBlock Text="Application Settings" Margin="0,5,0,0" />
-        
-                <Border BorderBrush="Gray" BorderThickness="1" Padding="2">
-            
-                    <DockPanel>
-                            
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedReapplyPowerToysCustomFancyZones}" 
-                                  Content="Apply Desktop FancyZones layouts to PowerToys" 
-                                  Margin="2,2,0,0" />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedReapplyPowerToysCustomFancyZones}" 
-                                  Content="Apply Big Laptop FancyZones layouts to PowerToys" 
-                                  Margin="2,2,0,0" />
-                            
-                    </DockPanel>
-                </Border>
-            </StackPanel>
+            <!-- <StackPanel> -->
+            <!--      -->
+            <!--     <TextBlock Text="Application Settings" Margin="0,5,0,0" /> -->
+            <!-- -->
+            <!--     <Border BorderBrush="Gray" BorderThickness="1" Padding="2"> -->
+            <!-- -->
+            <!--         <DockPanel> -->
+            <!--                  -->
+            <!--             <CheckBox DockPanel.Dock="Top" -->
+            <!--                       IsChecked="{Binding IsCheckedReapplyPowerToysCustomFancyZones}"  -->
+            <!--                       Content="Apply Desktop FancyZones layouts to PowerToys"  -->
+            <!--                       Margin="2,2,0,0" /> -->
+            <!--              -->
+            <!--             <CheckBox DockPanel.Dock="Top" -->
+            <!--                       IsChecked="{Binding IsCheckedReapplyPowerToysCustomFancyZones}"  -->
+            <!--                       Content="Apply Big Laptop FancyZones layouts to PowerToys"  -->
+            <!--                       Margin="2,2,0,0" /> -->
+            <!--                  -->
+            <!--         </DockPanel> -->
+            <!--     </Border> -->
+            <!-- </StackPanel> -->
         </StackPanel>
 
         <DockPanel Grid.Row="1" Grid.Column="2" >
@@ -254,7 +254,7 @@
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
                                             
-                                            <CheckBox IsChecked="{Binding IsSelected}" 
+                                            <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" 
                                                       Content="{Binding DisplayName}"
                                                       Margin="2,2,0,0" />
                                             
@@ -272,20 +272,30 @@
         <!-- Bottom Buttons -->
         <DockPanel Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Margin="5">
 
-            <Button Content="Select Commonly Used" 
-                    Click="SelectAllCommon_OnClick" 
-                    Padding="10"
-                    Margin="5"/>
-
-            <Button Content="Clear" 
-                    Click="ClearAll_OnClick" 
-                    Padding="10"
-                    Margin="5"/>
-
             <Button Content="Select All" 
                     Click="SelectAll_OnClick" 
                     Padding="10"
-                    Margin="5"/>
+                    Margin="5"
+                    Width="100" />
+            
+            <Button Content="Clear" 
+                    Click="ClearAll_OnClick" 
+                    Padding="10"
+                    Margin="5" 
+                    Width="100" />
+            
+            <Button Content="Load Profile" 
+                    Click="LoadProfile_OnClick" 
+                    Padding="10"
+                    Margin="5"
+                    Width="100" />
+
+            
+            <Button Content="Save Profile" 
+                    Click="SaveProfile_OnClick" 
+                    Padding="10"
+                    Margin="5"
+                    Width="100" />
 
             <Button Content="Start Execution"
                     DockPanel.Dock="Right"
@@ -293,11 +303,6 @@
                     Click="StartExecution_OnClick" 
                     Padding="10" />
             
-            <Button Content="TEST"
-                    DockPanel.Dock="Right"
-                    Width="200"
-                    Click="RunTestMethod_OnClick" 
-                    Padding="10" />
         </DockPanel>
     </Grid>
 </Window>

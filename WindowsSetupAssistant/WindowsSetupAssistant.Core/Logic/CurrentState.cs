@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
+using System.Windows;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 using Serilog;
 using WindowsSetupAssistant.Core.Models.Enums;
@@ -12,7 +14,7 @@ namespace WindowsSetupAssistant.Core.Logic;
 /// <summary>
 /// Model for storing current state, such as settings and installs that have been selected for the Windows Setup
 /// </summary>
-public class CurrentState
+public partial class CurrentState : ObservableObject
 {
     private readonly ILogger _logger;
     /// <summary>
@@ -34,7 +36,7 @@ public class CurrentState
     /// <summary>
     /// Model for storing state of user selection, so we can act on it in subsequent reboots
     /// </summary>
-    public MainWindowPartialViewModel MainWindowPartialViewModel { get; set; }
+    [ObservableProperty] private MainWindowPartialViewModel _mainWindowPartialViewModel = new();
 
     /// <summary>
     /// Constructor for dependency injection
@@ -46,7 +48,7 @@ public class CurrentState
         
         MainWindowPartialViewModel = new();
         
-        LoadStateFromDisk();
+        LoadCurrentStateAndStageFromDisk();
     }
 
     /// <summary>
@@ -65,14 +67,33 @@ public class CurrentState
         var startupBatPath = Path.Join(startupFolderPath, "Re-RunAdminBatFileAutomatically.bat");
 		        
         File.Delete(startupBatPath);
-		        
-        Environment.Exit(0);
     }
     
     /// <summary>
     /// Saves the current state to disk at location specified by StatePath
     /// </summary>
-    public void SaveCurrentState()
+    public void SaveCurrentStateAsProfile(string profileJsonFilePath)
+    {
+        var serializer = new JsonSerializer
+        {
+            NullValueHandling = NullValueHandling.Ignore,
+            TypeNameHandling = TypeNameHandling.Auto
+        };
+
+        if (!profileJsonFilePath.ToLower().EndsWith(".json"))
+            profileJsonFilePath += ".json";
+        
+        using var jsonStateFileWriter = new StreamWriter(profileJsonFilePath);
+        
+        using var jsonStateWriter = new JsonTextWriter(jsonStateFileWriter) { Formatting = Formatting.Indented };
+        
+        serializer.Serialize(jsonStateWriter, MainWindowPartialViewModel);
+    }
+    
+    /// <summary>
+    /// Saves the current state to disk at location specified by StatePath
+    /// </summary>
+    public void SaveCurrentStateForReboot()
     {
         var serializer = new JsonSerializer
         {
@@ -96,17 +117,52 @@ public class CurrentState
     }
 
     /// <summary>
-    /// Reboots the system
+    /// Reboots the system and exits program, so run it last
     /// </summary>
-    public void RebootComputer()
+    public void RebootComputerAndExit()
     {
         Console.WriteLine("Exiting script temporarily. will reboot and re-run admin bat file on next startup...");
     
-        Process.Start("shutdown", "/r /t 0");
+        Process.Start("powershell", "-C shutdown /r /t 5");
         
-        Thread.Sleep(1000);
+        while (Process.GetProcessesByName("powershell").Length < 1)
+        {
+            Thread.Sleep(1000);    
+        }
         
         Environment.Exit(0);
+    }
+    
+    /// <summary>
+    /// Prompts the user, asking if they are ready to reboot the PC
+    /// </summary>
+    public void PromptToRebootComputerAndExit()
+    {
+        var message = @"ONLY CLICK YES IF YOU HAVE CLICKED THROUGH ALL VISIBLE INSTALLERS AND THEY HAVE FINISHED!!!
+
+(This is only if you chose to install applications with a non-silent installer, of course.)
+
+Are you ready to reboot the computer?";
+        
+        if (MessageBox.Show(message, "WARNING: Okay to Reboot?", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
+        {
+            // User clicked no
+            Environment.Exit(0);
+        }
+        else
+        {
+            // User clicked yes
+            Console.WriteLine("Exiting script, will reboot and re-run admin bat file on next startup if present...");
+    
+            Process.Start("powershell", "-C shutdown /r /t 5");
+        
+            while (Process.GetProcessesByName("powershell").Length < 1)
+            {
+                Thread.Sleep(1000);    
+            }
+        
+            Environment.Exit(0);
+        }
     }
     
     private void CreateRebootScriptInStartup()
@@ -156,27 +212,65 @@ powershell start '{ApplicationPaths.ThisApplicationProcessPath}' ""%temp%\OEgetP
         File.WriteAllText(startupBatPath, batchFileContents);
     }
 
-    private void LoadStateFromDisk()
+    /// <summary>
+    /// Loads both stage and state data from serialized json files in Public Documents
+    /// </summary>
+    public void LoadCurrentStateAndStageFromDisk()
+    {
+        try
+        {
+            MainWindowPartialViewModel = GetStateFromDisk(StatePath);
+        }
+        catch (JsonSerializationException)
+        {
+        }
+
+        LoadStageFromDisk();
+    }
+    
+    /// <summary>
+    /// Loads both stage data from specified JSON file representing MainWindowPartialViewModel
+    /// </summary>
+    public void LoadCurrentStateFromDisk(string filePathToLoad)
+    {
+        MainWindowPartialViewModel = GetStateFromDisk(filePathToLoad);
+    }
+    
+    /// <summary>
+    /// Gets a saved state from a JSON file on disk that represents MainWindowPartialViewModel
+    /// </summary>
+    /// <param name="filePathToLoad">JSON file full path to load</param>
+    /// <returns></returns>
+    /// <exception cref="JsonSerializationException">If there is a problem deserializing from file</exception>
+    public MainWindowPartialViewModel GetStateFromDisk(string filePathToLoad)
     {
         var settings = new JsonSerializerSettings
         {
             TypeNameHandling = TypeNameHandling.Auto
         };
 
-        if (File.Exists(StatePath))
+        if (File.Exists(filePathToLoad))
         {
-            var jsonStateRaw = File.ReadAllText(StatePath);
+            var jsonStateRaw = File.ReadAllText(filePathToLoad);
 
-            MainWindowPartialViewModel =
+            var newMainWindowPartialViewModel =
                 JsonConvert.DeserializeObject<MainWindowPartialViewModel>(jsonStateRaw, settings) ??
                 new MainWindowPartialViewModel();
 
             _logger.Debug("Loaded current state from disk");
+            
+            return newMainWindowPartialViewModel;
         }
-        else
+
+        throw new JsonSerializationException();
+    }    
+    
+    private void LoadStageFromDisk()
+    {
+        var settings = new JsonSerializerSettings
         {
-            _logger.Warning("No current state file on disk. This is fine as long as this is the first run");
-        }
+            TypeNameHandling = TypeNameHandling.Auto
+        };
 
         if (File.Exists(StagePath))
         {

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using WindowsSetupAssistant.Core.Interfaces;
 
@@ -14,6 +13,9 @@ public partial class MainWindowPartialViewModel : ObservableObject
     [ObservableProperty] private bool _isCheckedUpdateWindows;
     [ObservableProperty] private bool _isCheckedSetSystemTimeZoneToEastern;
     [ObservableProperty] private bool _isCheckedSetFolderViewOptions;
+    
+    // Time 
+    [ObservableProperty] private bool _isCheckedSyncSystemTime;
     
     // Windows UI
     [ObservableProperty] private bool _isCheckedSetWindowsToDarkTheme;

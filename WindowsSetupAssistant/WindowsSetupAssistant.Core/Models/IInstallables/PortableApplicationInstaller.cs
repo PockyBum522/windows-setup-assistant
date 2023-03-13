@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Serilog;
 using WindowsSetupAssistant.Core.Interfaces;
 
@@ -8,7 +9,7 @@ namespace WindowsSetupAssistant.Core.Models.IInstallables;
 /// Model for deserializing JSON representing a portable application folder to copy according to the settings
 /// stored in the JSON for that particular installer
 /// </summary>
-public class PortableApplicationInstaller : IInstallable
+public partial class PortableApplicationInstaller : ObservableObject, IInstallable
 {
     /// <summary>
     /// Name of the folder containing the portable application, must be located in \Resources\Portable Applications\
@@ -35,8 +36,7 @@ public class PortableApplicationInstaller : IInstallable
     /// <inheritdoc/>
     public string DisplayName { get; set; } = "";
     
-    /// <inheritdoc/>
-    public bool IsSelected { get; set; }
+    [ObservableProperty] private bool _isSelected;
     
     /// <inheritdoc/>
     public void ExecuteInstall(ILogger logger)

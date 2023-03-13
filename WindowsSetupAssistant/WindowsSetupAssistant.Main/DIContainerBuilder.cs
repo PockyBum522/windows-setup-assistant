@@ -119,7 +119,7 @@ public class DiContainerBuilder
     {
         _builder.RegisterInstance(Dispatcher.CurrentDispatcher).AsSelf().SingleInstance();
         
-        _builder.RegisterType<MainWindowPartialViewModel>().AsSelf().SingleInstance();
+        _builder.RegisterType<MainWindowPartialViewModel>().AsSelf();
         _builder.RegisterType<MainWindow>().AsSelf().SingleInstance();
     }
 }

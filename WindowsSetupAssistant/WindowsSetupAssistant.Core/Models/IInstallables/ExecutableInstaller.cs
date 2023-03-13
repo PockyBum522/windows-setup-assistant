@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Serilog;
 using WindowsSetupAssistant.Core.Interfaces;
 using WindowsSetupAssistant.Core.Logic;
@@ -8,7 +9,7 @@ namespace WindowsSetupAssistant.Core.Models.IInstallables;
 /// <summary>
 /// Contains the information needed to install an executable install file
 /// </summary>
-public class ExecutableInstaller : IInstallable
+public partial class ExecutableInstaller : ObservableObject, IInstallable
 {
     /// <summary>
     /// Path to the .exe or .msi
@@ -28,8 +29,7 @@ public class ExecutableInstaller : IInstallable
     /// <inheritdoc/>
     public string DisplayName { get; set; } = "";
     
-    /// <inheritdoc/>
-    public bool IsSelected { get; set; }
+    [ObservableProperty] private bool _isSelected;
     
     /// <inheritdoc/>
     public void ExecuteInstall(ILogger logger)

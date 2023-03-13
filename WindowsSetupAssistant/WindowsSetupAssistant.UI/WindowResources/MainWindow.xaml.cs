@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.Win32;
 using Newtonsoft.Json;
 using Serilog;
 using WindowsSetupAssistant.Core;
@@ -13,6 +14,7 @@ using WindowsSetupAssistant.Core.Logic;
 using WindowsSetupAssistant.Core.Logic.TaskHelpers;
 using WindowsSetupAssistant.Core.Models.Enums;
 using WindowsSetupAssistant.Core.Models.IInstallables;
+using WindowsSetupAssistant.Core.Models.ViewModels;
 
 namespace WindowsSetupAssistant.UI.WindowResources;
 
@@ -27,7 +29,8 @@ public partial class MainWindow
     private readonly ILogger _logger;
     private readonly CurrentState _currentState;
     private readonly WindowsUpdater _windowsUpdater;
-    
+    private readonly WindowsSettingsHelper _windowsSettingsHelper;
+
     /// <summary>
     /// Main window constructor, loads in JSON files that need to be shown as controls, sets DataContext, sets up
     /// exception handling, checks what stage is saved to disk and works whatever needs to happen if there
@@ -42,6 +45,8 @@ public partial class MainWindow
         exceptionHandler.SetupExceptionHandlingEvents();
 
         _currentState = new(_logger);
+
+        _windowsSettingsHelper = new(_logger);
         
         DataContext = _currentState.MainWindowPartialViewModel;
         
@@ -59,10 +64,10 @@ public partial class MainWindow
     
     private void ClearAll_OnClick(object sender, RoutedEventArgs e)
     {
-        ClearAllCheckboxes();
+        ClearAllControls();
     }
 
-    private void ClearAllCheckboxes()
+    private void ClearAllControls()
     {
         foreach (var propertyInfo in _currentState.MainWindowPartialViewModel.GetType().GetProperties())
         {
@@ -72,6 +77,13 @@ public partial class MainWindow
 
             propertyInfo.SetValue(_currentState.MainWindowPartialViewModel, false);
         }
+
+        foreach (var installer in _currentState.MainWindowPartialViewModel.AvailableInstalls)
+        {
+            installer.IsSelected = false;
+        }
+
+        _currentState.MainWindowPartialViewModel.TextHostname = "";
     }
 
     private void SelectAll_OnClick(object sender, RoutedEventArgs e)
@@ -84,12 +96,17 @@ public partial class MainWindow
 
             propertyInfo.SetValue(_currentState.MainWindowPartialViewModel, true);
         }
+        
+        foreach (var installer in _currentState.MainWindowPartialViewModel.AvailableInstalls)
+        {
+            installer.IsSelected = true;
+        }
     }
 
     private void ExecuteAllSelected()
     {
         _currentState.ScriptStage = ScriptStageEnum.Uninitialized;
-        _currentState.SaveCurrentState();
+        _currentState.SaveCurrentStateForReboot();
         
         WorkAllUiRelatedCheckBoxes();
         
@@ -102,13 +119,13 @@ public partial class MainWindow
             _windowsUpdater.UpdateWindows();
         
             _currentState.ScriptStage = ScriptStageEnum.WindowsHasBeenUpdatedOnce;
-            _currentState.SaveCurrentState();
-            _currentState.RebootComputer();    
+            _currentState.SaveCurrentStateForReboot();
+            _currentState.RebootComputerAndExit();    
         }
         else
         {
             _currentState.ScriptStage = ScriptStageEnum.WindowsHasBeenUpdatedFully;
-            _currentState.SaveCurrentState();
+            _currentState.SaveCurrentStateForReboot();
 
             CheckStageAndWorkOnRerun();
         }
@@ -124,8 +141,8 @@ public partial class MainWindow
 
                 _currentState.ScriptStage = ScriptStageEnum.WindowsHasBeenUpdatedTwice;
                 
-                _currentState.SaveCurrentState();
-                _currentState.RebootComputer();
+                _currentState.SaveCurrentStateForReboot();
+                _currentState.RebootComputerAndExit();
                 
                 break;
             
@@ -135,8 +152,8 @@ public partial class MainWindow
 
                 _currentState.ScriptStage = ScriptStageEnum.WindowsHasBeenUpdatedFully;
                 
-                _currentState.SaveCurrentState();
-                _currentState.RebootComputer();
+                _currentState.SaveCurrentStateForReboot();
+                _currentState.RebootComputerAndExit();
 
                 break;
             
@@ -147,9 +164,16 @@ public partial class MainWindow
                     _windowsUpdater.UpdateWindows();
                 }
 
-                WorkAllApplicationInstallCheckboxes(); 
-                
+                WorkAllApplicationInstallCheckboxes();
+
                 _currentState.DeleteSavedChoicesAndStageOnDisk();
+
+                if (!string.IsNullOrWhiteSpace(_currentState.MainWindowPartialViewModel.TextHostname))
+                {
+                    _windowsSettingsHelper.ChangeHostName(_currentState.MainWindowPartialViewModel.TextHostname);
+                }
+
+                _currentState.PromptToRebootComputerAndExit();
                 
                 break;
         }
@@ -241,24 +265,9 @@ public partial class MainWindow
         // TODO: Start Jetbrains toolbox, see if installations can be performed automatically
     }
 
-    private void SelectAllCommon_OnClick(object sender, RoutedEventArgs e)
-    {
-        ClearAllCheckboxes();
-        
-        //SelectAllCommon();
-    }
-
     private void StartExecution_OnClick(object sender, RoutedEventArgs e)
     {
         ExecuteAllSelected();
-    }
-
-    private void RunTestMethod_OnClick(object sender, RoutedEventArgs e)
-    {
-        var message = string.Join("\r\n", _currentState.MainWindowPartialViewModel.AvailableInstalls);
-
-        _logger.Information("{CurrentInstallsStates}", message);
-
     }
 
     private void AvailableInstallsListView_OnPreviewMouseWheel(object sender, MouseWheelEventArgs e)
@@ -271,6 +280,101 @@ public partial class MainWindow
         scv.ScrollToVerticalOffset(scv.VerticalOffset - scrollAmount);
         
         e.Handled = true;
+    }
+
+    private void SaveProfile_OnClick(object sender, RoutedEventArgs e)
+    {
+        var profilesDirectoryPath = Path.Join(
+                ApplicationPaths.SetupAssistantRootDir,
+                "Resources",
+                "Configuration",
+                "Profiles")
+            .Replace("/", @"\");
+
+        profilesDirectoryPath = Path.GetFullPath(profilesDirectoryPath);
+
+        Console.WriteLine(profilesDirectoryPath);
+        
+        var fileDialog = new SaveFileDialog(){Filter = "JSON Files | *.json", InitialDirectory = profilesDirectoryPath };
+
+        if (fileDialog.ShowDialog() != true) return;
+            
+        var fullSelectedFilePath = fileDialog.FileName;
+
+        _currentState.SaveCurrentStateAsProfile(fullSelectedFilePath);
+    }
+
+    private void LoadProfile_OnClick(object sender, RoutedEventArgs e)
+    {
+        ClearAllControls();
+        
+        var profilesDirectoryPath = Path.Join(
+                ApplicationPaths.SetupAssistantRootDir,
+                "Resources",
+                "Configuration",
+                "Profiles")
+            .Replace("/", @"\");
+
+        profilesDirectoryPath = Path.GetFullPath(profilesDirectoryPath);
+
+        Console.WriteLine(profilesDirectoryPath);
+        
+        var fileDialog = new OpenFileDialog(){Filter = "JSON Files | *.json", InitialDirectory = profilesDirectoryPath };
+
+        if (fileDialog.ShowDialog() != true) return;
+            
+        var fullSelectedFilePath = fileDialog.FileName;
+
+        var loadedProfileState = _currentState.GetStateFromDisk(fullSelectedFilePath);
+        
+        foreach (var install in loadedProfileState.AvailableInstalls)
+        {
+            if (install.IsSelected)
+                GetInstallInListByDisplayName(install.DisplayName).IsSelected = true;
+        }
+
+        SetAllSettingsCheckBoxesToProfile(loadedProfileState);
+
+        _currentState.MainWindowPartialViewModel.TextHostname = loadedProfileState.TextHostname; 
+    }
+
+    private void SetAllSettingsCheckBoxesToProfile(MainWindowPartialViewModel loadedProfileState)
+    {
+        _currentState.MainWindowPartialViewModel.IsCheckedUpdateWindows = loadedProfileState.IsCheckedUpdateWindows;
+        _currentState.MainWindowPartialViewModel.IsCheckedSetSystemTimeZoneToEastern = loadedProfileState.IsCheckedSetSystemTimeZoneToEastern;
+        _currentState.MainWindowPartialViewModel.IsCheckedSetFolderViewOptions = loadedProfileState.IsCheckedSetFolderViewOptions;
+
+        // Windows UI
+        _currentState.MainWindowPartialViewModel.IsCheckedSetWindowsToDarkTheme = loadedProfileState.IsCheckedSetWindowsToDarkTheme;
+        _currentState.MainWindowPartialViewModel.IsCheckedBlackTitleBars = loadedProfileState.IsCheckedBlackTitleBars;
+        _currentState.MainWindowPartialViewModel.IsCheckedDisableNewsAndInterestsOnTaskbar = loadedProfileState.IsCheckedDisableNewsAndInterestsOnTaskbar;
+        _currentState.MainWindowPartialViewModel.IsCheckedSetWallpaperToDarkDefaultWallpaper = loadedProfileState.IsCheckedSetWallpaperToDarkDefaultWallpaper;
+        _currentState.MainWindowPartialViewModel.IsCheckedSetTaskbarSearchToHidden = loadedProfileState.IsCheckedSetTaskbarSearchToHidden;
+        _currentState.MainWindowPartialViewModel.IsCheckedSetTaskbarSearchToIcon = loadedProfileState.IsCheckedSetTaskbarSearchToIcon;
+
+        // Desktop
+        _currentState.MainWindowPartialViewModel.IsCheckedDeleteShortcutsOffDesktop = loadedProfileState.IsCheckedDeleteShortcutsOffDesktop;
+        _currentState.MainWindowPartialViewModel.IsCheckedDeleteIniFilesOffDesktop = loadedProfileState.IsCheckedDeleteIniFilesOffDesktop;
+        _currentState.MainWindowPartialViewModel.IsCheckedRemoveRecycleBinOffDesktop = loadedProfileState.IsCheckedRemoveRecycleBinOffDesktop;
+	
+        // Windows settings
+        _currentState.MainWindowPartialViewModel.IsCheckedDisableSleepWhenOnAc = loadedProfileState.IsCheckedDisableSleepWhenOnAc;
+        _currentState.MainWindowPartialViewModel.IsCheckedDisableNetworkThumbnails = loadedProfileState.IsCheckedDisableNetworkThumbnails;
+
+        // New hostname    
+        _currentState.MainWindowPartialViewModel.TextHostname = loadedProfileState.TextHostname;
+    }
+
+    private IInstallable GetInstallInListByDisplayName(string displayName)
+    {
+        foreach (var install in _currentState.MainWindowPartialViewModel.AvailableInstalls)
+        {
+            if (displayName == install.DisplayName)
+                return install;
+        }
+
+        // Just return something it can't act on that will affect the main window
+        return new ArchiveInstaller();
     }
 }
 

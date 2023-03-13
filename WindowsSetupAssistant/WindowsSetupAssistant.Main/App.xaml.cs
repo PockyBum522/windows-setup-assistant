@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using Autofac;
 using WindowsSetupAssistant.Core.Logic;
 using WindowsSetupAssistant.UI.WindowResources;

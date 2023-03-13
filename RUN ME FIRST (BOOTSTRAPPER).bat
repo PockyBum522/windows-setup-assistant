@@ -14,21 +14,33 @@
 
 @echo off
 
+: For checking for internet
+
+ping -n 2 -w 700 8.8.8.8 | find "TTL="
+
+IF %ERRORLEVEL% EQU 0 (
+    SET internet=internet_connected
+) ELSE (
+    SET internet=internet_not_connected
+)
+
 : For detecting if we're running as admin for warning to user
 cacls "%systemroot%\system32\config\system" 1>nul 2>&1
 
 : ELEV argument present means we're calling this script again but with admin privs now
 if "%1" neq "ELEV" (
-    
-    call :warnUserIfRunningAsAdministrator
-
-    call :createElevatedActionsMutexFile
 	
-    call :initElevatedActions
+		call :warnUserIfRunningAsAdministrator
+		
+		call :warnUserIfRunningWithoutInternet
 
-    call :pauseUntilElevatedActionsFinish
-    
-    call :finalSteps
+		call :createElevatedActionsMutexFile
+		
+		call :initElevatedActions
+
+		call :pauseUntilElevatedActionsFinish
+		
+		call :finalSteps
 
 ) else (
 
@@ -190,6 +202,29 @@ if "%1" neq "ELEV" (
         echo privileges.
         echo. 
         echo Make sure to NOT Run As Administrator next time!
+        echo. 
+        echo Press any key to exit . . .
+
+        pause> nul
+
+        exit 1
+    )
+
+    exit /B
+	
+:warnUserIfRunningWithoutInternet
+
+    if "%internet%" equ "internet_not_connected" (
+    
+        echo -------------------------------------------------------------
+        echo ERROR: YOU ARE RUNNING THIS WITHOUT AN INTERNET CONNECTION
+        echo -------------------------------------------------------------
+        echo. 
+        echo If you're seeing this, it means you are running this with no internet!
+        echo.
+        echo You will need to restart this program after connecting.
+        echo. 
+        echo Make sure to connect to the internet BEFORE re-running.
         echo. 
         echo Press any key to exit . . .
 

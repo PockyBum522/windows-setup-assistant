@@ -224,9 +224,9 @@ public partial class MainWindow
         
         if (_currentState.MainWindowPartialViewModel.IsCheckedSetSystemTimeZoneToEastern) uiHelper.SetFolderViewOptions();
         
-        if (_currentState.MainWindowPartialViewModel.IsCheckedSetTaskbarSearchToHidden) uiHelper.SetFolderViewOptions();
+        if (_currentState.MainWindowPartialViewModel.IsCheckedSetTaskbarSearchToHidden) uiHelper.CollapseSearchOnTaskbarToHidden();
         
-        if (_currentState.MainWindowPartialViewModel.IsCheckedSetTaskbarSearchToIcon) uiHelper.SetFolderViewOptions();
+        if (_currentState.MainWindowPartialViewModel.IsCheckedSetTaskbarSearchToIcon) uiHelper.CollapseSearchOnTaskbarToIcon();
     }
 
     private void WorkAllTimeRelatedCheckboxes()

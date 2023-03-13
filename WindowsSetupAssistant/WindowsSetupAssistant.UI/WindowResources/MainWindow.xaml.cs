@@ -58,6 +58,9 @@ public partial class MainWindow
         
         if (_currentState.ScriptStage == ScriptStageEnum.Uninitialized) return;
         
+        // Set long sleep and monitor off times so it doesn't sleep during install
+        _windowsSettingsHelper.SetPowerSettingsTo();
+        
         // Otherwise:
         CheckStageAndWorkOnRerun();
     }
@@ -173,6 +176,8 @@ public partial class MainWindow
                     _windowsSettingsHelper.ChangeHostName(_currentState.MainWindowPartialViewModel.TextHostname);
                 }
 
+                _windowsSettingsHelper.SetPowerSettingsTo(140);
+                
                 _currentState.PromptToRebootComputerAndExit();
                 
                 break;
@@ -230,7 +235,7 @@ public partial class MainWindow
     {
         var windowsSettingsHelper = new WindowsSettingsHelper(_logger);
 
-        if (_currentState.MainWindowPartialViewModel.IsCheckedDisableSleepWhenOnAc) windowsSettingsHelper.DisableSleepWhenPoweredByAc();
+        if (_currentState.MainWindowPartialViewModel.IsCheckedDisableSleepWhenOnAc) windowsSettingsHelper.SetPowerSettingsTo();
         
         // TODO: if (_currentState.MainWindowPartialViewModel.IsCheckedDisableNetworkThumbnails) windowsSettingsHelper.DisableNetworkThumbnails();
 

@@ -152,7 +152,7 @@ if "%1" neq "ELEV" (
     echo Running final steps!
     echo.
     
-	del "C:\Users\David\AppData\Roaming\NuGet\NuGet.Config"
+	del "%AppData%\NuGet\NuGet.Config"
 	
 	dotnet restore "%~dp0WindowsSetupAssistant.Main\WindowsSetupAssistant.Main.csproj"
 	

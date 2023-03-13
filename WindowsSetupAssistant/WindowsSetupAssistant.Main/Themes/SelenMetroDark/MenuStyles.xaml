@@ -42,7 +42,7 @@
                                         <Path x:Name="ArrowPanelPath" HorizontalAlignment="Right" VerticalAlignment="Center" 
                                               Fill="{TemplateBinding Foreground}" Data="M0,0 L0,8 L4,4 z"/>
                                     </Grid>
-                                    <Popup IsOpen="{Binding Path=IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}" 
+                                    <Popup Grid.Column="0" IsOpen="{Binding Path=IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}" 
                                            Placement="Right" HorizontalOffset="-1" x:Name="SubMenuPopup" Focusable="false"
                                            PopupAnimation="{DynamicResource {x:Static SystemParameters.MenuPopupAnimationKey}}"
                                            AllowsTransparency="True">

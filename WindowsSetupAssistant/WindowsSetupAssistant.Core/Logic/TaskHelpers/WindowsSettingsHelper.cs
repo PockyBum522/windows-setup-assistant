@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Management;
-using System.Runtime.InteropServices.JavaScript;
 using Microsoft.Win32;
 using Serilog;
 
@@ -32,7 +31,7 @@ public class WindowsSettingsHelper
     {
         const string registryComputerNameKey = @"SYSTEM\CurrentControlSet\Control\ComputerName\ComputerName";
     
-        var compPath= "Win32_ComputerSystem.Name='" + System.Environment.MachineName + "'";
+        var compPath= "Win32_ComputerSystem.Name='" + Environment.MachineName + "'";
         
         using (var mo = new ManagementObject(new ManagementPath(compPath)))
         {

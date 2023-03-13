@@ -3,6 +3,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Threading;
 using Autofac;
+using JetBrains.Annotations;
 using Serilog;
 using WindowsSetupAssistant.Core.Logic;
 using WindowsSetupAssistant.Core.Models.IInstallables;
@@ -16,6 +17,7 @@ namespace WindowsSetupAssistant.Main;
 /// Builds the container for the local application dependencies. This is then passed to TeakTools.Common
 /// dependency injection for library dependencies to get added
 /// </summary>
+[PublicAPI]
 public class DiContainerBuilder
 {
     private readonly ContainerBuilder _builder = new ();

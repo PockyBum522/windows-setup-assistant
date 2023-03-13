@@ -38,7 +38,7 @@
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
                                     <Border x:Name="BackgroundBorder" Grid.ColumnSpan="2" Background="{StaticResource BackgroundSelected}"/>
-                                    <TextBlock Foreground="{StaticResource Foreground}" FontSize="14" FontWeight="SemiBold">
+                                    <TextBlock Grid.Column="0" Foreground="{StaticResource Foreground}" FontSize="14" FontWeight="SemiBold">
                                         <ContentPresenter Margin="6,3,6,3" VerticalAlignment="Center"/>
                                     </TextBlock>
                                     <Path x:Name="SortArrow" Visibility="Collapsed" Data="M0,0 L1,0 0.5,1 z" Stretch="Fill" 

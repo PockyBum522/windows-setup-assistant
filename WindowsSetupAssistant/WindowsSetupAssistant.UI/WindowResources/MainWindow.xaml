@@ -4,6 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=PresentationFramework"
+        xmlns:viewModels="clr-namespace:WindowsSetupAssistant.Core.Models.ViewModels;assembly=WindowsSetupAssistant.Core"
+        d:DataContext="{d:DesignInstance Type=viewModels:MainWindowPartialViewModel, IsDesignTimeCreatable=True}"
         mc:Ignorable="d"
         Style="{StaticResource StandardWindow}"
         Title="MainWindow" Height="980" Width="1820"

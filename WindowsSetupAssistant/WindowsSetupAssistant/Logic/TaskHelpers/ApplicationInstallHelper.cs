@@ -31,60 +31,60 @@ public class ApplicationInstallHelper
 
     public void InstallArchiveFromPortableApplications(string archiveFileName)
     {
-        _logger.Information("Running {ThisName}", System.Reflection.MethodBase.GetCurrentMethod()?.Name);
-        
-        Directory.CreateDirectory(ApplicationPaths.PortableAppsDestinationDirectory);
-
-        var sevenZipExecutablePath =
-            Path.Join(
-                ApplicationPaths.PortableAppsSourceDirectory,
-                "7-Zip",
-                "7z.exe");
-        
-        var archiveToInstallPath =
-            Path.Join(
-                ApplicationPaths.PortableAppsSourceDirectory,
-                archiveFileName);
-        
-        var arguments = $"e {archiveToInstallPath} -o\"{ApplicationPaths.PortableAppsDestinationDirectory}\" -r";
-        
-        _logger.Debug("Extracting Archive: {ArchiveToInstallPath}", archiveToInstallPath);
-        _logger.Debug("With arguments: {Args}", arguments);
-        
-        if (File.Exists(archiveToInstallPath) &&
-            File.Exists(sevenZipExecutablePath))
-        {
-            var processStartInfo = new ProcessStartInfo()
-            {
-                Arguments = arguments,
-                FileName = sevenZipExecutablePath
-            };
-
-            Process.Start(processStartInfo)?.WaitForExit();
-        }
+        // _logger.Information("Running {ThisName}", System.Reflection.MethodBase.GetCurrentMethod()?.Name);
+        //
+        // Directory.CreateDirectory(ApplicationPaths.PortableAppsDestinationDirectory);
+        //
+        // var sevenZipExecutablePath =
+        //     Path.Join(
+        //         ApplicationPaths.PortableAppsSourceDirectory,
+        //         "7-Zip",
+        //         "7z.exe");
+        //
+        // var archiveToInstallPath =
+        //     Path.Join(
+        //         ApplicationPaths.PortableAppsSourceDirectory,
+        //         archiveFileName);
+        //
+        // var arguments = $"e {archiveToInstallPath} -o\"{ApplicationPaths.PortableAppsDestinationDirectory}\" -r";
+        //
+        // _logger.Debug("Extracting Archive: {ArchiveToInstallPath}", archiveToInstallPath);
+        // _logger.Debug("With arguments: {Args}", arguments);
+        //
+        // if (File.Exists(archiveToInstallPath) &&
+        //     File.Exists(sevenZipExecutablePath))
+        // {
+        //     var processStartInfo = new ProcessStartInfo()
+        //     {
+        //         Arguments = arguments,
+        //         FileName = sevenZipExecutablePath
+        //     };
+        //
+        //     Process.Start(processStartInfo)?.WaitForExit();
+        // }
     }
     
     public void InstallDirectoryFromPortableApplications(string folderName)
     {
-        var sourcePath =
-            Path.Join(
-                ApplicationPaths.PortableAppsSourceDirectory,
-                folderName);
-
-        var destinationPath =
-            Path.Join(
-                ApplicationPaths.PortableAppsDestinationDirectory,
-                folderName);
-        
-        Directory.CreateDirectory(destinationPath);
-        
-        _logger.Debug("Copying portable app: {SourceFolderPath}", sourcePath);
-        _logger.Debug("To directory: {DestinationFolder}", destinationPath);
-        
-        if (Directory.Exists(sourcePath))
-        {
-            CopyFolderWithContents(sourcePath, destinationPath);
-        }
+        // var sourcePath =
+        //     Path.Join(
+        //         ApplicationPaths.PortableAppsSourceDirectory,
+        //         folderName);
+        //
+        // var destinationPath =
+        //     Path.Join(
+        //         ApplicationPaths.PortableAppsDestinationDirectory,
+        //         folderName);
+        //
+        // Directory.CreateDirectory(destinationPath);
+        //
+        // _logger.Debug("Copying portable app: {SourceFolderPath}", sourcePath);
+        // _logger.Debug("To directory: {DestinationFolder}", destinationPath);
+        //
+        // if (Directory.Exists(sourcePath))
+        // {
+        //     CopyFolderWithContents(sourcePath, destinationPath);
+        // }
     }
     
     public void InstallTeamViewer11()

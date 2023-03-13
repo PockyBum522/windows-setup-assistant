@@ -1,12 +1,7 @@
-﻿using WindowsSetupAssistant.Interfaces;
+﻿namespace WindowsSetupAssistant.Models.IInstallables;
 
-namespace WindowsSetupAssistant.Models.ISelectables.Installers;
-
-public class ExecutableInstaller : ISelectable
+public class ExecutableInstaller : BaseInstaller
 {
-    /// <inheritdoc />
-    public string DisplayName { get; set; } = "";
-    
     /// <summary>
     /// Path to the .exe or .msi
     /// </summary>
@@ -21,7 +16,4 @@ public class ExecutableInstaller : ISelectable
     /// AutoHotkey V2 macro script to click through the installer
     /// </summary>
     public string AutoHotkeyMacro { get; set; } = "";
-    
-    /// <inheritdoc />
-    public bool IsSelected { get; set; }
 }

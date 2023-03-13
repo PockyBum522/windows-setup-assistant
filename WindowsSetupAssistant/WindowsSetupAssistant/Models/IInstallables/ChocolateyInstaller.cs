@@ -1,15 +1,10 @@
-﻿using WindowsSetupAssistant.Interfaces;
-
-namespace WindowsSetupAssistant.Models.ISelectables.Installers;
+﻿namespace WindowsSetupAssistant.Models.IInstallables;
 
 /// <summary>
 /// Represents an application that will be installed through Chocolatey windows package manager
 /// </summary>
-public class ChocolateyInstaller : ISelectable
+public class ChocolateyInstaller : BaseInstaller
 {
-    /// <inheritdoc />
-    public string DisplayName { get; set; } = "";
-    
     /// <summary>
     /// The ID of the package at https://community.chocolatey.org/packages (basically whatever would come after choco install)
     /// </summary>
@@ -19,7 +14,4 @@ public class ChocolateyInstaller : ISelectable
     /// Any arguments chocolatey needs to install the package. These are optional and generally not needed
     /// </summary>
     public string Arguments { get; set; } = "";
-    
-    /// <inheritdoc />
-    public bool IsSelected { get; set; }
 }

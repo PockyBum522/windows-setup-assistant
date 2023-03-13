@@ -4,15 +4,25 @@ using Serilog;
 
 namespace WindowsSetupAssistant.Logic;
 
+/// <summary>
+/// Allows for easy restarting of this process with admin privileges
+/// </summary>
 public class ProcessElevator
 {
     private readonly ILogger _logger;
 
+    /// <summary>
+    /// Constructor for dependency injection
+    /// </summary>
+    /// <param name="logger">Injected ILogger to use</param>
     public ProcessElevator(ILogger logger)
     {
         _logger = logger;
     }
     
+    /// <summary>
+    /// Restarts current process with admin privileges
+    /// </summary>
     public void ElevateThisProcessNow()
     {
         _logger.Information("Restarting new process as admin");

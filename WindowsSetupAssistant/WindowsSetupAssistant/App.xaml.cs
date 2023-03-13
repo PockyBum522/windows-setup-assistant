@@ -10,6 +10,9 @@ namespace WindowsSetupAssistant
     /// </summary>
     public partial class App
     {
+        /// <summary>
+        /// Main Application class
+        /// </summary>
         public App()
         {
             var logger = DependencyInitializer.GetConfiguredLogger();
@@ -25,9 +28,8 @@ namespace WindowsSetupAssistant
             mainWindow.ShowDialog();
         }
 
-        private void MergeDarkThemeResource()
+        private static void MergeDarkThemeResource()
         {
-            
             var resourcePath = ApplicationPaths.DarkThemePath;
             var currentResource = new Uri(resourcePath, UriKind.RelativeOrAbsolute);
         

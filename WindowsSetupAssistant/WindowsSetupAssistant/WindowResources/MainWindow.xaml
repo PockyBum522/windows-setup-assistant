@@ -220,281 +220,24 @@
                     
                     <StackPanel>
                         
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallTeamViewer11}" 
-                                  Content="TeamViewer v11"  
-                                  Margin="2,2,0,0"  />
+                        <ListView ItemsSource="{Binding AvailableInstalls}">
+                            
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        
+                                        <CheckBox DockPanel.Dock="Top"
+                                                  IsChecked="{Binding IsSelected}" 
+                                                  Margin="2,2,0,0" />
+                                        
+                                        <TextBlock Text="{Binding DisplayName}" />
+                                        
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                            
+                        </ListView>
                         
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstall7Zip}" 
-                                  Content="7-Zip"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallGoogleChrome}" 
-                                  Content="Google Chrome"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallDotNet5DesktopRuntime}" 
-                                  Content=".NET 5 Desktop Runtime"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallDotNet6DesktopRuntime}" 
-                                  Content=".NET 6 Desktop Runtime"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallVisualStudioCode}" 
-                                  Content="VSCode"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallYubicoAuthenticator }" 
-                                  Content="Yubico Authenticator (Modified)"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallClcl }" 
-                                  Content="CLCL"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallMouseMover }" 
-                                  Content="Mouse Mover"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallNgrok }" 
-                                  Content="Ngrok (Sigrok GUI for Logic Analyzers)"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallRufus }" 
-                                  Content="Rufus"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallWindowsUpdateBlocker }" 
-                                  Content="Windows Update Blocker"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallArduino1819 }" 
-                                  Content="Arduino 1.8.19 (For Line Wobbler)"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallArduinoLatest }" 
-                                  Content="Arduino Latest"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallOmnidome }" 
-                                  Content="Omnidome"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallVeraCrypt }" 
-                                  Content="VeraCrypt"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallPython }" 
-                                  Content="Python"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallFireFox }" 
-                                  Content="FireFox"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallMicrosoftEdge }" 
-                                  Content="Microsoft Edge"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallEverything }" 
-                                  Content="Everything Search"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallVlc }" 
-                                  Content="VLC"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallAudacity }" 
-                                  Content="Audacity"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallHandbrake }" 
-                                  Content="Handbrake (Video converter)"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallFileZilla }" 
-                                  Content="FileZilla"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallWinScp }" 
-                                  Content="WinScp"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallPutty }" 
-                                  Content="Putty"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallWinMerge }" 
-                                  Content="WinMerge"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallKrita }" 
-                                  Content="Krita"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallBlender }" 
-                                  Content="Blender"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallPaintDotNet }" 
-                                  Content="Paint.net"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallGimp }" 
-                                  Content="GIMP"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallIrfanView }" 
-                                  Content="IrfanView"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallInkscape }" 
-                                  Content="Inkscape"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallGreenShot }" 
-                                  Content="GreenShot"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallFoxitReader }" 
-                                  Content="FoxitReader"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallLibreOffice }" 
-                                  Content="LibreOffice"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallCdBurnerXp }" 
-                                  Content="CDBurnerXP"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallRevo }" 
-                                  Content="Revo Uninstaller"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallWinDirStat }" 
-                                  Content="WinDirStat"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallQBitTorrent }" 
-                                  Content="QBitTorrent"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallZoom }" 
-                                  Content="Zoom"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallSteam }" 
-                                  Content="Steam"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallDropBox }" 
-                                  Content="DropBox"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallObsidian }" 
-                                  Content="Obsidian"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallPushBullet }" 
-                                  Content="PushBullet"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallBitWarden }" 
-                                  Content="BitWarden"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallPowerToys }" 
-                                  Content="PowerToys"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallJetbrainsToolbox }" 
-                                  Content="JetbrainsToolbox"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallMp3Tag }" 
-                                  Content="MP3Tag"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallTelegram }" 
-                                  Content="Telegram Desktop"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallSyncBack }" 
-                                  Content="SyncBack Pro"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallMusicBee }" 
-                                  Content="MusicBee"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallDisplayFusion }" 
-                                  Content="DisplayFusion"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallTrueLaunchBar }" 
-                                  Content="True Launch Bar"  
-                                  Margin="2,0,0,0"  />
-                        
-                        <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedInstallRipcord }" 
-                                  Content="Ripcord"  
-                                  Margin="2,0,0,0"  />
-
                     </StackPanel>
                 </Border>
             </StackPanel>
@@ -502,16 +245,6 @@
         
         <!-- Bottom Buttons -->
         <DockPanel Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Margin="5">
-
-            <Button Content="Select for Personal PCs" 
-                    Click="SelectAllForPersonalPCs_OnClick" 
-                    Padding="10"
-                    Margin="5"/>
-
-            <Button Content="Select for OSC Exhibit PCs" 
-                    Click="SelectAllForOscExhibitPCs_OnClick" 
-                    Padding="10"
-                    Margin="5"/>
 
             <Button Content="Select Commonly Used" 
                     Click="SelectAllCommon_OnClick" 
@@ -532,6 +265,12 @@
                     DockPanel.Dock="Right"
                     Width="200"
                     Click="StartExecution_OnClick" 
+                    Padding="10" />
+            
+            <Button Content="TEST"
+                    DockPanel.Dock="Right"
+                    Width="200"
+                    Click="RunTestMethod_OnClick" 
                     Padding="10" />
         </DockPanel>
     </Grid>

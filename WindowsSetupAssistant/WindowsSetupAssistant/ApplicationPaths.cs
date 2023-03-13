@@ -8,7 +8,7 @@ namespace WindowsSetupAssistant
         /// <summary>
         /// Per-user log folder path
         /// </summary>
-        public static string LogAppBasePath =>
+        private static string LogAppBasePath =>
             Path.Combine(
                 "C:",
                 "Users",
@@ -25,28 +25,44 @@ namespace WindowsSetupAssistant
                 LogAppBasePath,
                 "Script.log");
         
-        public static string PortableAppsDestinationDirectory => 
-                @"C:\PortableApplications"; 
-        
-        public static string PortableAppsSourceDirectory =>
+        /// <summary>
+        /// The directory the assembly is running from
+        /// </summary>
+        public static string ThisApplicationRunFromDirectoryPath => 
+            Path.GetDirectoryName(Environment.ProcessPath) ?? "";
+
+        /// <summary>
+        /// The top level dir, useful for getting to configuration folders and resource folders
+        /// This is the directory the bootstrapper bat file is in
+        /// </summary>
+        public static string SetupAssistantRootDir => 
             Path.Join(
-                @"D:\Dropbox", 
-                "Apps", 
-                "New Workstation Setup", 
-                "PortableApplications");
-
-        public static string ThisApplicationRunFromDirectoryPath
-            => Path.GetDirectoryName(Environment.ProcessPath) ?? "";
+                ApplicationPaths.ThisApplicationRunFromDirectoryPath, "../../../..");
         
-        public static string ThisApplicationProcessPath 
-            => Environment.ProcessPath ?? "";
+        /// <summary>
+        /// The full path to this application's running assembly
+        /// </summary>
+        public static string ThisApplicationProcessPath => 
+            Environment.ProcessPath ?? "";
 
-        public static string DarkThemePath
-            =>
+        /// <summary>
+        /// The full path to the dark theme Styles.xaml which contains the rest of the style information
+        /// </summary>
+        public static string DarkThemePath =>
                 Path.Join(
                     ThisApplicationRunFromDirectoryPath,
                     "Themes",
                     "SelenMetroDark",
                     "Styles.xaml");
+        
+        internal static class ResourcePaths
+        {
+            public static string InstallsFileJsonPath = 
+                Path.Join(
+                    SetupAssistantRootDir,
+                    "Resources",
+                    "Configuration",
+                    "AvailableInstalls.json");
+        }
     }
 }

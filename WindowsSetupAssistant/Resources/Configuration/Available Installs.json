@@ -64,22 +64,6 @@
 		"IsSelected": false
 	},
 	{
-		"$type": "WindowsSetupAssistant.Core.Models.IInstallables.ArchiveInstaller, WindowsSetupAssistant.Core",
-		"ArchiveFilename": "Yubico Authenticator.7z",
-		"DestinationPath": "C:\\PortableApplications\\Yubico Authenticator\\",
-		"DisplayName": "Yubico Authenticator (Modified)",
-		"IsSelected": false
-	},
-	{
-		"$type": "WindowsSetupAssistant.Core.Models.IInstallables.PortableApplicationInstaller, WindowsSetupAssistant.Core",
-		"FolderName": "CLCL",
-		"DestinationPath": "C:\\PortableApplications\\CLCL\\",
-		"DesktopShortcutExePath": "",
-		"StartMenuShortcutExePath": "",
-		"DisplayName": "CLCL",
-		"IsSelected": false
-	},
-	{
 		"$type": "WindowsSetupAssistant.Core.Models.IInstallables.PortableApplicationInstaller, WindowsSetupAssistant.Core",
 		"FolderName": "ngrok",
 		"DestinationPath": "C:\\PortableApplications\\ngrok\\",
@@ -471,20 +455,36 @@
 		"DisplayName": "Spotify",
 		"IsSelected": false
 	},
-	{
-		"$type": "WindowsSetupAssistant.Core.Models.IInstallables.ExecutableInstaller, WindowsSetupAssistant.Core",
-		"FileName": "truelaunchbar8-free.exe",
-		"Arguments": "",
-		"AutoHotkeyMacro": "",
-		"DisplayName": "True Launch Bar",
-		"IsSelected": false
-	},
-	{
-		"$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
-		"ChocolateyId": "ripcord",
+    {
+        "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ExecutableInstaller, WindowsSetupAssistant.Core",
+        "FileName": "truelaunchbar8-free.exe",
+        "Arguments": "",
+        "AutoHotkeyMacro": "",
+        "DisplayName": "True Launch Bar",
+        "IsSelected": false
+    },
+    {
+        "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
+		"ChocolateyId": "discord",
 		"Arguments": "",
 		"Parameters": "",
-		"DisplayName": "Ripcord",
-		"IsSelected": false
-	}
+		"DisplayName": "Discord",
+        "IsSelected": false
+    },
+    {
+        "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
+        "ChocolateyId": "ripcord",
+        "Arguments": "",
+        "Parameters": "",
+        "DisplayName": "Ripcord",
+        "IsSelected": false
+    },
+    {
+        "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
+        "ChocolateyId": "brave",
+        "Arguments": "",
+        "Parameters": "",
+        "DisplayName": "Brave Browser",
+        "IsSelected": false
+    }
 ]

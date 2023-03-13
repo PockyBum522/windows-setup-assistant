@@ -58,9 +58,6 @@ public partial class MainWindow
         
         if (_currentState.ScriptStage == ScriptStageEnum.Uninitialized) return;
         
-        // Set long sleep and monitor off times so it doesn't sleep during install
-        _windowsSettingsHelper.SetPowerSettingsTo();
-        
         // Otherwise:
         CheckStageAndWorkOnRerun();
     }
@@ -136,6 +133,9 @@ public partial class MainWindow
 
     private void CheckStageAndWorkOnRerun()
     {
+        // Set long sleep and monitor off times so it doesn't sleep during install
+        _windowsSettingsHelper.SetPowerSettingsTo();
+        
         switch (_currentState.ScriptStage)
         {
             case ScriptStageEnum.WindowsHasBeenUpdatedOnce:

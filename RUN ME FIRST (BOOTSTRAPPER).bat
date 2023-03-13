@@ -152,7 +152,7 @@ if "%1" neq "ELEV" (
     echo Deleting lockfile that represents admin stuff is running, now.
     echo.
 
-    del %temp%\elevatedActionsScriptV01.lockfile
+    del %PUBLIC%\Documents\elevatedActionsScriptV01.lockfile
 
     exit 0
 
@@ -241,7 +241,7 @@ if "%1" neq "ELEV" (
     echo Creating lockfile for waiting until elevated actions finish
     echo.
 
-    copy /y NUL %temp%\elevatedActionsScriptV01.lockfile >NUL
+    copy /y NUL %PUBLIC%\Documents\elevatedActionsScriptV01.lockfile >NUL
     
     exit /B
 
@@ -256,7 +256,7 @@ if "%1" neq "ELEV" (
     timeout /t 10
 
 
-    IF EXIST %temp%\elevatedActionsScriptV01.lockfile goto pauseUntilElevatedActionsFinish
+    IF EXIST %PUBLIC%\Documents\elevatedActionsScriptV01.lockfile goto pauseUntilElevatedActionsFinish
     
     exit /B
 

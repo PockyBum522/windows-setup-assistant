@@ -10,8 +10,6 @@ namespace WindowsSetupAssistant.Main
     /// </summary>
     public partial class App
     {
-        public IContainer DependencyContainer { get; private set;  } 
-        
         private readonly DiContainerBuilder _mainBuilder = new ();
         
         /// <summary>
@@ -20,9 +18,9 @@ namespace WindowsSetupAssistant.Main
         /// <param name="e"></param>
         protected override void OnStartup(StartupEventArgs e)
         {
-            DependencyContainer = _mainBuilder.GetBuiltContainer();
+            var dependencyContainer = _mainBuilder.GetBuiltContainer();
             
-            using var scope = DependencyContainer.BeginLifetimeScope();
+            using var scope = dependencyContainer.BeginLifetimeScope();
 
             // Attach unhandled exception logging
             scope.Resolve<ExceptionHandler>().SetupExceptionHandlingEvents();

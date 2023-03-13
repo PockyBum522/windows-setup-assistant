@@ -107,6 +107,21 @@
       <Content Include="Themes\SelenMetroDark\WindowStyles.xaml">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
+      <Page Remove="Themes\SelenMetroDark\TextBlockStyles.xaml" />
+      <Content Include="Themes\SelenMetroDark\TextBlockStyles.xaml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Page Remove="Themes\SelenMetroDark\StackPanelStyles.xaml" />
+      <Content Include="Themes\SelenMetroDark\StackPanelStyles.xaml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Page Remove="Themes\SelenMetroDark\ListViewStyles.xaml" />
+      <Content Include="Themes\SelenMetroDark\ListViewStyles.xaml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
 </Project>

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -317,6 +319,18 @@ public partial class MainWindow
 
         _logger.Information("{CurrentInstallsStates}", message);
 
+    }
+
+    private void AvailableInstallsListView_OnPreviewMouseWheel(object sender, MouseWheelEventArgs e)
+    {
+        var listView = (ListView)sender;
+        var scv = (ScrollViewer)listView.Parent;
+
+        var scrollAmount = e.Delta / 2f;
+        
+        scv.ScrollToVerticalOffset(scv.VerticalOffset - scrollAmount);
+        
+        e.Handled = true;
     }
 }
 

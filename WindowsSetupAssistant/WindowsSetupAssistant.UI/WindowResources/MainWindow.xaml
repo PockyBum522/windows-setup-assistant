@@ -3,9 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=PresentationFramework"
         mc:Ignorable="d"
         Style="{StaticResource StandardWindow}"
-        Title="MainWindow" Height="980" Width="1820">
+        Title="MainWindow" Height="980" Width="1820"
+        Background="#222222">
     
     <Grid>
         <Grid.RowDefinitions>
@@ -26,6 +28,32 @@
         <Grid.Resources>
             <Style TargetType="{x:Type StackPanel}">
                 <Setter Property="Margin" Value="2" />    
+            </Style>
+            
+            <!-- Design time dark backgrounds  -->
+            <Style TargetType="{x:Type ScrollViewer}">
+                <Style.Triggers>
+                    <Trigger Property="componentModel:DesignerProperties.IsInDesignMode" Value="True">
+                        <Setter Property="Background" Value="#333333" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <Style TargetType="{x:Type CheckBox}">
+                <Style.Triggers>
+                    <Trigger Property="componentModel:DesignerProperties.IsInDesignMode" Value="True">
+                        <Setter Property="Foreground" Value="#FFFFFF" />
+                    </Trigger>
+                </Style.Triggers>
+                
+                <!-- I have no idea why this has to be done. It should be set in CheckBoxStyles.xaml in Themes folder -->
+                <Setter Property="Background" Value="#555555" />
+            </Style>
+            <Style TargetType="{x:Type TextBlock}">
+                <Style.Triggers>
+                    <Trigger Property="componentModel:DesignerProperties.IsInDesignMode" Value="True">
+                        <Setter Property="Foreground" Value="#FFFFFF" />
+                    </Trigger>
+                </Style.Triggers>
             </Style>
         </Grid.Resources>
         
@@ -210,38 +238,36 @@
             </StackPanel>
         </StackPanel>
 
-        <StackPanel Grid.Row="1" Grid.Column="2" >
+        <DockPanel Grid.Row="1" Grid.Column="2" >
             <!-- Install Applications -->
-            <StackPanel>
+            <DockPanel>
                 
-                <TextBlock Text="Install Applications" />
+                <TextBlock Text="Install Applications" DockPanel.Dock="Top" />
                 
                 <Border BorderBrush="Gray" BorderThickness="1" Padding="2">
-                    
-                    <StackPanel>
-                        
-                        <ListView ItemsSource="{Binding AvailableInstalls}">
+                    <DockPanel>
+                        <ScrollViewer>
                             
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        
-                                        <CheckBox DockPanel.Dock="Top"
-                                                  IsChecked="{Binding IsSelected}" 
-                                                  Margin="2,2,0,0" />
-                                        
-                                        <TextBlock Text="{Binding DisplayName}" />
-                                        
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                            
-                        </ListView>
-                        
-                    </StackPanel>
+                            <ListView ItemsSource="{Binding AvailableInstalls}" PreviewMouseWheel="AvailableInstallsListView_OnPreviewMouseWheel">
+                                
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            
+                                            <CheckBox IsChecked="{Binding IsSelected}" 
+                                                      Content="{Binding DisplayName}"
+                                                      Margin="2,2,0,0" />
+                                            
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                                
+                            </ListView>
+                        </ScrollViewer>
+                    </DockPanel>
                 </Border>
-            </StackPanel>
-        </StackPanel>
+            </DockPanel>
+        </DockPanel>
         
         <!-- Bottom Buttons -->
         <DockPanel Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Margin="5">

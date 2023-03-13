@@ -17,6 +17,9 @@
         <ResourceDictionary Source="GroupBoxStyles.xaml"/>
         <ResourceDictionary Source="CheckBoxStyles.xaml"/>
         <ResourceDictionary Source="RadioButtonStyles.xaml"/>
+        <ResourceDictionary Source="ListViewStyles.xaml"/>
+        <ResourceDictionary Source="TextBlockStyles.xaml"/>
+        <ResourceDictionary Source="StackPanelStyles.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
     <Style TargetType="Control" BasedOn="{StaticResource StandardControl}"/> 
@@ -34,4 +37,7 @@
     <Style TargetType="GroupBox" BasedOn="{StaticResource StandardGroupBox}"/> 
     <Style TargetType="CheckBox" BasedOn="{StaticResource StandardCheckBox}"/> 
     <Style TargetType="RadioButton" BasedOn="{StaticResource StandardRadioButton}"/> 
+    <Style TargetType="ListView" BasedOn="{StaticResource StandardListView}"/> 
+    <Style TargetType="TextBlock" BasedOn="{StaticResource StandardTextBlock}"/> 
+    <Style TargetType="StackPanel" BasedOn="{StaticResource StandardStackPanel}"/> 
 </ResourceDictionary>

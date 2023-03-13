@@ -5,8 +5,7 @@
         <ResourceDictionary Source="Resources.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
-    <Style x:Key="StandardCheckBox" TargetType="CheckBox">
-        <Setter Property="Foreground" Value="{StaticResource Foreground}"/>
-        <Setter Property="Background" Value="{StaticResource CheckBoxBackground}"/>
+    <Style x:Key="StandardStackPanel" TargetType="StackPanel">
+    
     </Style>
 </ResourceDictionary>

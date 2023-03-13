@@ -1,12 +1,10 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Resources.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
-    <Style x:Key="StandardCheckBox" TargetType="CheckBox">
+    <Style x:Key="StandardTextBlock" TargetType="TextBlock">
         <Setter Property="Foreground" Value="{StaticResource Foreground}"/>
-        <Setter Property="Background" Value="{StaticResource CheckBoxBackground}"/>
     </Style>
 </ResourceDictionary>

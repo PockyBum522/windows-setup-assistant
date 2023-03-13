@@ -249,20 +249,31 @@ public partial class MainWindow
         // Install 7zip no matter what because we need it later for the portable apps
         new ChocolateyInstaller(){ChocolateyId = "7Zip"}.ExecuteInstall(_logger);
 
+        // Run non-executable installers and get them out of the way first since they require no user interaction
         foreach (var installer in _currentState.MainWindowPartialViewModel.AvailableInstalls)
         {
             if (!installer.IsSelected) continue;
 
-            installer.ExecuteInstall(_logger);
+            if (installer is not ExecutableInstaller)
+                installer.ExecuteInstall(_logger);
         }
         
+        // Do the executableInstallers last
+        foreach (var installer in _currentState.MainWindowPartialViewModel.AvailableInstalls)
+        {
+            if (!installer.IsSelected) continue;
+
+            if (installer is ExecutableInstaller)
+                installer.ExecuteInstall(_logger);
+        }
+
         // TODO: Associate 7zFM.exe with .7z and .zip files
         
         // TODO: Set Chrome as default for .html files
 
         // TODO: Make default pictures app IrfanView if installed
         
-        // TODO: Displayfusion install did not make the shell icons when right clicking the desktop
+        // TODO: DisplayFusion install did not make the shell icons when right clicking the desktop
 
         // TODO: Uninstall windows store version of spotify
 
@@ -409,7 +420,7 @@ public partial class MainWindow
 // TODO: Disable microsoft edge in startup
 // TODO: Disable onedrive in startup
 
-// TODO: Displayfusion titlebar button off
+// TODO: DFusion titlebar button off
 
 // TODO: Look through true launch bar folder and see what else should be installed 
 

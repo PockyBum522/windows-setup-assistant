@@ -3,10 +3,23 @@ using System.IO;
 
 namespace WindowsSetupAssistant.Core.Logic;
 
+/// <summary>
+/// Contains methods for finding files based on a pattern, helpful for looking for files higher up in a directory
+/// tree.
+/// </summary>
 public class FileSearcher
 {
     private static string _foundFullPath = "";
     
+    /// <summary>
+    /// Searches n levels to find a file matching fileName in directories above pathToSearchIn
+    /// </summary>
+    /// <param name="pathToSearchIn">Starting directory, search will look up in the directory tree from there</param>
+    /// <param name="fileName">File name to match</param>
+    /// <param name="maxLevels">Maximum levels to look above pathToSearchIn. Obviously setting this higher will
+    /// result in a much longer search time</param>
+    /// <returns>Path to file with fileName</returns>
+    /// <exception cref="FileNotFoundException">If fileName could not be found</exception>
     public static string ReverseWalkDirectoriesFind(string pathToSearchIn, string fileName, int maxLevels)
     {
         _foundFullPath = "";

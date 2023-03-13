@@ -71,7 +71,7 @@ namespace WindowsSetupAssistant.Core
                     SetupAssistantRootDir,
                     "Resources",
                     "Configuration",
-                    "AvailableInstalls.json");
+                    "Available Installs.json");
         }
     }
 }

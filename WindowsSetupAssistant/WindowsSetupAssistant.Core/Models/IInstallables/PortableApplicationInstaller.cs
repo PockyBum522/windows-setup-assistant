@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using System.IO;
+using Serilog;
 
 namespace WindowsSetupAssistant.Core.Models.IInstallables;
 
@@ -44,6 +45,45 @@ public class PortableApplicationInstaller : BaseInstaller
     /// <inheritdoc/>
     public override void ExecuteInstall()
     {
+        var searchInPath =
+            Path.Join(
+                ApplicationPaths.SetupAssistantRootDir,
+                "WindowsSetupAssistant",
+                "Resources",
+                "Portable Applications");
         
+        var folderToInstallPath =
+            Path.Join(
+                searchInPath,
+                FolderName);
+        
+        Directory.CreateDirectory(DestinationPath);
+        
+        _logger.Debug("Copying portable app: {SourceFolderPath}", folderToInstallPath);
+        _logger.Debug("To directory: {DestinationFolder}", DestinationPath);
+        
+        if (Directory.Exists(folderToInstallPath))
+        {
+            CopyFolderWithContents(folderToInstallPath, DestinationPath);
+        }
+    }
+    
+    private void CopyFolderWithContents(string sourcePath, string destinationPath)
+    {
+        //Create all the directories.
+        foreach (var directoryPath in Directory.GetDirectories(sourcePath, "*", SearchOption.AllDirectories))
+        {
+            var newDirectoryPath = directoryPath.Replace(sourcePath, destinationPath);
+            
+            Directory.CreateDirectory(newDirectoryPath);
+        }
+
+        //Copy all the files & Replaces any files with the same name.
+        foreach (var sourceFilePath in Directory.GetFiles(sourcePath, "*.*", SearchOption.AllDirectories))
+        {
+            var newPath = sourceFilePath.Replace(sourcePath, destinationPath);
+            
+            File.Copy(sourceFilePath, newPath, true);
+        }
     }
 }

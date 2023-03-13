@@ -1,4 +1,7 @@
-﻿using Serilog;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
+using Serilog;
 
 namespace WindowsSetupAssistant.Core.Models.IInstallables;
 
@@ -31,7 +34,47 @@ public class ArchiveInstaller : BaseInstaller
 
     /// <inheritdoc/>
     public override void ExecuteInstall()
-    {
+    {        
+        _logger.Information("Running {ThisName}", System.Reflection.MethodBase.GetCurrentMethod()?.Name);
         
+        Directory.CreateDirectory(Path.GetDirectoryName(DestinationPath) ?? throw new DirectoryNotFoundException());
+        
+        var searchInPath =
+            Path.Join(
+                ApplicationPaths.SetupAssistantRootDir,
+                "WindowsSetupAssistant",
+                "Resources",
+                "Installer Archives");
+        
+        var archiveToInstallPath =
+            Path.Join(
+                searchInPath,
+                ArchiveFilename);
+        
+        var arguments = $"""e {archiveToInstallPath} -o"{DestinationPath}" -r""";
+        
+        _logger.Debug("Extracting Archive: {ArchiveToInstallPath}", archiveToInstallPath);
+        _logger.Debug("With arguments: {Args}", arguments);
+        
+        var sevenZipExecutablePath =
+            Path.Join(
+                Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),
+                "7-Zip",
+                "7z.exe");
+
+        if (!File.Exists(sevenZipExecutablePath))
+            throw new FileNotFoundException(
+                $"Could not find 7-Zip exe. Make sure it exists at: {sevenZipExecutablePath}");
+
+        if (!File.Exists(archiveToInstallPath))
+            throw new FileNotFoundException($"Could not find archive specified: {archiveToInstallPath}");
+        
+        var processStartInfo = new ProcessStartInfo()
+        {
+            Arguments = arguments,
+            FileName = sevenZipExecutablePath
+        };
+    
+        Process.Start(processStartInfo)?.WaitForExit();
     }
 }

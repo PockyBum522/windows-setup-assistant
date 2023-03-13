@@ -272,10 +272,8 @@ public partial class MainWindow
     // ReSharper disable once CognitiveComplexity because it's extremely linear and it's fine
     private void WorkAllApplicationInstallCheckboxes()
     {
-        var chocolateyHelper = new ChocolateyHelper(_logger);
-
         // Install 7zip no matter what because we need it later for the portable apps
-        chocolateyHelper.ChocoInstall(new ChocolateyInstaller(_logger){ChocolateyId = "7Zip"});
+        new ChocolateyInstaller(_logger){ChocolateyId = "7Zip"}.ExecuteInstall();
 
         foreach (var installer in _currentState.MainWindowPartialViewModel.AvailableInstalls)
         {

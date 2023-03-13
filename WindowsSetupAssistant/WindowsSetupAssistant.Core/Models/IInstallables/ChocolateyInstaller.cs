@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using System.Diagnostics;
+using Serilog;
 
 namespace WindowsSetupAssistant.Core.Models.IInstallables;
 
@@ -36,6 +37,28 @@ public class ChocolateyInstaller : BaseInstaller
     /// <inheritdoc/>
     public override void ExecuteInstall()
     {
-        
+        _logger.Information("Installing {PackageName} with Chocolatey", ChocolateyId);
+
+        var procInfo = new ProcessStartInfo();
+
+        var argsString = $"upgrade {ChocolateyId}";
+
+        if (!string.IsNullOrWhiteSpace(Arguments))
+        {
+            argsString += $" --install-arguments='{Arguments}'";
+        }
+
+        if (!string.IsNullOrWhiteSpace(Parameters))
+        {
+            argsString += $" --params '{Parameters}'";
+        }
+
+        procInfo.Arguments = argsString;
+
+        procInfo.FileName = "choco";
+
+        var proc = Process.Start(procInfo);
+
+        proc?.WaitForExit();   
     }
 }

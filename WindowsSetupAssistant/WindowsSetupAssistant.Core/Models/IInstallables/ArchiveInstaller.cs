@@ -38,8 +38,8 @@ public partial class ArchiveInstaller : ObservableObject, IInstallable
         var searchInPath =
             Path.Join(
                 ApplicationPaths.SetupAssistantRootDir,
-                "WindowsSetupAssistant",
                 "Resources",
+                "Installers",
                 "Installer Archives")
             .Replace("/", @"\");
         
@@ -50,7 +50,7 @@ public partial class ArchiveInstaller : ObservableObject, IInstallable
         
         archiveToInstallPath = Path.GetFullPath(archiveToInstallPath);
         
-        var arguments = $"""e {archiveToInstallPath} -o"{DestinationPath}" -r""";
+        var arguments = $"""e "{archiveToInstallPath}" -o"{DestinationPath}" -r""";
         
         logger.Debug("Extracting Archive: {ArchiveToInstallPath}", archiveToInstallPath);
         logger.Debug("With arguments: {Args}", arguments);

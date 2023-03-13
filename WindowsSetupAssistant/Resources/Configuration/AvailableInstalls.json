@@ -1,35 +1,45 @@
-[
-  {
-    "DisplayName": "TeamViewer v11",
-    "FileName": "TeamViewer_11.exe",
-    "Arguments": "",
-    "AutoHotkeyMacro": "",
-    "IsSelected": false
-  },
-  {
-    "DisplayName": "7-Zip",
-    "ChocolateyId": "7Zip",
-    "Arguments": "",
-    "IsSelected": false
-  },
-  {
-    "DisplayName": "Google Chrome",
-    "ChocolateyId": "googlechrome",
-    "Arguments": "",
-    "IsSelected": false
-  },
-  {
-    "DisplayName": "Yubico Authenticator (Modified)",
-    "ArchiveFilename": "Yubico Authenticator.7z",
-    "DestinationPath": "C:\\PortableApplications\\Yubico Authenticator\\",
-    "IsSelected": false
-  },
-  {
-    "DisplayName": "CLCL",
-    "FolderName": "CLCL",
-    "DestinationPath": "C:\\PortableApplications\\CLCL\\",
-    "DesktopShortcutExePath": "",
-    "StartMenuShortcutExePath": "",
-    "IsSelected": false
-  }
-]
+{
+  "$type": "System.Collections.Generic.List`1[[WindowsSetupAssistant.Core.Models.IInstallables.BaseInstaller, WindowsSetupAssistant.Core]], System.Private.CoreLib",
+  "$values": [
+    {
+      "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ExecutableInstaller, WindowsSetupAssistant.Core",
+      "FileName": "TeamViewer_11.exe",
+      "Arguments": "",
+      "AutoHotkeyMacro": "",
+      "DisplayName": "TeamViewer v11",
+      "IsSelected": false
+    },
+    {
+      "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
+      "ChocolateyId": "7Zip",
+      "Arguments": "",
+      "Parameters": "",
+      "DisplayName": "7-Zip",
+      "IsSelected": false
+    },
+    {
+      "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
+      "ChocolateyId": "googlechrome",
+      "Arguments": "",
+      "Parameters": "",
+      "DisplayName": "Google Chrome",
+      "IsSelected": false
+    },
+    {
+      "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ArchiveInstaller, WindowsSetupAssistant.Core",
+      "ArchiveFilename": "Yubico Authenticator.7z",
+      "DestinationPath": "C:\\PortableApplications\\Yubico Authenticator\\",
+      "DisplayName": "Yubico Authenticator (Modified)",
+      "IsSelected": false
+    },
+    {
+      "$type": "WindowsSetupAssistant.Core.Models.IInstallables.PortableApplicationInstaller, WindowsSetupAssistant.Core",
+      "FolderName": "CLCL",
+      "DestinationPath": "C:\\PortableApplications\\CLCL\\",
+      "DesktopShortcutExePath": "",
+      "StartMenuShortcutExePath": "",
+      "DisplayName": "CLCL",
+      "IsSelected": false
+    }
+  ]
+}

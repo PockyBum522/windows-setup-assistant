@@ -1,0 +1,112 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net7.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <UseWPF>true</UseWPF>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Autofac" Version="7.0.0" />
+      <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
+      <PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
+      <PackageReference Include="GuerrillaNtp" Version="3.0.0" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+      <PackageReference Include="Serilog" Version="2.12.0" />
+      <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
+      <PackageReference Include="Serilog.Sinks.Debug" Version="2.0.0" />
+      <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+      <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Page Update="WindowResources\MainWindow.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+        <SubType>Designer</SubType>
+      </Page>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Page Remove="Themes\SelenMetroDark\ButtonStyles.xaml" />
+      <Page Remove="Themes\SelenMetroDark\CheckBoxStyles.xaml" />
+      <Page Remove="Themes\SelenMetroDark\ComboBoxStyles.xaml" />
+      <Page Remove="Themes\SelenMetroDark\ControlStyles.xaml" />
+      <Page Remove="Themes\SelenMetroDark\DataGridStyles.xaml" />
+      <Page Remove="Themes\SelenMetroDark\GroupBoxStyles.xaml" />
+      <Page Remove="Themes\SelenMetroDark\ListBoxStyles.xaml" />
+      <Page Remove="Themes\SelenMetroDark\MenuStyles.xaml" />
+      <Page Remove="Themes\SelenMetroDark\PageStyles.xaml" />
+      <Page Remove="Themes\SelenMetroDark\RadioButtonStyles.xaml" />
+      <Page Remove="Themes\SelenMetroDark\Resources.xaml" />
+      <Page Remove="Themes\SelenMetroDark\ScrollBarStyles.xaml" />
+      <Page Remove="Themes\SelenMetroDark\Styles.xaml" />
+      <Page Remove="Themes\SelenMetroDark\TabControlStyles.xaml" />
+      <Page Remove="Themes\SelenMetroDark\TextBoxStyles.xaml" />
+      <Page Remove="Themes\SelenMetroDark\TreeViewStyles.xaml" />
+      <Page Remove="Themes\SelenMetroDark\WindowStyles.xaml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\WindowsSetupAssistant.Core\WindowsSetupAssistant.Core.csproj" />
+      <ProjectReference Include="..\WindowsSetupAssistant.UI\WindowsSetupAssistant.UI.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="Themes\SelenMetroDark\ButtonStyles.xaml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Themes\SelenMetroDark\CheckBoxStyles.xaml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Themes\SelenMetroDark\ComboBoxStyles.xaml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Themes\SelenMetroDark\ControlStyles.xaml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Themes\SelenMetroDark\DataGridStyles.xaml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Themes\SelenMetroDark\GroupBoxStyles.xaml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Themes\SelenMetroDark\ListBoxStyles.xaml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Themes\SelenMetroDark\MenuStyles.xaml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Themes\SelenMetroDark\PageStyles.xaml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Themes\SelenMetroDark\RadioButtonStyles.xaml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Themes\SelenMetroDark\Resources.xaml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Themes\SelenMetroDark\ScrollBarStyles.xaml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Themes\SelenMetroDark\Styles.xaml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Themes\SelenMetroDark\TabControlStyles.xaml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Themes\SelenMetroDark\TextBoxStyles.xaml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Themes\SelenMetroDark\TreeViewStyles.xaml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Themes\SelenMetroDark\WindowStyles.xaml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
+</Project>

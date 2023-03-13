@@ -50,7 +50,7 @@ public partial class ArchiveInstaller : ObservableObject, IInstallable
         
         archiveToInstallPath = Path.GetFullPath(archiveToInstallPath);
         
-        var arguments = $"""e "{archiveToInstallPath}" -o"{DestinationPath}" -r""";
+        var arguments = $"""e "{archiveToInstallPath}" -o"{DestinationPath}" -r -y""";
         
         logger.Debug("Extracting Archive: {ArchiveToInstallPath}", archiveToInstallPath);
         logger.Debug("With arguments: {Args}", arguments);

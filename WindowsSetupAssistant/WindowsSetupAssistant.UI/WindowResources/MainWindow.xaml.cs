@@ -30,6 +30,7 @@ public partial class MainWindow
     private readonly CurrentState _currentState;
     private readonly WindowsUpdater _windowsUpdater;
     private readonly WindowsSettingsHelper _windowsSettingsHelper;
+    private readonly WindowsUiHelper _windowsUiHelper;
 
     /// <summary>
     /// Main window constructor, loads in JSON files that need to be shown as controls, sets DataContext, sets up
@@ -47,6 +48,7 @@ public partial class MainWindow
         _currentState = new(_logger);
 
         _windowsSettingsHelper = new(_logger);
+        _windowsUiHelper = new(_logger);
         
         DataContext = _currentState.MainWindowPartialViewModel;
         
@@ -178,6 +180,8 @@ public partial class MainWindow
                 }
 
                 _windowsSettingsHelper.SetPowerSettingsTo(140);
+
+                _windowsUiHelper.CleanDesktopOfAllFilesMatching(new[] { ".lnk", ".ini" });
                 
                 _currentState.PromptToRebootComputerAndExit();
                 
@@ -197,6 +201,8 @@ public partial class MainWindow
         var availableInstalls = JsonConvert.DeserializeObject<List<IInstallable>>(availableInstallsJsonRaw, jsonSerializerSettings);
         
         if (availableInstalls is null) throw new NullReferenceException();
+        
+        _currentState.MainWindowPartialViewModel.AvailableInstalls.Clear();
         
         foreach (var availableInstall in availableInstalls)
         {

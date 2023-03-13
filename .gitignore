@@ -7,7 +7,9 @@
 .idea/
 
 # All installer files
-WindowsSetupAssistant/Resources/Installers/*
+WindowsSetupAssistant/Resources/Installers/Installer Archives/*
+WindowsSetupAssistant/Resources/Installers/Installer Executables/*
+WindowsSetupAssistant/Resources/Installers/Portable Applications/*
 
 # User-specific files (Jetbrains Rider)
 *.DotSettings.user

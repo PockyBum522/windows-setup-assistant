@@ -10,7 +10,7 @@
 WindowsSetupAssistant/Resources/Installers/Installer Archives/*
 WindowsSetupAssistant/Resources/Installers/Installer Executables/*
 WindowsSetupAssistant/Resources/Installers/Portable Applications/*
-WindowsSetupAssistant/Resources/Installers/Portable Applications/*
+WindowsSetupAssistant/Resources/Configuration/Profiles/*
 /WindowsSetupAssistant/Resources/Drivers/Network/*
 
 # User-specific files (Jetbrains Rider)

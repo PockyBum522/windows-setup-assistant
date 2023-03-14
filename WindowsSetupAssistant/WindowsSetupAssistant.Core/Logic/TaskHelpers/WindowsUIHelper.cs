@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
 using Serilog;
@@ -209,15 +210,19 @@ public class WindowsUiHelper
         key.SetValue("SearchboxTaskbarMode", 0);
     }
     
-    
     /// <summary>
     /// Deletes files on the desktop that match each pattern in patternsToDeleteWithoutWildcards
     /// </summary>
     public void CleanDesktopOfAllFilesMatching(string[] patternsToDeleteWithoutWildcards)
     {
         var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        var publicDesktopPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonDesktopDirectory);
 
-        foreach (var file in Directory.GetFiles(desktopPath))
+        var filesOnDesktops = 
+            Directory.GetFiles(publicDesktopPath).Concat(
+            Directory.GetFiles(desktopPath)); 
+        
+        foreach (var file in filesOnDesktops)
         {
             foreach (var pattern in patternsToDeleteWithoutWildcards)
             {
@@ -225,4 +230,13 @@ public class WindowsUiHelper
             }
         }
     }
+    
+    /// <summary>
+    /// Remove Edge, Mail, Explorer, Store, from taskbar pinned
+    /// </summary>
+    public void CleanTaskbarOfPinned()
+    {
+        
+    }
+    
 }

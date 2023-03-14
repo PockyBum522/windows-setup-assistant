@@ -334,15 +334,40 @@ public partial class MainWindow
                     _windowsHostnameHelper.ChangeHostName(_currentState.MainWindowPartialViewModel.TextHostname);
                 }
 
-                // TODO: Change this so it sets whatever the user inputs at the beginning
-                _powerHelper.SetPowerSettingsTo(140);
+                SetPowerSettingsToUserChoicesAtStart();
 
                 _currentState.PromptToRebootComputerAndExit();
 
                 break;
         }
     }
-    
+
+    private void SetPowerSettingsToUserChoicesAtStart()
+    {
+        var monitorTimeoutOnAc = 20; // Start with defaults
+        var monitorTimeoutOnBattery = 5;
+        var standbyTimeoutOnAc = 60;
+        var standbyTimeoutOnBattery = 10;
+        var hibernateTimeoutOnAc = 0;
+        
+        if (!string.IsNullOrWhiteSpace(_currentState.MainWindowPartialViewModel.TextMonitorTimeoutOnAc))
+            monitorTimeoutOnAc = int.Parse(_currentState.MainWindowPartialViewModel.TextMonitorTimeoutOnAc);
+        
+        if (!string.IsNullOrWhiteSpace(_currentState.MainWindowPartialViewModel.TextMonitorTimeoutOnBattery))
+            monitorTimeoutOnBattery = int.Parse(_currentState.MainWindowPartialViewModel.TextMonitorTimeoutOnBattery);
+        
+        if (!string.IsNullOrWhiteSpace(_currentState.MainWindowPartialViewModel.TextStandbyTimeoutOnAc))
+            standbyTimeoutOnAc = int.Parse(_currentState.MainWindowPartialViewModel.TextStandbyTimeoutOnAc);
+
+        if (!string.IsNullOrWhiteSpace(_currentState.MainWindowPartialViewModel.TextStandbyTimeoutOnBattery))
+            standbyTimeoutOnBattery = int.Parse(_currentState.MainWindowPartialViewModel.TextStandbyTimeoutOnBattery);
+        
+        if (!string.IsNullOrWhiteSpace(_currentState.MainWindowPartialViewModel.TextHibernateTimeoutOnAc))
+            hibernateTimeoutOnAc = int.Parse(_currentState.MainWindowPartialViewModel.TextHibernateTimeoutOnAc);
+        
+        _powerHelper.SetPowerSettingsTo(monitorTimeoutOnAc, monitorTimeoutOnBattery, standbyTimeoutOnAc, standbyTimeoutOnBattery, hibernateTimeoutOnAc);
+    }
+
     // ReSharper disable once CognitiveComplexity because it's extremely linear and it's fine
     private void WorkAllApplicationInstallCheckboxes()
     {

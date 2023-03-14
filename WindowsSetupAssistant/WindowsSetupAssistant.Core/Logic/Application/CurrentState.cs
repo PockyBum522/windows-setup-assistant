@@ -6,8 +6,8 @@ using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 using Serilog;
+using WindowsSetupAssistant.Core.Models;
 using WindowsSetupAssistant.Core.Models.Enums;
-using WindowsSetupAssistant.Core.Models.ViewModels;
 
 namespace WindowsSetupAssistant.Core.Logic.Application;
 

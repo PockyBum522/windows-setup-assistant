@@ -1,7 +1,6 @@
 ﻿using System.Windows;
 using Autofac;
 using WindowsSetupAssistant.Core.Logic.Application;
-using WindowsSetupAssistant.UI.WindowResources;
 using WindowsSetupAssistant.UI.WindowResources.MainWindow;
 
 namespace WindowsSetupAssistant.Main

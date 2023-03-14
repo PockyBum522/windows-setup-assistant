@@ -14,9 +14,9 @@ public class OptionInternalMethod : ISelectableSetting
     
     /// <inheritdoc/>
     public bool IsSelected { get; set; }
-    
+
     /// <summary>
-    /// Action which will run the method that sets the setting when fired
+    /// Action which will merge the .reg file when fired
     /// </summary>
-    [JsonIgnore] public Action ExecuteSetting { get; set; } = new(() => { });
+    [JsonIgnore] public Action? ExecuteSetting { get; set; }
 }

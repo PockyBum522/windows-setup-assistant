@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
+using System.Net;
+using System.Windows;
 using Newtonsoft.Json;
 using WindowsSetupAssistant.Core.Models.Settings.Interfaces;
 
@@ -19,9 +23,10 @@ public class OptionRegistryFile : ISelectableSetting
     /// Full path to the .reg file
     /// </summary>
     public string FilePathToReg { get; set; } = "";
-    
+
     /// <summary>
     /// Action which will merge the .reg file when fired
     /// </summary>
-    [JsonIgnore] public Action ExecuteSetting { get; set; } = new(() => { });
+    [JsonIgnore] public Action? ExecuteSetting { get; set; }
+    
 }

@@ -7,12 +7,11 @@ using JetBrains.Annotations;
 using Serilog;
 using WindowsSetupAssistant.Core.Logic.Application;
 using WindowsSetupAssistant.Core.Logic.MainWindowHelpers;
-using WindowsSetupAssistant.Core.Logic.MainWindowHelpers.SettingsSections;
 using WindowsSetupAssistant.Core.Logic.TaskHelpers;
+using WindowsSetupAssistant.Core.Models;
 using WindowsSetupAssistant.Core.Models.IInstallables;
-using WindowsSetupAssistant.Core.Models.ViewModels;
-using WindowsSetupAssistant.UI.WindowResources;
 using WindowsSetupAssistant.UI.WindowResources.MainWindow;
+using WindowsSetupAssistant.UI.WindowResources.MainWindow.SettingsSections;
 
 namespace WindowsSetupAssistant.Main;
 

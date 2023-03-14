@@ -21,5 +21,5 @@ public interface ISelectableSetting
     /// <summary>
     /// Action which when executed will make the option change
     /// </summary>
-    [JsonIgnore] public Action ExecuteSetting { get; set; }
+    [JsonIgnore] public Action? ExecuteSetting { get; set; }
 }

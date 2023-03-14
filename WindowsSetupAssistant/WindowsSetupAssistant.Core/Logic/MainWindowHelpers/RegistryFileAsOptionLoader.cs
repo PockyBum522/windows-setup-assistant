@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 using WindowsSetupAssistant.Core.Logic.Application;
 using WindowsSetupAssistant.Core.Models.Settings;
 using WindowsSetupAssistant.Core.Models.Settings.ISelectableSettings;
@@ -32,10 +33,20 @@ public class RegistryFileAsOptionLoader
             DisplayName = displayName,
             ExecuteSetting = () =>
             {
-                // Merge reg file at fullPathToRegistryFile
+                var processStartInfo = new ProcessStartInfo()
+                {
+                    Verb = "runas",
+                    FileName = "reg",
+                    Arguments = $"import \"{fullPathToRegistryFile}\"",
+                    UseShellExecute = true
+                };
+
+                var proc = Process.Start(processStartInfo);
+
+                proc?.WaitForExit();
             }
         };
-
+        
         var foundSection = false;
         
         foreach (var section in currentState.MainWindowPartialViewModel.SettingsSections)

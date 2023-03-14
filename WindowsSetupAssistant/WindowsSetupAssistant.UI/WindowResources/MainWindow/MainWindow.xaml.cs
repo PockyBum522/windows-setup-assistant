@@ -10,12 +10,11 @@ using Serilog;
 using WindowsSetupAssistant.Core;
 using WindowsSetupAssistant.Core.Logic.Application;
 using WindowsSetupAssistant.Core.Logic.MainWindowHelpers;
-using WindowsSetupAssistant.Core.Logic.MainWindowHelpers.SettingsSections;
-using WindowsSetupAssistant.Core.Logic.TaskHelpers;
+using WindowsSetupAssistant.Core.Models;
 using WindowsSetupAssistant.Core.Models.Enums;
 using WindowsSetupAssistant.Core.Models.IInstallables;
 using WindowsSetupAssistant.Core.Models.IInstallables.Interfaces;
-using WindowsSetupAssistant.Core.Models.ViewModels;
+using WindowsSetupAssistant.UI.WindowResources.MainWindow.SettingsSections;
 
 namespace WindowsSetupAssistant.UI.WindowResources.MainWindow;
 
@@ -261,7 +260,11 @@ public partial class MainWindow
             foreach (var setting in section.Settings)
             {
                 if (setting.IsSelected)
-                    setting.ExecuteSetting.Invoke();
+                {
+                    _logger.Debug("Executing setting: {Name}", setting.DisplayName);
+                    
+                    setting.ExecuteSetting?.Invoke();
+                }
             }
         }
     }

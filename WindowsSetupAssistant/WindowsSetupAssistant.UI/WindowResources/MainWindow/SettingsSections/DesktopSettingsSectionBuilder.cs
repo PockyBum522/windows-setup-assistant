@@ -1,8 +1,9 @@
-﻿using WindowsSetupAssistant.Core.Logic.TaskHelpers;
+﻿using System;
+using WindowsSetupAssistant.Core.Logic.TaskHelpers;
 using WindowsSetupAssistant.Core.Models.Settings;
 using WindowsSetupAssistant.Core.Models.Settings.ISelectableSettings;
 
-namespace WindowsSetupAssistant.Core.Logic.MainWindowHelpers.SettingsSections;
+namespace WindowsSetupAssistant.UI.WindowResources.MainWindow.SettingsSections;
 
 /// <summary>
 /// Creates the section in MainWindow relating to the time settings
@@ -32,7 +33,7 @@ public class DesktopSettingsSectionBuilder
 
         var taskbarSearchToHidden = new OptionInternalMethod()
         {
-            DisplayName = "Delete All Shortcuts off Desktop When Finished",
+            DisplayName = "Delete all shortcuts off desktop when finished",
             ExecuteSetting = () =>
             {
                 _uiHelper.CollapseSearchOnTaskbarToHidden();
@@ -41,15 +42,25 @@ public class DesktopSettingsSectionBuilder
         
         var taskbarSearchToIcon = new OptionInternalMethod()
         {
-            DisplayName = "Delete All .ini Files off Desktop When Finished",
+            DisplayName = "Delete all .ini files off desktop when finished",
             ExecuteSetting = () =>
             {
                 _uiHelper.CollapseSearchOnTaskbarToIcon();
             }
         };
         
+        var wallpaperToDarkImage = new OptionInternalMethod()
+        {
+            DisplayName = "Set wallpaper to dark image (Windows camping)",
+            ExecuteSetting = () =>
+            {
+                throw new NotImplementedException();
+            }
+        };
+        
         parentSection.Settings.Add(taskbarSearchToHidden);
         parentSection.Settings.Add(taskbarSearchToIcon);
+        parentSection.Settings.Add(wallpaperToDarkImage);
 
         return parentSection;
     }

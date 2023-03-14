@@ -2,9 +2,8 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using WindowsSetupAssistant.Core.Models.IInstallables.Interfaces;
 using WindowsSetupAssistant.Core.Models.Settings;
-using WindowsSetupAssistant.Core.Models.Settings.Interfaces;
 
-namespace WindowsSetupAssistant.Core.Models.ViewModels;
+namespace WindowsSetupAssistant.Core.Models;
 
 /// <summary>
 /// This holds our main window checkboxes state and available installers loaded from json

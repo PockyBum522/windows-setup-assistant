@@ -2,7 +2,7 @@
 using WindowsSetupAssistant.Core.Models.Settings;
 using WindowsSetupAssistant.Core.Models.Settings.ISelectableSettings;
 
-namespace WindowsSetupAssistant.Core.Logic.MainWindowHelpers.SettingsSections;
+namespace WindowsSetupAssistant.UI.WindowResources.MainWindow.SettingsSections;
 
 /// <summary>
 /// Creates the section in MainWindow relating to the time settings

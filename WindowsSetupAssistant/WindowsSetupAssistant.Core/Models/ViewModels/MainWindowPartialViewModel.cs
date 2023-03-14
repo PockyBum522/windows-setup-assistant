@@ -13,7 +13,6 @@ public partial class MainWindowPartialViewModel : ObservableObject
     [ObservableProperty] private bool _isCheckedUpdateWindows;
     [ObservableProperty] private bool _isCheckedSetSystemTimeZoneToEastern;
     [ObservableProperty] private bool _isCheckedSetFolderViewOptions;
-    [ObservableProperty] private bool _isCheckedSetFolderasdfasdfasViewOptions;
     
     // Time 
     [ObservableProperty] private bool _isCheckedSyncSystemTime;
@@ -74,6 +73,9 @@ public partial class MainWindowPartialViewModel : ObservableObject
     
     // Application installers
     [ObservableProperty] private ObservableCollection<IInstallable> _availableInstalls = new();
+    
+    // System Settings
+    [ObservableProperty] private ObservableCollection<ISelectable> _availas = new();
     
     private bool _isCheckedSetTaskbarSearchToHidden;
     private bool _isCheckedSetTaskbarSearchToIcon;

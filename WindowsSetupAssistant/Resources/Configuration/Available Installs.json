@@ -16,6 +16,14 @@
 		"IsSelected": false
 	},
 	{
+		"$type": "WindowsSetupAssistant.Core.Models.IInstallables.ExecutableInstaller, WindowsSetupAssistant.Core",
+		"FileName": "synergy_windows_x64.msi",
+		"Arguments": "",
+		"AutoHotkeyMacro": "",
+		"DisplayName": "Synergy Software KVM",
+		"IsSelected": false
+	},
+	{
 		"$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
 		"ChocolateyId": "googlechrome",
 		"Arguments": "",
@@ -477,6 +485,14 @@
         "Arguments": "",
         "Parameters": "",
         "DisplayName": "Ripcord",
+        "IsSelected": false
+    },
+    {
+        "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
+        "ChocolateyId": "pia",
+        "Arguments": "",
+        "Parameters": "",
+        "DisplayName": "PIA VPN Client",
         "IsSelected": false
     },
     {

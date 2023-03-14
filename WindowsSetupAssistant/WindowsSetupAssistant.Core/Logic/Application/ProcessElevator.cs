@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using Serilog;
 
-namespace WindowsSetupAssistant.Core.Logic;
+namespace WindowsSetupAssistant.Core.Logic.Application;
 
 /// <summary>
 /// Allows for easy restarting of this process with admin privileges

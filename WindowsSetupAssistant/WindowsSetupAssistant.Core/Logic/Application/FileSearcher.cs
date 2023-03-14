@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace WindowsSetupAssistant.Core.Logic;
+namespace WindowsSetupAssistant.Core.Logic.Application;
 
 /// <summary>
 /// Contains methods for finding files based on a pattern, helpful for looking for files higher up in a directory

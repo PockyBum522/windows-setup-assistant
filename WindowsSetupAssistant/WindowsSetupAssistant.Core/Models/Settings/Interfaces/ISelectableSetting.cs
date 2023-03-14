@@ -1,6 +1,7 @@
 ﻿using System;
+using Newtonsoft.Json;
 
-namespace WindowsSetupAssistant.Core.Interfaces;
+namespace WindowsSetupAssistant.Core.Models.Settings.Interfaces;
 
 /// <summary>
 /// Applied to any control that will show in the MainWindow and is a selectable option/installer
@@ -20,5 +21,5 @@ public interface ISelectableSetting
     /// <summary>
     /// Action which when executed will make the option change
     /// </summary>
-    public Action ExecuteSetting { get; set; }
+    [JsonIgnore] public Action ExecuteSetting { get; set; }
 }

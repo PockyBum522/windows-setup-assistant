@@ -1,6 +1,6 @@
 ﻿using Serilog;
 
-namespace WindowsSetupAssistant.Core.Interfaces;
+namespace WindowsSetupAssistant.Core.Models.IInstallables.Interfaces;
 
 /// <summary>
 /// Interface for installable things to implement (ArchiveInstaller, ChocolateyInstaller, ...)

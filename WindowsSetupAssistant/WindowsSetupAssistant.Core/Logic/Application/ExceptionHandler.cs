@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Serilog;
 
-namespace WindowsSetupAssistant.Core.Logic
+namespace WindowsSetupAssistant.Core.Logic.Application
 {
     /// <summary>
     /// Sets up unhandled exception listeners and logging for such

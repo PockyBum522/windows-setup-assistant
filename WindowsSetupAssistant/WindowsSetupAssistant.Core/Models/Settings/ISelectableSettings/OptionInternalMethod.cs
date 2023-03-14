@@ -1,5 +1,6 @@
 ﻿using System;
-using WindowsSetupAssistant.Core.Interfaces;
+using Newtonsoft.Json;
+using WindowsSetupAssistant.Core.Models.Settings.Interfaces;
 
 namespace WindowsSetupAssistant.Core.Models.Settings.ISelectableSettings;
 
@@ -17,5 +18,5 @@ public class OptionInternalMethod : ISelectableSetting
     /// <summary>
     /// Action which will run the method that sets the setting when fired
     /// </summary>
-    public Action ExecuteSetting { get; set; } = new(() => { });
+    [JsonIgnore] public Action ExecuteSetting { get; set; } = new(() => { });
 }

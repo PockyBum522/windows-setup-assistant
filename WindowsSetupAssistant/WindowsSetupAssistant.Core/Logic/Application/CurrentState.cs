@@ -9,7 +9,7 @@ using Serilog;
 using WindowsSetupAssistant.Core.Models.Enums;
 using WindowsSetupAssistant.Core.Models.ViewModels;
 
-namespace WindowsSetupAssistant.Core.Logic;
+namespace WindowsSetupAssistant.Core.Logic.Application;
 
 /// <summary>
 /// Model for storing current state, such as settings and installs that have been selected for the Windows Setup

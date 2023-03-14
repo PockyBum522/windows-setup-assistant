@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using WindowsSetupAssistant.Core.Interfaces;
+using WindowsSetupAssistant.Core.Models.Settings.Interfaces;
 
 namespace WindowsSetupAssistant.Core.Models.Settings;
 
@@ -8,16 +8,6 @@ namespace WindowsSetupAssistant.Core.Models.Settings;
 /// </summary>
 public class SettingsSection
 {
-    /// <summary>
-    /// The settingsSection that is the parent of this one, if nested
-    /// </summary>
-    public SettingsSection? Parent { get; set; }
-
-    /// <summary>
-    /// The settingsSection(s) that are under of this one, if nested
-    /// </summary>
-    public List<SettingsSection> Children { get; set; } = new();
-    
     /// <summary>
     /// Header for the section
     /// </summary>

@@ -5,10 +5,14 @@ using System.Windows.Threading;
 using Autofac;
 using JetBrains.Annotations;
 using Serilog;
-using WindowsSetupAssistant.Core.Logic;
+using WindowsSetupAssistant.Core.Logic.Application;
+using WindowsSetupAssistant.Core.Logic.MainWindowHelpers;
+using WindowsSetupAssistant.Core.Logic.MainWindowHelpers.SettingsSections;
+using WindowsSetupAssistant.Core.Logic.TaskHelpers;
 using WindowsSetupAssistant.Core.Models.IInstallables;
 using WindowsSetupAssistant.Core.Models.ViewModels;
 using WindowsSetupAssistant.UI.WindowResources;
+using WindowsSetupAssistant.UI.WindowResources.MainWindow;
 
 namespace WindowsSetupAssistant.Main;
 
@@ -43,6 +47,10 @@ public class DiContainerBuilder
         
         RegisterMainDependencies();
 
+        RegisterTaskHelpers();
+
+        RegisterSectionBuilders();
+        
         RegisterInstallerModels();
         
         RegisterUiDependencies();
@@ -105,8 +113,14 @@ public class DiContainerBuilder
     private void RegisterMainDependencies()
     {
         _builder.RegisterType<ExceptionHandler>().AsSelf().SingleInstance();
-
-        //_builder.RegisterType<AutofacContractResolver>().AsSelf().SingleInstance();
+    }
+    
+    private void RegisterTaskHelpers()
+    {
+        _builder.RegisterType<TimeHelper>().AsSelf().SingleInstance();
+        _builder.RegisterType<WindowsUiHelper>().AsSelf().SingleInstance();
+        
+        _builder.RegisterType<AvailableApplicationsJsonLoader>().AsSelf();
     }
     
     private void RegisterInstallerModels()
@@ -115,6 +129,13 @@ public class DiContainerBuilder
         _builder.RegisterType<ChocolateyInstaller>().AsSelf();
         _builder.RegisterType<ExecutableInstaller>().AsSelf();
         _builder.RegisterType<PortableApplicationInstaller>().AsSelf();
+    }
+    
+    private void RegisterSectionBuilders()
+    {
+        _builder.RegisterType<TimeSettingsSectionBuilder>().AsSelf();
+        _builder.RegisterType<TaskbarSettingsSectionBuilder>().AsSelf();
+        _builder.RegisterType<DesktopSettingsSectionBuilder>().AsSelf();
     }
     
     private void RegisterUiDependencies()

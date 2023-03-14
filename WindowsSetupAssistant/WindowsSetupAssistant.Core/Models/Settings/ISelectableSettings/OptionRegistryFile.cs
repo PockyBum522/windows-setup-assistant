@@ -1,12 +1,13 @@
 ﻿using System;
-using WindowsSetupAssistant.Core.Interfaces;
+using Newtonsoft.Json;
+using WindowsSetupAssistant.Core.Models.Settings.Interfaces;
 
 namespace WindowsSetupAssistant.Core.Models.Settings.ISelectableSettings;
 
 /// <summary>
 /// Represents a registry file on the filesystem to give the user the option to merge to registry
 /// </summary>
-public class SelectableSettingOptionRegistryFile : ISelectableSetting
+public class OptionRegistryFile : ISelectableSetting
 {
     /// <inheritdoc />
     public string DisplayName { get; set; } = "";
@@ -22,5 +23,5 @@ public class SelectableSettingOptionRegistryFile : ISelectableSetting
     /// <summary>
     /// Action which will merge the .reg file when fired
     /// </summary>
-    public Action ExecuteSetting { get; set; } = new(() => { });
+    [JsonIgnore] public Action ExecuteSetting { get; set; } = new(() => { });
 }

@@ -50,6 +50,8 @@ public class TimeHelper
     /// </summary>
     public void SyncSystemTime()
     {
+        _logger.Information("Running {ThisName}", System.Reflection.MethodBase.GetCurrentMethod()?.Name);
+        
         var utcNtpTime = GetNtpTimeUtc();
         
         var systemTime = new SYSTEMTIME
@@ -62,7 +64,11 @@ public class TimeHelper
             wSecond = (short)utcNtpTime.Second
         };
 
+        _logger.Information("From NTP got: {TimeObject}", utcNtpTime);
+
         SetSystemTime(ref systemTime);
+
+        _logger.Information("System time synced!");
     }
 
     private DateTimeOffset GetNtpTimeUtc()

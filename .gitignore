@@ -6,12 +6,15 @@
 # Jetbrains rider folders
 .idea/
 
+# Whitelist .gitkeep files even if something else is blacklisting that directory
+!/**/.gitkeep
+
 # All installer files
-/WindowsSetupAssistant/Resources/Installers/Installer Archives/*.*
-/WindowsSetupAssistant/Resources/Installers/Installer Executables/*.*
-/WindowsSetupAssistant/Resources/Installers/Portable Applications/*.*
-/WindowsSetupAssistant/Resources/Configuration/Profiles/*.*
-/WindowsSetupAssistant/Resources/Drivers/Network/*.*
+/WindowsSetupAssistant/Resources/Installers/Installer Archives/*
+/WindowsSetupAssistant/Resources/Installers/Installer Executables/*
+/WindowsSetupAssistant/Resources/Installers/Portable Applications/*
+/WindowsSetupAssistant/Resources/Configuration/Profiles/*
+/WindowsSetupAssistant/Resources/Drivers/Network/*
 
 # User-specific files (Jetbrains Rider)
 *.DotSettings.user

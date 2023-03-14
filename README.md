@@ -11,7 +11,7 @@
 * [Helping With Development](https://github.com/PockyBum522/windows-setup-assistant#helping-with-development)
 * [Why didn't you just...?](https://github.com/PockyBum522/windows-setup-assistant#why-didnt-you-just)
 
-# Windows Post-Setup Assistant
+# Windows Setup Assistant
 
 [![.NET Core](https://github.com/PockyBum522/windows-setup-assistant/actions/workflows/dotnet.yml/badge.svg)](https://github.com/PockyBum522/windows-setup-assistant/actions/workflows/dotnet.yml)
 

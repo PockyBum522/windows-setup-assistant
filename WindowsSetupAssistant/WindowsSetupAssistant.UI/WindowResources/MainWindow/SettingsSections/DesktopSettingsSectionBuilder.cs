@@ -10,15 +10,15 @@ namespace WindowsSetupAssistant.UI.WindowResources.MainWindow.SettingsSections;
 /// </summary>
 public class DesktopSettingsSectionBuilder
 {
-    private readonly WindowsUiHelper _uiHelper;
+    private readonly DesktopHelper _desktopHelper;
 
     /// <summary>
     /// Constructor for dependency injection
     /// </summary>
-    /// <param name="uiHelper">Injected TimeHelper</param>
-    public DesktopSettingsSectionBuilder(WindowsUiHelper uiHelper)
+    /// <param name="desktopHelper">Injected TimeHelper</param>
+    public DesktopSettingsSectionBuilder(DesktopHelper desktopHelper)
     {
-        _uiHelper = uiHelper;
+        _desktopHelper = desktopHelper;
     }
     
     /// <summary>
@@ -36,7 +36,7 @@ public class DesktopSettingsSectionBuilder
             DisplayName = "Delete all shortcuts off desktop when finished",
             ExecuteSetting = () =>
             {
-                _uiHelper.CollapseSearchOnTaskbarToHidden();
+                _desktopHelper.CleanDesktopOfAllFilesMatching(new []{".lnk"});
             }
         };
         
@@ -45,7 +45,7 @@ public class DesktopSettingsSectionBuilder
             DisplayName = "Delete all .ini files off desktop when finished",
             ExecuteSetting = () =>
             {
-                _uiHelper.CollapseSearchOnTaskbarToIcon();
+                _desktopHelper.CleanDesktopOfAllFilesMatching(new []{".ini"});
             }
         };
         
@@ -54,7 +54,7 @@ public class DesktopSettingsSectionBuilder
             DisplayName = "Set wallpaper to dark image (Windows camping)",
             ExecuteSetting = () =>
             {
-                throw new NotImplementedException();
+                _desktopHelper.SetWallpaperToDarkDefaultWallpaper();
             }
         };
         

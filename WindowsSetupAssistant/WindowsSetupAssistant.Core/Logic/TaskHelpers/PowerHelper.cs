@@ -6,7 +6,7 @@ namespace WindowsSetupAssistant.Core.Logic.TaskHelpers;
 /// <summary>
 /// Methods for changing Windows and operating-system-related settings
 /// </summary>
-public class WindowsPowerSettingsHelper
+public class PowerHelper
 {
     private readonly ILogger _logger;
 
@@ -14,7 +14,7 @@ public class WindowsPowerSettingsHelper
     /// Constructor for dependency injection
     /// </summary>
     /// <param name="logger">Injected ILogger to use</param>
-    public WindowsPowerSettingsHelper(ILogger logger)
+    public PowerHelper(ILogger logger)
     {
         _logger = logger;
     }

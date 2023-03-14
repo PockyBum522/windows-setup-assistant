@@ -8,7 +8,7 @@ namespace WindowsSetupAssistant.Core.Logic.TaskHelpers;
 /// <summary>
 /// Methods for changing Windows and operating-system-related settings
 /// </summary>
-public class WindowsSettingsHelper
+public class WindowsHostnameHelper
 {
     private readonly ILogger _logger;
 
@@ -16,7 +16,7 @@ public class WindowsSettingsHelper
     /// Constructor for dependency injection
     /// </summary>
     /// <param name="logger">Injected ILogger to use</param>
-    public WindowsSettingsHelper(ILogger logger)
+    public WindowsHostnameHelper(ILogger logger)
     {
         _logger = logger;
     }
@@ -65,21 +65,5 @@ public class WindowsSettingsHelper
         computerName.Close();
         
         computerName.Dispose();
-    }
-   
-    /// <summary>
-    /// Makes it so computer doesn't generate thumbnails on network locations, which prevents Thumbs.db files that
-    /// annoyingly cannot be deleted or moved
-    /// </summary>
-    /// <exception cref="NullReferenceException">Throws if registry access problem</exception>
-    public void DisableNetworkThumbnails()
-    {
-        _logger.Information("Running {ThisName}", System.Reflection.MethodBase.GetCurrentMethod()?.Name);
-
-        using var key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Policies\Microsoft\Windows\Explorer", true);
-
-        if (key == null) throw new NullReferenceException();
-
-        key.SetValue("DisableThumbsDBOnNetworkFolders", 1);
     }
 }

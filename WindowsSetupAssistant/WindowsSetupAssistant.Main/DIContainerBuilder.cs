@@ -117,9 +117,11 @@ public class DiContainerBuilder
     private void RegisterTaskHelpers()
     {
         _builder.RegisterType<TimeHelper>().AsSelf().SingleInstance();
-        _builder.RegisterType<WindowsUiHelper>().AsSelf().SingleInstance();
+        _builder.RegisterType<WindowHelper>().AsSelf().SingleInstance();
         
         _builder.RegisterType<AvailableApplicationsJsonLoader>().AsSelf();
+        _builder.RegisterType<PowerHelper>().AsSelf();
+        _builder.RegisterType<WindowsHostnameHelper>().AsSelf();
     }
     
     private void RegisterInstallerModels()
@@ -135,6 +137,7 @@ public class DiContainerBuilder
         _builder.RegisterType<TimeSettingsSectionBuilder>().AsSelf();
         _builder.RegisterType<TaskbarSettingsSectionBuilder>().AsSelf();
         _builder.RegisterType<DesktopSettingsSectionBuilder>().AsSelf();
+        _builder.RegisterType<WindowSettingsSectionBuilder>().AsSelf();
     }
     
     private void RegisterUiDependencies()

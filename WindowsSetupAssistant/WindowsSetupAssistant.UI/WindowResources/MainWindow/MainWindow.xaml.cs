@@ -10,6 +10,7 @@ using Serilog;
 using WindowsSetupAssistant.Core;
 using WindowsSetupAssistant.Core.Logic.Application;
 using WindowsSetupAssistant.Core.Logic.MainWindowHelpers;
+using WindowsSetupAssistant.Core.Logic.TaskHelpers;
 using WindowsSetupAssistant.Core.Models;
 using WindowsSetupAssistant.Core.Models.Enums;
 using WindowsSetupAssistant.Core.Models.IInstallables;
@@ -27,9 +28,13 @@ public partial class MainWindow
 #pragma warning restore MVVMTK0033
 {
     private readonly ILogger _logger;
+    private readonly WindowsUpdater _windowsUpdater;
+    private readonly PowerHelper _powerHelper;
+    private readonly WindowsHostnameHelper _windowsHostnameHelper;
     private readonly TimeSettingsSectionBuilder _timeSettingsSectionBuilder;
     private readonly TaskbarSettingsSectionBuilder _taskbarSettingsSectionBuilder;
     private readonly DesktopSettingsSectionBuilder _desktopSettingsSectionBuilder;
+    private readonly WindowSettingsSectionBuilder _windowSettingsSectionBuilder;
     private readonly CurrentState _currentState;
 
     /// <summary>
@@ -38,21 +43,33 @@ public partial class MainWindow
     /// is one.
     /// </summary>
     /// <param name="logger">Injected ILogger to use</param>
+    /// <param name="windowsUpdater">Windows update helper</param>
+    /// <param name="powerHelper">Windows power settings helper</param>
+    /// <param name="windowsHostnameHelper">Windows hostname helper</param>
     /// <param name="availableApplicationsJsonLoader">Loads "Available Applications.json" file into CurrentState</param>
     /// <param name="timeSettingsSectionBuilder">Time settings section builder</param>
     /// <param name="taskbarSettingsSectionBuilder">Taskbar settings section builder</param>
     /// <param name="desktopSettingsSectionBuilder">Desktop settings section builder</param>
+    /// <param name="windowSettingsSectionBuilder">Window settings section builder</param>
     public MainWindow(
         ILogger logger, 
+        WindowsUpdater windowsUpdater,
+        PowerHelper powerHelper,
+        WindowsHostnameHelper windowsHostnameHelper,
         AvailableApplicationsJsonLoader availableApplicationsJsonLoader,
         TimeSettingsSectionBuilder timeSettingsSectionBuilder,
         TaskbarSettingsSectionBuilder taskbarSettingsSectionBuilder,
-        DesktopSettingsSectionBuilder desktopSettingsSectionBuilder)
+        DesktopSettingsSectionBuilder desktopSettingsSectionBuilder,
+        WindowSettingsSectionBuilder windowSettingsSectionBuilder)
     {
         _logger = logger;
+        _windowsUpdater = windowsUpdater;
+        _powerHelper = powerHelper;
+        _windowsHostnameHelper = windowsHostnameHelper;
         _timeSettingsSectionBuilder = timeSettingsSectionBuilder;
         _taskbarSettingsSectionBuilder = taskbarSettingsSectionBuilder;
         _desktopSettingsSectionBuilder = desktopSettingsSectionBuilder;
+        _windowSettingsSectionBuilder = windowSettingsSectionBuilder;
         _currentState = new(_logger);
 
         DataContext = _currentState.MainWindowPartialViewModel;
@@ -84,6 +101,9 @@ public partial class MainWindow
         
         var desktopSection = _desktopSettingsSectionBuilder.MakeSection();
         _currentState.MainWindowPartialViewModel.SettingsSections.Add(desktopSection);
+
+        var windowSection = _windowSettingsSectionBuilder.MakeSection();
+        _currentState.MainWindowPartialViewModel.SettingsSections.Add(windowSection);
 
         // Load registry files from disk
         var registryFilePaths = GetAllRegistryFilePathsFromResources();
@@ -240,7 +260,7 @@ public partial class MainWindow
             _currentState.ScriptStage = ScriptStageEnum.WindowsHasBeenUpdatedOnce;
             _currentState.SaveCurrentStateForReboot();
             
-            //_windowsUpdater.UpdateWindows();
+            _windowsUpdater.UpdateWindows();
         
             _currentState.RebootComputerAndExit();    
         }
@@ -278,7 +298,7 @@ public partial class MainWindow
         {
             case ScriptStageEnum.WindowsHasBeenUpdatedOnce:
 
-                // _windowsUpdater.UpdateWindows();
+                _windowsUpdater.UpdateWindows();
 
                 _currentState.ScriptStage = ScriptStageEnum.WindowsHasBeenUpdatedTwice;
 
@@ -289,7 +309,7 @@ public partial class MainWindow
 
             case ScriptStageEnum.WindowsHasBeenUpdatedTwice:
 
-                // _windowsUpdater.UpdateWindows();
+                _windowsUpdater.UpdateWindows();
 
                 _currentState.ScriptStage = ScriptStageEnum.WindowsHasBeenUpdatedFully;
 
@@ -302,21 +322,20 @@ public partial class MainWindow
 
                 if (_currentState.MainWindowPartialViewModel.IsCheckedUpdateWindows)
                 {
-                     //_windowsUpdater.UpdateWindows();
+                     _windowsUpdater.UpdateWindows();
                 }
 
                 WorkAllApplicationInstallCheckboxes();
 
                 _currentState.DeleteSavedChoicesAndStageOnDisk();
 
-                // if (!string.IsNullOrWhiteSpace(_currentState.MainWindowPartialViewModel.TextHostname))
-                // {
-                //     _windowsSettingsHelper.ChangeHostName(_currentState.MainWindowPartialViewModel.TextHostname);
-                // }
+                if (!string.IsNullOrWhiteSpace(_currentState.MainWindowPartialViewModel.TextHostname))
+                {
+                    _windowsHostnameHelper.ChangeHostName(_currentState.MainWindowPartialViewModel.TextHostname);
+                }
 
-                // _windowsSettingsHelper.SetPowerSettingsTo(140);
-
-                // _windowsUiHelper.CleanDesktopOfAllFilesMatching(new[] { ".lnk", ".ini" });
+                // TODO: Change this so it sets whatever the user inputs at the beginning
+                _powerHelper.SetPowerSettingsTo(140);
 
                 _currentState.PromptToRebootComputerAndExit();
 

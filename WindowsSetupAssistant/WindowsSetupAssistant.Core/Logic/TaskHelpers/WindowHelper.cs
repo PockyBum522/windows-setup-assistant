@@ -10,7 +10,7 @@ namespace WindowsSetupAssistant.Core.Logic.TaskHelpers;
 /// <summary>
 /// Methods for changing Windows UI-specific settings
 /// </summary>
-public class WindowsUiHelper
+public class WindowHelper
 {
     private readonly ILogger _logger;
 
@@ -18,13 +18,13 @@ public class WindowsUiHelper
     /// Constructor for dependency injection
     /// </summary>
     /// <param name="logger">Injected ILogger to use</param>
-    public WindowsUiHelper(ILogger logger)
+    public WindowHelper(ILogger logger)
     {
         _logger = logger;
     }
 
     /// <summary>
-    /// Changes Windows theme, title bars, and accent color to dark and disables transparency
+    /// Changes Windows theme, title bars, and accent color to dark
     /// </summary>
     /// <exception cref="NullReferenceException">Throws if registry access error</exception>
     public void ChangeWindowsThemeToDark()
@@ -36,7 +36,6 @@ public class WindowsUiHelper
         if (key == null) throw new NullReferenceException();
 
         key.SetValue("AppsUseLightTheme", 0);
-        key.SetValue("EnableTransparency", 0);
         key.SetValue("SystemUsesLightTheme", 0);
 
         using var accentKey = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Accent", true);
@@ -56,57 +55,23 @@ public class WindowsUiHelper
         dwmKey.SetValue("AccentColor", 4282927692);        
         dwmKey.SetValue("ColorizationAfterglow", 3293334088);
         dwmKey.SetValue("ColorizationColor", 3293334088);
-        
-        //dwmKey.SetValue("StartColor", 4281546038);
-        //dwmKey.SetValue("AccentColor", 4282927692);
-    }
-
-    /// <summary>
-    /// Sets Windows wallpaper to the dark "Camping under the stars" wallpaper, which is less blinding than the default
-    /// </summary>
-    /// <exception cref="NullReferenceException">Throws if registry access error</exception>
-    public void SetWallpaperToDarkDefaultWallpaper()
-    {
-        _logger.Information("Running {ThisName}", System.Reflection.MethodBase.GetCurrentMethod()?.Name);
-        
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        static extern int SystemParametersInfo(int uAction, int uParam, string lpvParam, int fuWinIni);
-
-        var tempFolder = Path.Join(
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                "Temp");
-        
-        File.Copy(@"C:\Windows\Web\Wallpaper\Theme1\img13.jpg", @$"{tempFolder}\img13.jpg", true);
-        
-        using var fs = File.Open(@$"{tempFolder}\img13.jpg", FileMode.Open);
-        
-        var img = System.Drawing.Image.FromStream(fs);
-        var tempPath = Path.Combine(Path.GetTempPath(), "wallpaper.bmp");
-        img.Save(tempPath, System.Drawing.Imaging.ImageFormat.Bmp);
-
-        var key = Registry.CurrentUser.OpenSubKey(@"Control Panel\Desktop", true);
-
-        if (key is null) throw new NullReferenceException();
-        
-        key.SetValue(@"WallpaperStyle", 22.ToString());
-        key.SetValue(@"TileWallpaper", 0.ToString());
-        
-        SystemParametersInfo(20, 0, tempPath, 0x01 | 0x02);
-    }
-
-    /// <summary>
-    /// Turns off news and interests on taskbar
-    /// </summary>
-    /// <exception cref="NullReferenceException">Throws if registry access error</exception>
-    public void DisableNewsAndInterestsOnTaskbar()
-    {
-        _logger.Information("Running {ThisName}", System.Reflection.MethodBase.GetCurrentMethod()?.Name);
-
-        using var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Feeds", true);
-
-        key?.SetValue("ShellFeedsTaskbarViewMode", 2);
     }
     
+    /// <summary>
+    /// Changes Windows to disabled transparency
+    /// </summary>
+    /// <exception cref="NullReferenceException">Throws if registry access error</exception>
+    public void DisableWindowTransparency()
+    {
+        _logger.Information("Running {ThisName}", System.Reflection.MethodBase.GetCurrentMethod()?.Name);
+
+        using var key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize", true);
+
+        if (key == null) throw new NullReferenceException();
+
+        key.SetValue("EnableTransparency", 0);
+    }
+
     /// <summary>
     /// Sets active and inactive window title bars to dark colors
     /// </summary>
@@ -134,52 +99,6 @@ public class WindowsUiHelper
         accentKey.SetValue("AccentColor", BitConverter.ToInt32(BitConverter.GetBytes(0xff484a4cu), 0), RegistryValueKind.DWord);
     }
 
-    /// <summary>
-    /// Sets better folder view options. This needs to be broken out to individual checkboxes in MainWindow
-    /// </summary>
-    /// <exception cref="NullReferenceException">Throws if registry access error</exception>
-    public void SetFolderViewOptions()
-    {
-        _logger.Information("Running {ThisName}", System.Reflection.MethodBase.GetCurrentMethod()?.Name);
-
-        using var key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced", true);
-
-        if (key == null) throw new NullReferenceException();
-
-        key.SetValue("Start_SearchFiles", 2);
-        key.SetValue("ServerAdminUI", 0);
-        key.SetValue("Hidden", 1);
-        key.SetValue("ShowCompColor", 1);
-        key.SetValue("HideFileExt", 0);
-        key.SetValue("DontPrettyPath", 0);
-        key.SetValue("ShowInfoTip", 1);
-        key.SetValue("HideIcons", 0);
-        key.SetValue("MapNetDrvBtn", 0);
-        key.SetValue("WebView", 1);
-        key.SetValue("Filter", 0);
-        key.SetValue("ShowSuperHidden", 1);
-        key.SetValue("SeparateProcess", 1);
-        key.SetValue("AutoCheckSelect", 0);
-        key.SetValue("IconsOnly", 0);
-        key.SetValue("ShowTypeOverlay", 1);
-        key.SetValue("ShowStatusBar", 1);
-        key.SetValue("StoreAppsOnTaskbar", 1);
-        key.SetValue("ListviewAlphaSelect", 1);
-        key.SetValue("ListviewShadow", 1);
-        key.SetValue("TaskbarAnimations", 1);
-        key.SetValue("ShowCortanaButton", 0);
-        key.SetValue("ReindexedProfile", 1);
-        key.SetValue("StartMenuInit", 13);
-        key.SetValue("TaskbarGlomLevel", 1);
-        key.SetValue("MMTaskbarGlomLevel", 1);
-        key.SetValue("ShowTaskViewButton", 0);
-        key.SetValue("AlwaysShowMenus", 1);
-        key.SetValue("ShowEncryptCompressedColor", 1);
-        key.SetValue("SharingWizardOn", 0);
-        key.SetValue("MMTaskbarEnabled", 0);
-        key.SetValue("TaskbarSizeMove", 0);
-    }
-    
     /// <summary>
     /// Collapses the search in taskbar to just an icon 
     /// </summary>
@@ -230,13 +149,4 @@ public class WindowsUiHelper
             }
         }
     }
-    
-    /// <summary>
-    /// Remove Edge, Mail, Explorer, Store, from taskbar pinned
-    /// </summary>
-    public void CleanTaskbarOfPinned()
-    {
-        
-    }
-    
 }

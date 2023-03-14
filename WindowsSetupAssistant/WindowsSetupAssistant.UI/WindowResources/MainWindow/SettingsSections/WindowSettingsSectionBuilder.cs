@@ -9,15 +9,15 @@ namespace WindowsSetupAssistant.UI.WindowResources.MainWindow.SettingsSections;
 /// </summary>
 public class WindowSettingsSectionBuilder
 {
-    private readonly WindowsUiHelper _uiHelper;
+    private readonly WindowHelper _windowHelper;
 
     /// <summary>
     /// Constructor for dependency injection
     /// </summary>
-    /// <param name="uiHelper">Injected UiHelper</param>
-    public WindowSettingsSectionBuilder(WindowsUiHelper uiHelper)
+    /// <param name="windowHelper">Injected UiHelper</param>
+    public WindowSettingsSectionBuilder(WindowHelper windowHelper)
     {
-        _uiHelper = uiHelper;
+        _windowHelper = windowHelper;
     }
     
     /// <summary>
@@ -35,7 +35,7 @@ public class WindowSettingsSectionBuilder
             DisplayName = "Set windows theme to dark theme",
             ExecuteSetting = () =>
             {
-                
+                _windowHelper.ChangeWindowsThemeToDark();
             }
         };
         
@@ -44,7 +44,7 @@ public class WindowSettingsSectionBuilder
             DisplayName = "Set windows theme to not use transparency",
             ExecuteSetting = () =>
             {
-                
+                _windowHelper.DisableWindowTransparency();
             }
         };
         
@@ -53,7 +53,7 @@ public class WindowSettingsSectionBuilder
             DisplayName = "Set inactive title bars to be a dark color also",
             ExecuteSetting = () =>
             {
-                
+                _windowHelper.BlackActiveAndInactiveTitleBars();
             }
         };
         

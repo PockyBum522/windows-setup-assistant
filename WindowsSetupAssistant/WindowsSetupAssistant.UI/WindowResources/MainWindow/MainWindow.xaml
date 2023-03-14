@@ -232,6 +232,9 @@
                 </DockPanel>
             </Expander>
 
+            </StackPanel>
+        
+        <StackPanel  Grid.Row="1" Grid.Column="2" >
             <ItemsControl ItemsSource="{Binding SettingsSections}"
                            ItemTemplate="{StaticResource settingsSectionTemplate}" 
                            Padding="0" Margin="0"/>
@@ -241,7 +244,7 @@
         
         
         <!-- Install Applications -->
-        <DockPanel Grid.Row="1" Grid.Column="2">
+        <DockPanel Grid.Row="1" Grid.Column="3">
             
             <DockPanel>
 

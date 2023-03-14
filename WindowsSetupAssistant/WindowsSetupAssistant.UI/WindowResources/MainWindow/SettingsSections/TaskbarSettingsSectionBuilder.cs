@@ -9,15 +9,15 @@ namespace WindowsSetupAssistant.UI.WindowResources.MainWindow.SettingsSections;
 /// </summary>
 public class TaskbarSettingsSectionBuilder
 {
-    private readonly WindowsUiHelper _uiHelper;
+    private readonly TaskbarHelper _taskbarHelper;
 
     /// <summary>
     /// Constructor for dependency injection
     /// </summary>
-    /// <param name="uiHelper">Injected TimeHelper</param>
-    public TaskbarSettingsSectionBuilder(WindowsUiHelper uiHelper)
+    /// <param name="taskbarHelper">Injected Taskbar Helper</param>
+    public TaskbarSettingsSectionBuilder(TaskbarHelper taskbarHelper)
     {
-        _uiHelper = uiHelper;
+        _taskbarHelper = taskbarHelper;
     }
     
     /// <summary>
@@ -35,7 +35,7 @@ public class TaskbarSettingsSectionBuilder
             DisplayName = "Set Taskbar Search to Hidden",
             ExecuteSetting = () =>
             {
-                _uiHelper.CollapseSearchOnTaskbarToHidden();
+                _taskbarHelper.CollapseSearchOnTaskbarToHidden();
             }
         };
         
@@ -44,7 +44,7 @@ public class TaskbarSettingsSectionBuilder
             DisplayName = "Collapse Taskbar Search to Just Icon",
             ExecuteSetting = () =>
             {
-                _uiHelper.CollapseSearchOnTaskbarToIcon();
+                _taskbarHelper.CollapseSearchOnTaskbarToIcon();
             }
         };
         
@@ -53,7 +53,7 @@ public class TaskbarSettingsSectionBuilder
             DisplayName = "Disable news and interests on taskbar",
             ExecuteSetting = () =>
             {
-                
+                _taskbarHelper.DisableNewsAndInterestsOnTaskbar();
             }
         };
         

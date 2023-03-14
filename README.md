@@ -268,6 +268,12 @@ For now, there's several things that would be helpful until I get a better idea 
 
 If you want a setting added and can get a .reg file or C# code to do what you want, send it over! I'll add it. Soon, I hope to have it so that you can just drop them in \windows-setup-assistant\WindowsSetupAssistant\Resources\Configuration\Registry Files\ and they will be indexed and become a selectable option, allowing for better customization by the end users in this area.
 
+* New Installs
+
+If you add to the "Available Installers.json" with something that you think other people will find useful, make a pull request! I probably won't approve all of them, but if you tell me why you think it should be included, I likely will!
+
+For security reasons, I don't accept ArchiveInstallers or PortableAppsInstallers unless you can tell me where to download the thing on a well-known 3rd party website, and then give me the configuration for it. I will still likely scrutinize the heck out of it.
+
 * Crash/Bug Reports
 
 Log files are located in C:\Users\Public\Documents\Logs\
@@ -279,3 +285,16 @@ Please add an issue in github with the log and expected behavior. Logs shouldn't
 I am self taught, and in addition to that, I don't know what I don't know.
 
 If you see a better way to do something, or structure things, or anything, please talk to me about it. File an issue and use the "question" tag. I would love to have a conversation with you!
+
+
+# Why didn't you just...?
+
+Use group policy?
+
+Use ninite? (I love ninite. Great product. I used the paid version for years.)
+
+Use X, Y, or Z?
+
+Mostly because I wanted to make something that's useful and usable by everyone! I wanted it to be simple to configure, powerful enough to be useful, and help real people save time. Since this application just pops up a window asking you what you'd like to install or configure, that seems pretty simple and usable to me! 
+
+Up to this point, I have done lots of research and have never been able to find something that will let you do Windows settings, application installs, and custom configuration of those things all in one place. I aim to fix that.

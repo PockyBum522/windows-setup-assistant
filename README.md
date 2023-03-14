@@ -1,58 +1,278 @@
 # Windows Post-Setup Assistant
-GUI to easily create and save automated configuration/app install profiles that can quickly be applied to fresh installations of Windows. 
 
-Everything you need to set up your workstation the way you want it (automatically) after installing Windows!
+### What it does
+
+Takes the pain out of new Windows 10 installations, by installing new software and configuring settings for you, all unattended.
+
+You should be able to:
+1. Install Windows 10 on a computer
+2. Connect to the internet
+3. Run the bootstrapper batch file
+4. Spend about 5 minutes waiting for the initial requirement applications and libraries to load
+5. Answer a few questions about how you want your system configured, or load a profile you made previously with all that information
+6. Walk away
+
+In a few hours, depending on your internet speed and system speed, you should reurn to find that:
+
+* Your new Windows install has all settings set how you like them
+* Your Windows install is completely up to date (If you selected the "Update Windows" option)
+* Any applications you selected for install are now ready
+* Any necessary reboots are handled automatically, with the program resuming on next boot.
+* Your computer has been renamed to your chosen hostname
+
+Through the use of AutoLogon64 from Microsoft SysInternals, you can make the whole process happen completely unattended.
+
+
+# Features and Roadmap
+
+* Basic application installation - Complete!
+* Unattended Application Installation/Settings Apply/Windows Update with reboots - Complete! 
+* Profile load/save - Complete!
+* GUI - Complete!
+* windows Settings - Some! 
+
+We are aiming to add more settings as the project progresses. We are still in the early stages of setting this up and making something that should be useful to everyone. Your help and pull requests are gratefully welcome!
 
 # Prerequisites
+
 * A Windows 10 Installation that is not configured with your preferred settings or applications.
 
 * Internet on said machine
 
 # Objectives 
-<ul>
 
-## Profile Creation
-* Profiles should be able to install applications and configure windows/app settings in a predefined order
+### Short-Term
 
-* Any application installation should be able to be marked as optional, which will prompt the user at runtime asking if they want to install it
+* Better progress indication. Right now a lot of things happen invisibly. Not great.
 
-* Any setting change should be able to be marked as optional, which will prompt the user at runtime asking if they want to make that change
+* A better organization system for system settings, including the ability to have windows-setup-assistant crawl folders underneath it for .reg files which will then show up as selectable in the Main Window.
 
-* All prompts should happen as early as possible after running the main batch file so that for the majority of the time necessary, user interaction is not required
+* Application settings able to be set, not just Windows settings
 
-## Automatic Profile Execution
-You should be able to run the main batch file as Admin and:
+* Better logging and failure recovery
 
-* Select a profile that you created previously using this application
-* Answer prompts for anything you've marked optional all at the beginning
+* Considering: Integration of AutoHotKey scripts for both program installation/installation automation as well as changing settings
 
-* Let it run (It will handle rebooting as necessary.)
+### Long-Term
 
-* When it's finished, with no interaction on your part after the initial prompts, you should have:
-    * Windows completely up-to-date, if desired
-    * Any applications you want, installed
-    * Your workstation almost completely configured:
-        * Windows settings changed to match your chosen settings
-        * Application settings changed to match your chosen settings
-</ul>
-
-# Future Objectives
 * Windows 11 Support
 
 # Usage:
-<ul>
 
-## Adding a new module:
+For the end user, there are a few things you should know:
 
-* Add a new class under WindowsPostSetupAssistant.Core.Modules
-* Implement IModule
-* For ModuleGuid, generate a new GUID (Without {} ) and paste it in. You should end up with: public Guid ModuleGuid => new Guid("AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE");
-* Set up ValidateArguments to point to a bool method that returns true if Arguments is valid, false otherwise
-* Execute should point to a method that does what the module needs to do, using Arguments to do it, if applicable
-* IMPORTANT: Add ModuleClass().ModuleGuid to WindowsPostSetupAssistant.Core.Logic.GuidModulesRegistration
+First off, if you just want to try it, download the repo (Likely the easiest way is as a zip) and then just double click "RUN ME FIRST (BOOTSTRAPPER).bat"
 
-## Terminology:
+This will set up a few things necessary for unattended install, like disabling UAC prompts (You can re-enable them after the application is finished configuring your computer) and setting up Automatic Logon to your user with Microsoft's AutoLogon.
 
-* A card is a UI element that contains one or more IConfigurationAction(s)
-* IModule is what gets looked up by an action. IModule is what actually applies the configuration action on the computer.
-</ul>
+After the batch file runs, it should build the main application with .NET 7 SDK, which will be installed automatically. 
+
+Once you see the main window:
+
+<a href="img/documentation/getting-started/MainWindow.png">
+    <img src="img/documentation/getting-started/MainWindow.png" 
+        alt="Picture of the Main Window of the application, where almost all of the settings are set and applications can be selected for install" 
+        width=300 />
+</a>
+
+<br/>
+You are ready to go. Pick what applications you'd like to have installed, and what settings you would like to have applied, and click "Save Profile" if you'd like to re-use this selection later. 
+
+When finished, click "Start Execution" and then you can sit back and relax or walk away. Everything from here on out will be taken care of without user interaction.
+
+If you have chosen to install standard .exe or .msi installers, they will be saved for the last part of the process.
+
+# Custom Configuration
+
+Users can add their own application installs that will show up in the "Install Applications" list. 
+
+Simply browse to \WindowsSetupAssistant\Resources\Configuration\ and edit the "Available Installs.json" file.
+
+There are four types of installations you can add here:
+
+* ChocolateyInstaller
+* ExecutableInstaller
+* ArchiveInstaller
+* PortableApplicationInstaller
+
+I would suggest copying and pasting an existing entry of the type that you want to add, and then editing the values to suit your needs.
+
+### ChocolateyInstaller:
+
+Properties:
+
+* ChocolateyId
+
+This should be set to whatever comes after "choco install" on [https://community.chocolatey.org/packages](Chocolatey Packages) so for "Adobe AIR runtime, for example, you see: choco install adobeair"
+
+So set ChocolateyId to just adobeair
+
+* Arguments 
+
+If you need to pass arguments to the "choco install" command that gets run, put them in here.
+
+* Parameters
+
+Same thing as arguments
+
+* DisplayName 
+
+This is what shows up in the list of applications that can be selected in the main window.
+
+* IsSelected
+
+Used for tracking if the user has selected the entry for install. You can set this to true if you want the application to always launch with this entry selected, but most likely, profiles will help you accomplish what you're trying to do much more easily. 
+
+### ExecutableInstaller:
+
+Properties:
+
+* FileName
+
+This should be the full filename of the exe or msi to start. It should be located in \windows-setup-assistant\WindowsSetupAssistant\Resources\Installers\Installer Executables\
+
+* Arguments 
+
+If you need to pass arguments to the start process command that runs the installer, pass them here.
+
+* AutoHotkeyMacro
+
+Unused at this time.
+
+* DisplayName 
+
+This is what shows up in the list of applications that can be selected in the main window.
+
+* IsSelected
+
+Used for tracking if the user has selected the entry for install. You can set this to true if you want the application to always launch with this entry selected, but most likely, profiles will help you accomplish what you're trying to do much more easily. 
+
+### ArchiveInstaller:
+
+Properties:
+
+* ArchiveFilename
+
+This should be the full filename of the .7z or .zip to extract. It should be located in \windows-setup-assistant\WindowsSetupAssistant\Resources\Installers\Installer Archives\
+
+* DestinationPath 
+
+Where you would like to have the archive extracted to. This folder will be created automatically. \ characters must be escaped. A valid path would look like this:
+
+"DestinationPath": "C:\\PortableApplications\\Arduino IDE\\",
+
+* DisplayName 
+
+This is what shows up in the list of applications that can be selected in the main window.
+
+* IsSelected
+
+Used for tracking if the user has selected the entry for install. You can set this to true if you want the application to always launch with this entry selected, but most likely, profiles will help you accomplish what you're trying to do much more easily. 
+
+### PortableApplicationInstaller:
+
+Properties:
+
+* FolderName
+
+This should be the full folder name of the folder to copy. It should be located in \windows-setup-assistant\WindowsSetupAssistant\Resources\Installers\Portable Applications\ 
+
+* DestinationPath 
+
+Where you would like to have the folder copied to. \ characters must be escaped. A valid path would look like this:
+
+"DestinationPath": "C:\\PortableApplications\\Arduino IDE\\",
+
+* DisplayName 
+
+This is what shows up in the list of applications that can be selected in the main window.
+
+* IsSelected
+
+Used for tracking if the user has selected the entry for install. You can set this to true if you want the application to always launch with this entry selected, but most likely, profiles will help you accomplish what you're trying to do much more easily. 
+
+* DesktopShortcutExePath 
+
+Unused for now, this will later allow you to specify an .exe to make a shortcut to that will show up on your desktop.
+
+* StartMenuShortcutExePath
+
+Unused for now, this will later allow you to specify an .exe to make a shortcut to that will show up on your desktop.
+
+
+# Detailed Breakdown of What's Going On in the Batch File Bootstrapper
+
+When you double click on "RUN ME FIRST (BOOTSTRAPPER).bat" a few things happen:
+
+* The batch file creates a .lockfile in C:\Users\Public\Documents\ so that the second half of the script (the second half runs as the user) waits until after the first half (first half runs as admin because Chocolatey needs it) has finished to allow the second half (non-admin) part to proceed.
+
+* The batch file checks if you have an internet connection, exits if you don't.
+
+* The batch file checks if you ran it as admin, exits if you DID. 
+
+(This is because while it's easy to elevate the process later, it's suprisingly hard to figure out what user originally ran the batch file if it's started as administrator by them when they run it.)
+
+* The batch file then notifies the user they should disable UAC prompts and set up AutoLogin. 
+
+This is for unattended capability, both of these things can be re-enabled/disabled once the application finishes running and the computer reboots for the last time. 
+
+* The batch file then installs Chocolatey, which we'll be using to install things
+
+* The batch file installs the latest .NET SDK so we can build this application
+
+* The batch file then installs powershell core and Notepad++ just to give some basic utilities to make troubleshooting easier.
+
+* The admin half (first half) of the batch file now deletes the .lockfile and closes. 
+
+Once the second half sees that the lockfile is gone, it knows everything it needs has been installed and it can proceed. 
+
+* The first half does some basic nuget cleaning, restores the packages in the project, and then builds and runs the application.
+
+# Detailed Breakdown of What's Going On in the Main Application
+
+* When you make your selections and hit "Start Execution" the application immediately saves all of the slections to a JSON file stored in C:\Users\Public\Documents\ so that it can act on them later.
+
+* It also creates a batch file in the Public Startup folder to re-run the application on subsequent reboots. 
+
+This is deleted once the application has run through its complete process.
+
+* If you selected to update windows, a CLI windows update handler will be installed, and windows will be updated as far as it will allow without a reboot. 
+
+* The application then marks that it has gotten through the first stage by writing to another file in C:\Users\Public\Documents\
+
+* When the computer is done rebooting to apply the windows updates, the batch file launches because it's in the public startup folder, and re-runs the application.
+
+* Upon re-launch, the application checks the settings it saved at the beginning, and what stage of the process it's on. 
+
+It does any necessary work, and then if necessary, updates the stage and reboots the computer. The first few reboots are just to install windows updates, reboot, then see if there are any more updates and install them.
+
+* Once it's done updating windows, it will start installing selected applications. It handles all the selected 
+ChocolateyInstallers, ArchiveInstallers, and PortableApplicationInstallers first, since those don't require user interaction. Once those are finished, it runs all ExecutableInstallers.
+
+It will then load a warning dialog telling you to proceed through any ExecutableInstallers that may be on the screen, then once you are finished, press yes to reboot the computer.
+
+This is the last reboot, and at this point the process is finished. The application will clean up the files it was using to save the current stage of the process it was in, the user options that were selected at the beginning, and the bat file in Public Startup.
+
+# Helping With Development
+
+So you read through all that? I'm impressed. Maybe a little frightened. I'm hesitant to put a lot of effort into this section at such an early stage of development, as things will likely change quickly.
+
+However! Know that help and pull requests are GREATLY appreciated and I will review them in a timely manner.
+
+For now, there's several things that would be helpful until I get a better idea of the structure of the code:
+
+* Windows Settings
+
+If you want a setting added and can get a .reg file or C# code to do what you want, send it over! I'll add it. Soon, I hope to have it so that you can just drop them in \windows-setup-assistant\WindowsSetupAssistant\Resources\Configuration\Registry Files\ and they will be indexed and become a selectable option, allowing for better customization by the end users in this area.
+
+* Crash/Bug Reports
+
+Log files are located in C:\Users\Public\Documents\Logs\
+
+Please add an issue in github with the log and expected behavior. Logs shouldn't contain sensitive data (Possibly your username.) and if they do, let me know, so I can tell it to stop logging it.
+
+* Code Review
+
+I am self taught, and in addition to that, I don't know what I don't know.
+
+If you see a better way to do something, or structure things, or anything, please talk to me about it. File an issue and use the "question" tag. I would love to have a conversation with you!

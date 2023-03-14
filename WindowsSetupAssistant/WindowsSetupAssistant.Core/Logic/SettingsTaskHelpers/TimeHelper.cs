@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 using GuerrillaNtp;
 using Serilog;
 
-namespace WindowsSetupAssistant.Core.Logic.TaskHelpers;
+namespace WindowsSetupAssistant.Core.Logic.SettingsTaskHelpers;
 
 /// <summary>
 /// Methods for working with Windows time/data and the system time

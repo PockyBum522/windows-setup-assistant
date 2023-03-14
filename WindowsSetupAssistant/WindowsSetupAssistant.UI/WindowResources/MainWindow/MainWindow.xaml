@@ -58,7 +58,7 @@
                 </Style.Triggers>
             </Style>
             
-            <DataTemplate x:Key="settingsSectionTemplate">
+            <DataTemplate x:Key="SettingsSectionTemplate">
                 
                 <Expander Background="#222222"
                           Foreground="#FFFFFF"
@@ -236,7 +236,7 @@
         
         <StackPanel  Grid.Row="1" Grid.Column="2" >
             <ItemsControl ItemsSource="{Binding SettingsSections}"
-                           ItemTemplate="{StaticResource settingsSectionTemplate}" 
+                           ItemTemplate="{StaticResource SettingsSectionTemplate}" 
                            Padding="0" Margin="0"/>
             
         </StackPanel>

@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using WindowsSetupAssistant.Core.Models.IInstallables.Interfaces;
-using WindowsSetupAssistant.Core.Models.Settings;
+using WindowsSetupAssistant.Core.Models.ISelectableSettings;
 
 namespace WindowsSetupAssistant.Core.Models;
 

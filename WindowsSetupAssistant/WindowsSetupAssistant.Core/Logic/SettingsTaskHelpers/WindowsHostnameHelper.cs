@@ -3,7 +3,7 @@ using System.Management;
 using Microsoft.Win32;
 using Serilog;
 
-namespace WindowsSetupAssistant.Core.Logic.TaskHelpers;
+namespace WindowsSetupAssistant.Core.Logic.SettingsTaskHelpers;
 
 /// <summary>
 /// Methods for changing Windows and operating-system-related settings
@@ -28,6 +28,8 @@ public class WindowsHostnameHelper
     /// <exception cref="Exception">If new name cannot be set</exception>
     public void ChangeHostName(string newHostName)
     {
+        _logger.Information("Changing hostname to: {NewHostName}", newHostName);
+        
         const string registryComputerNameKey = @"SYSTEM\CurrentControlSet\Control\ComputerName\ComputerName";
     
         var compPath= "Win32_ComputerSystem.Name='" + Environment.MachineName + "'";

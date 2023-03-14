@@ -1,6 +1,6 @@
-﻿using WindowsSetupAssistant.Core.Logic.TaskHelpers;
-using WindowsSetupAssistant.Core.Models.Settings;
-using WindowsSetupAssistant.Core.Models.Settings.ISelectableSettings;
+﻿using WindowsSetupAssistant.Core.Logic.SettingsTaskHelpers;
+using WindowsSetupAssistant.Core.Models.ISelectableSettings;
+using WindowsSetupAssistant.Core.Models.ISelectableSettings.ISelectableSettings;
 
 namespace WindowsSetupAssistant.UI.WindowResources.MainWindow.SettingsSections;
 

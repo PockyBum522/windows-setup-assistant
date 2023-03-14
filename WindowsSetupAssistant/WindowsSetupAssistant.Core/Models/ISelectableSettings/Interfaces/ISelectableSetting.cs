@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace WindowsSetupAssistant.Core.Models.Settings.Interfaces;
+namespace WindowsSetupAssistant.Core.Models.ISelectableSettings.Interfaces;
 
 /// <summary>
 /// Applied to any control that will show in the MainWindow and is a selectable option/installer

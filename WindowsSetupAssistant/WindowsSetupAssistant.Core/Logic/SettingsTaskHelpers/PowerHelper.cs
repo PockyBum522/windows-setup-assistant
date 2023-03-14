@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using Serilog;
 
-namespace WindowsSetupAssistant.Core.Logic.TaskHelpers;
+namespace WindowsSetupAssistant.Core.Logic.SettingsTaskHelpers;
 
 /// <summary>
 /// Methods for changing Windows and operating-system-related settings

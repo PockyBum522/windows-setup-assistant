@@ -1,11 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using Microsoft.Win32;
 using Serilog;
 
-namespace WindowsSetupAssistant.Core.Logic.TaskHelpers;
+namespace WindowsSetupAssistant.Core.Logic.SettingsTaskHelpers;
 
 /// <summary>
 /// Methods for changing Windows UI-specific settings

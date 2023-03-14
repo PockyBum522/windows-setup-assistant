@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using Microsoft.Win32;
 using Serilog;
 
-namespace WindowsSetupAssistant.Core.Logic.TaskHelpers;
+namespace WindowsSetupAssistant.Core.Logic.SettingsTaskHelpers;
 
 /// <summary>
 /// Methods for changing Windows desktop specific settings

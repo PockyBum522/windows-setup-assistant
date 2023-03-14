@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using WindowsSetupAssistant.Core.Models.Settings.Interfaces;
+using WindowsSetupAssistant.Core.Models.ISelectableSettings.Interfaces;
 
-namespace WindowsSetupAssistant.Core.Models.Settings;
+namespace WindowsSetupAssistant.Core.Models.ISelectableSettings;
 
 /// <summary>
 /// Section to hold settings to display to the user and let them select

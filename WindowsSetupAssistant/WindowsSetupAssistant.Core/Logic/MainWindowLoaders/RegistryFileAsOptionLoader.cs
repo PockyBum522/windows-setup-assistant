@@ -1,10 +1,10 @@
 ﻿using System.Diagnostics;
 using System.IO;
 using WindowsSetupAssistant.Core.Logic.Application;
-using WindowsSetupAssistant.Core.Models.Settings;
-using WindowsSetupAssistant.Core.Models.Settings.ISelectableSettings;
+using WindowsSetupAssistant.Core.Models.ISelectableSettings;
+using WindowsSetupAssistant.Core.Models.ISelectableSettings.ISelectableSettings;
 
-namespace WindowsSetupAssistant.Core.Logic.MainWindowHelpers;
+namespace WindowsSetupAssistant.Core.Logic.MainWindowLoaders;
 
 /// <summary>
 /// Takes a path to a .reg file, and turns it into an option in the settings section matching its parent folder name

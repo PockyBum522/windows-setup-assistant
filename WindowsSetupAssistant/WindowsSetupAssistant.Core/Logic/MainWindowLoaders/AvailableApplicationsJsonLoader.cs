@@ -6,7 +6,7 @@ using Serilog;
 using WindowsSetupAssistant.Core.Logic.Application;
 using WindowsSetupAssistant.Core.Models.IInstallables.Interfaces;
 
-namespace WindowsSetupAssistant.Core.Logic.MainWindowHelpers;
+namespace WindowsSetupAssistant.Core.Logic.MainWindowLoaders;
 
 /// <summary>
 /// Helper to load in the "Available Installs.json" and update CurrentState with entries

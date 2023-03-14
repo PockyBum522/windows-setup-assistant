@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Diagnostics;
-using System.IO;
-using System.Net;
-using System.Windows;
 using Newtonsoft.Json;
-using WindowsSetupAssistant.Core.Models.Settings.Interfaces;
+using WindowsSetupAssistant.Core.Models.ISelectableSettings.Interfaces;
 
-namespace WindowsSetupAssistant.Core.Models.Settings.ISelectableSettings;
+namespace WindowsSetupAssistant.Core.Models.ISelectableSettings.ISelectableSettings;
 
 /// <summary>
 /// Represents a registry file on the filesystem to give the user the option to merge to registry

@@ -1,8 +1,8 @@
 ﻿using System;
 using Newtonsoft.Json;
-using WindowsSetupAssistant.Core.Models.Settings.Interfaces;
+using WindowsSetupAssistant.Core.Models.ISelectableSettings.Interfaces;
 
-namespace WindowsSetupAssistant.Core.Models.Settings.ISelectableSettings;
+namespace WindowsSetupAssistant.Core.Models.ISelectableSettings.ISelectableSettings;
 
 /// <summary>
 /// Selectable item that when Executed will run internal code 

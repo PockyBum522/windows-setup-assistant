@@ -1,3 +1,16 @@
+# Index
+
+* [What it does](https://github.com/PockyBum522/windows-setup-assistant#windows-post-setup-assistant)
+* [Features and Roadmap](https://github.com/PockyBum522/windows-setup-assistant#features-and-roadmap)
+* [Prerequisites](https://github.com/PockyBum522/windows-setup-assistant#prerequisites)
+* [Usage](https://github.com/PockyBum522/windows-setup-assistant#usage)
+* [Objectives](https://github.com/PockyBum522/windows-setup-assistant#objectives)
+* [Custom Configuration](https://github.com/PockyBum522/windows-setup-assistant#custom-configuration)
+* [Detailed Breakdown of What's Going On in the Batch File Bootstrapper](https://github.com/PockyBum522/windows-setup-assistant#detailed-breakdown-of-whats-going-on-in-the-batch-file-bootstrapper)
+* [Detailed Breakdown of What's Going On in the Main Application](https://github.com/PockyBum522/windows-setup-assistant#detailed-breakdown-of-whats-going-on-in-the-main-application)
+* [Helping With Development](https://github.com/PockyBum522/windows-setup-assistant#helping-with-development)
+* [Why didn't you just...?](https://github.com/PockyBum522/windows-setup-assistant#why-didnt-you-just)
+
 # Windows Post-Setup Assistant
 
 ### What it does
@@ -106,7 +119,7 @@ Properties:
 
 * ChocolateyId
 
-This should be set to whatever comes after "choco install" on [https://community.chocolatey.org/packages](Chocolatey Packages) so for "Adobe AIR runtime, for example, you see: choco install adobeair"
+This should be set to whatever comes after "choco install" on [Chocolatey Packages](https://community.chocolatey.org/packages) so for "Adobe AIR runtime, for example, you see: choco install adobeair"
 
 So set ChocolateyId to just adobeair
 

@@ -1,12 +1,12 @@
 ﻿using System;
 using WindowsSetupAssistant.Core.Interfaces;
 
-namespace WindowsSetupAssistant.Core.Models.ISelectables;
+namespace WindowsSetupAssistant.Core.Models.Settings.ISelectableSettings;
 
 /// <summary>
 /// Represents a registry file on the filesystem to give the user the option to merge to registry
 /// </summary>
-public class SelectableOptionRegistryFile : ISelectable
+public class SelectableSettingOptionRegistryFile : ISelectableSetting
 {
     /// <inheritdoc />
     public string DisplayName { get; set; } = "";

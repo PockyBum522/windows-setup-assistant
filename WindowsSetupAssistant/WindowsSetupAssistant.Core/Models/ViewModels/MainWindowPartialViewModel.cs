@@ -75,7 +75,7 @@ public partial class MainWindowPartialViewModel : ObservableObject
     [ObservableProperty] private ObservableCollection<IInstallable> _availableInstalls = new();
     
     // System Settings
-    [ObservableProperty] private ObservableCollection<ISelectable> _availas = new();
+    [ObservableProperty] private ObservableCollection<ISelectableSetting> _availas = new();
     
     private bool _isCheckedSetTaskbarSearchToHidden;
     private bool _isCheckedSetTaskbarSearchToIcon;

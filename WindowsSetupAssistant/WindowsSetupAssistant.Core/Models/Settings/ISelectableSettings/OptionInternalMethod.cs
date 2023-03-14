@@ -1,12 +1,12 @@
 ﻿using System;
 using WindowsSetupAssistant.Core.Interfaces;
 
-namespace WindowsSetupAssistant.Core.Models.ISelectables;
+namespace WindowsSetupAssistant.Core.Models.Settings.ISelectableSettings;
 
 /// <summary>
 /// Selectable item that when Executed will run internal code 
 /// </summary>
-public class OptionInternalMethod : ISelectable
+public class OptionInternalMethod : ISelectableSetting
 {
     /// <inheritdoc/>
     public string DisplayName { get; set; } = "";

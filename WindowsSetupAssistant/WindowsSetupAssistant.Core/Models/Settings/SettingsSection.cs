@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using WindowsSetupAssistant.Core.Interfaces;
 
-namespace WindowsSetupAssistant.Core.Models;
+namespace WindowsSetupAssistant.Core.Models.Settings;
 
 /// <summary>
 /// Section to hold settings to display to the user and let them select
@@ -27,5 +26,5 @@ public class SettingsSection
     /// <summary>
     /// The ISelectable settings to allow the user to select
     /// </summary>
-    public ObservableCollection<ISelectable> Settings { get; set; } = new();
+    public List<ISelectableSetting> Settings { get; set; } = new();
 }

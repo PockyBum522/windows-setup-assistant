@@ -71,8 +71,8 @@ After the batch file runs, it should build the main application with .NET 7 SDK,
 
 Once you see the main window:
 
-<a href="img/documentation/getting-started/MainWindow.png">
-    <img src="img/documentation/getting-started/MainWindow.png" 
+<a href="documentation/img/getting-started/MainWindow.png">
+    <img src="documentation/img/getting-started/MainWindow.png"
         alt="Picture of the Main Window of the application, where almost all of the settings are set and applications can be selected for install" 
         width=300 />
 </a>

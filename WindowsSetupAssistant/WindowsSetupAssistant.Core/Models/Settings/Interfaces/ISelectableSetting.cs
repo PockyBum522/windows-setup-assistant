@@ -5,7 +5,7 @@ namespace WindowsSetupAssistant.Core.Interfaces;
 /// <summary>
 /// Applied to any control that will show in the MainWindow and is a selectable option/installer
 /// </summary>
-public interface ISelectable
+public interface ISelectableSetting
 {
     /// <summary>
     /// The name to display to the user next to a checkbox in this application

@@ -39,23 +39,6 @@ We are aiming to add more settings as the project progresses. We are still in th
 
 * Internet on said machine
 
-# Objectives 
-
-### Short-Term
-
-* Better progress indication. Right now a lot of things happen invisibly. Not great.
-
-* A better organization system for system settings, including the ability to have windows-setup-assistant crawl folders underneath it for .reg files which will then show up as selectable in the Main Window.
-
-* Application settings able to be set, not just Windows settings
-
-* Better logging and failure recovery
-
-* Considering: Integration of AutoHotKey scripts for both program installation/installation automation as well as changing settings
-
-### Long-Term
-
-* Windows 11 Support
 
 # Usage:
 
@@ -81,6 +64,26 @@ You are ready to go. Pick what applications you'd like to have installed, and wh
 When finished, click "Start Execution" and then you can sit back and relax or walk away. Everything from here on out will be taken care of without user interaction.
 
 If you have chosen to install standard .exe or .msi installers, they will be saved for the last part of the process.
+
+
+# Objectives 
+
+### Short-Term
+
+* Better progress indication. Right now a lot of things happen invisibly. Not great.
+
+* A better organization system for system settings, including the ability to have windows-setup-assistant crawl folders underneath it for .reg files which will then show up as selectable in the Main Window.
+
+* Application settings able to be set, not just Windows settings
+
+* Better logging and failure recovery
+
+* Considering: Integration of AutoHotKey scripts for both program installation/installation automation as well as changing settings
+
+### Long-Term
+
+* Windows 11 Support
+
 
 # Custom Configuration
 

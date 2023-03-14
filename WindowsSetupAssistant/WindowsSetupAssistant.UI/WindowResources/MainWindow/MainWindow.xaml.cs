@@ -257,9 +257,6 @@ public partial class MainWindow
 
         if (_currentState.MainWindowPartialViewModel.IsCheckedUpdateWindows)
         {
-            _currentState.ScriptStage = ScriptStageEnum.WindowsHasBeenUpdatedOnce;
-            _currentState.SaveCurrentStateForReboot();
-            
             _windowsUpdater.UpdateWindows();
         
             _currentState.RebootComputerAndExit();    

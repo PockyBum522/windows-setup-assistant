@@ -48,6 +48,8 @@ public class DiContainerBuilder
 
         RegisterTaskHelpers();
 
+        RegisterMainWindowLoaders();
+
         RegisterSectionBuilders();
         
         RegisterInstallerModels();
@@ -116,14 +118,21 @@ public class DiContainerBuilder
     
     private void RegisterTaskHelpers()
     {
+        _builder.RegisterType<DesktopHelper>().AsSelf();
+        _builder.RegisterType<PowerHelper>().AsSelf();
+        _builder.RegisterType<TaskbarHelper>().AsSelf().SingleInstance();
         _builder.RegisterType<TimeHelper>().AsSelf().SingleInstance();
         _builder.RegisterType<WindowHelper>().AsSelf().SingleInstance();
-        
-        _builder.RegisterType<AvailableApplicationsJsonLoader>().AsSelf();
-        _builder.RegisterType<PowerHelper>().AsSelf();
         _builder.RegisterType<WindowsHostnameHelper>().AsSelf();
+        _builder.RegisterType<WindowsUpdater>().AsSelf();
     }
-    
+
+    private void RegisterMainWindowLoaders()
+    {
+        _builder.RegisterType<RegistryFileAsOptionLoader>().AsSelf().SingleInstance();
+        _builder.RegisterType<AvailableApplicationsJsonLoader>().AsSelf().SingleInstance();
+    }
+
     private void RegisterInstallerModels()
     {
         _builder.RegisterType<ArchiveInstaller>().AsSelf();

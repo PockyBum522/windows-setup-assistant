@@ -27,6 +27,7 @@ public partial class MainWindow
     private readonly MainWindowPersistentState _mainWindowPersistentState;
     private readonly StateHandler _stateHandler;
     private readonly SystemRebooter _systemRebooter;
+    private readonly StartupScriptWriter _startupScriptWriter;
     private readonly WindowsUpdater _windowsUpdater;
     private readonly PowerHelper _powerHelper;
     private readonly WindowsHostnameHelper _windowsHostnameHelper;
@@ -45,6 +46,7 @@ public partial class MainWindow
     /// </summary>
     /// <param name="logger">Injected ILogger to use</param>
     /// <param name="systemRebooter">Injected</param>
+    /// <param name="startupScriptWriter">Creates the startup script that reruns the program on reboot</param>
     /// <param name="windowsUpdater">Windows update helper</param>
     /// <param name="powerHelper">Windows power settings helper</param>
     /// <param name="windowsHostnameHelper">Windows hostname helper</param>
@@ -65,6 +67,7 @@ public partial class MainWindow
         ProfileHandler profileHandler,
         StateHandler stateHandler,
         SystemRebooter systemRebooter,
+        StartupScriptWriter startupScriptWriter,
         WindowsUpdater windowsUpdater,
         PowerHelper powerHelper,
         WindowsHostnameHelper windowsHostnameHelper,
@@ -81,6 +84,7 @@ public partial class MainWindow
         _profileHandler = profileHandler;
         _stateHandler = stateHandler;
         _systemRebooter = systemRebooter;
+        _startupScriptWriter = startupScriptWriter;
         _windowsUpdater = windowsUpdater;
         _powerHelper = powerHelper;
         _windowsHostnameHelper = windowsHostnameHelper;
@@ -108,12 +112,13 @@ public partial class MainWindow
     {
         _mainWindowPersistentState.ScriptStage = ScriptStageEnum.WindowsHasBeenUpdatedOnce;
         _stateHandler.SaveCurrentStateAsJson(ApplicationPaths.StatePath);
+        _startupScriptWriter.CreateRebootScriptInStartup();
 
         ExecuteSelectedSettingsInAllSections();
 
         if (_mainWindowPersistentState.IsCheckedUpdateWindows)
         {
-            _windowsUpdater.UpdateWindows();
+            _windowsUpdater.UpdateWindowsAndReboot();
         
             _systemRebooter.RebootComputerAndExit();    
         }

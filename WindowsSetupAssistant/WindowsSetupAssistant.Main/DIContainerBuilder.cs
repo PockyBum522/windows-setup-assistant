@@ -23,8 +23,19 @@ namespace WindowsSetupAssistant.Main;
 [PublicAPI]
 public class DiContainerBuilder
 {
+    /// <summary>
+    /// Constructor to satisfy the null warning that would otherwise occur
+    /// </summary>
+    public DiContainerBuilder()
+    {
+        _persistentState = new MainWindowPersistentState();
+    }
+    
     private readonly ContainerBuilder _builder = new ();
     private ILogger? _logger;
+
+    private MainWindowPersistentState _persistentState;
+    
     //private ISettingsApplicationLocal _settingsApplicationLocal;
 
     /// <summary>
@@ -55,7 +66,7 @@ public class DiContainerBuilder
         RegisterInstallerModels();
         
         RegisterUiDependencies();
-        
+
         var container = _builder.Build();
         
         return container;
@@ -113,7 +124,7 @@ public class DiContainerBuilder
 
     private void RegisterMainDependencies()
     {
-        _builder.RegisterType<MainWindowPersistentState>().AsSelf().SingleInstance();
+        _builder.RegisterInstance(_persistentState).As<MainWindowPersistentState>().SingleInstance();
         
         _builder.RegisterType<ExceptionHandler>().AsSelf().SingleInstance();
         _builder.RegisterType<StartupScriptWriter>().AsSelf().SingleInstance();

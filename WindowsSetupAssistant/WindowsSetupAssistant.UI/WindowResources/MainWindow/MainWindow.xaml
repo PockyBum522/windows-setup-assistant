@@ -10,7 +10,8 @@
         mc:Ignorable="d"
         Style="{StaticResource StandardWindow}"
         Title="MainWindow" Height="980" Width="1820"
-        Background="#222222">
+        Background="#222222"
+        Loaded="MainWindow_OnLoaded">
 
     <Grid>
         <Grid.RowDefinitions>

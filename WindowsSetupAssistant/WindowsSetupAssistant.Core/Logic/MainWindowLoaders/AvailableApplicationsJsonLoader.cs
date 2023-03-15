@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 using Serilog;
-using WindowsSetupAssistant.Core.Logic.Application;
 using WindowsSetupAssistant.Core.Models;
 using WindowsSetupAssistant.Core.Models.IInstallables.Interfaces;
 

@@ -101,57 +101,60 @@ public partial class MainWindow
         InitializeComponent();
     }
 
-    private void ExecuteAllSelected()
-    {
-        _mainWindowPersistentState.ScriptStage = ScriptStageEnum.WindowsHasBeenUpdatedOnce;
-        _stateHandler.SaveCurrentStateAsJson(ApplicationPaths.StatePath);
-        _startupScriptWriter.CreateRebootScriptInStartup();
-
-        // Set long sleep and monitor off times so it doesn't sleep during install
-        _powerHelper.SetPowerSettingsTo();
-        
-        ExecuteSelectedSettingsInAllSections();
-
-        if (_mainWindowPersistentState.IsCheckedUpdateWindows)
-        {
-            _windowsUpdater.UpdateWindowsAndReboot();
-        
-            _systemRebooter.RebootComputerAndExit();    
-        }
-        else
-        {
-            _mainWindowPersistentState.ScriptStage = ScriptStageEnum.WindowsHasBeenUpdatedFully;
-            _stateHandler.SaveCurrentStateAsJson(ApplicationPaths.StatePath);
-        
-            CheckStageAndWorkOnRerun();
-        }
-    }
-
-    private void CheckStageAndWorkOnRerun()
+    private void MainWindow_OnLoaded(object sender, RoutedEventArgs e) => CheckStageAndWork();
+    
+    private void CheckStageAndWork()
     {
         // Set long sleep and monitor off times so it doesn't sleep during install
         _powerHelper.SetPowerSettingsTo();
 
         switch (_mainWindowPersistentState.ScriptStage)
         {
+            case ScriptStageEnum.FirstRun:
+                
+                _mainWindowPersistentState.ScriptStage = ScriptStageEnum.WindowsHasBeenUpdatedOnce;
+                _stateHandler.SaveCurrentStateAsJson(ApplicationPaths.StatePath);
+                _startupScriptWriter.CreateRebootScriptInStartup();
+
+                // Set long sleep and monitor off times so it doesn't sleep during install
+                _powerHelper.SetPowerSettingsTo();
+        
+                ExecuteSelectedSettingsInAllSections();
+
+                if (_mainWindowPersistentState.IsCheckedUpdateWindows)
+                {
+                    _windowsUpdater.UpdateWindowsAndReboot();
+        
+                    _systemRebooter.RebootComputerAndExit();    
+                }
+                else
+                {
+                    _mainWindowPersistentState.ScriptStage = ScriptStageEnum.WindowsHasBeenUpdatedFully;
+                    _stateHandler.SaveCurrentStateAsJson(ApplicationPaths.StatePath);
+
+                    CheckStageAndWork();
+                }
+
+                break;
+            
             case ScriptStageEnum.WindowsHasBeenUpdatedOnce:
 
-                _windowsUpdater.UpdateWindows();
-
                 _mainWindowPersistentState.ScriptStage = ScriptStageEnum.WindowsHasBeenUpdatedTwice;
-
                 _stateHandler.SaveCurrentStateAsJson(ApplicationPaths.StatePath);
+                
+                _windowsUpdater.UpdateWindowsAndReboot();
+
                 _systemRebooter.RebootComputerAndExit();
 
                 break;
 
             case ScriptStageEnum.WindowsHasBeenUpdatedTwice:
 
-                _windowsUpdater.UpdateWindows();
-
                 _mainWindowPersistentState.ScriptStage = ScriptStageEnum.WindowsHasBeenUpdatedFully;
-
                 _stateHandler.SaveCurrentStateAsJson(ApplicationPaths.StatePath);
+                
+                _windowsUpdater.UpdateWindowsAndReboot();
+
                 _systemRebooter.RebootComputerAndExit();
 
                 break;
@@ -221,7 +224,12 @@ public partial class MainWindow
         return returnPaths;
     }
 
-    private void StartExecution_OnClick(object sender, RoutedEventArgs e) => ExecuteAllSelected();
+    private void StartExecution_OnClick(object sender, RoutedEventArgs e)
+    {
+        _mainWindowPersistentState.ScriptStage = ScriptStageEnum.FirstRun;
+        
+        CheckStageAndWork();   
+    }
     private void SaveProfile_OnClick(object sender, RoutedEventArgs e) => _profileHandler.PromptUserToBrowseAndSaveProfile();
 
     private void LoadProfile_OnClick(object sender, RoutedEventArgs e)
@@ -366,8 +374,5 @@ public partial class MainWindow
 
     private void AvailableInstallsListView_OnPreviewMouseWheel(object sender, MouseWheelEventArgs e) => ControlHelpers.OnPreviewMouseWheelMove(sender, e);
 
-    private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
-    {
-        CheckStageAndWorkOnRerun();
-    }
+    
 }

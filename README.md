@@ -4,8 +4,10 @@
 * [Features and Roadmap](https://github.com/PockyBum522/windows-setup-assistant#features-and-roadmap)
 * [Prerequisites](https://github.com/PockyBum522/windows-setup-assistant#prerequisites)
 * [Usage](https://github.com/PockyBum522/windows-setup-assistant#usage)
-* [Objectives](https://github.com/PockyBum522/windows-setup-assistant#objectives)
-* [Custom Configuration](https://github.com/PockyBum522/windows-setup-assistant#custom-configuration)
+* [Objectives](https://github.com/PockyBum522/windows-setup-assistant#extensible-configuration---installers)
+* [Extensible Configuration - Installers](https://github.com/PockyBum522/windows-setup-assistant#custom-configuration)
+* [Extensible Configuration - Windows Settings](https://github.com/PockyBum522/windows-setup-assistant#extensible-configuration---windows-settings)
+
 * [Detailed Breakdown of What's Going On in the Batch File Bootstrapper](https://github.com/PockyBum522/windows-setup-assistant#detailed-breakdown-of-whats-going-on-in-the-batch-file-bootstrapper)
 * [Detailed Breakdown of What's Going On in the Main Application](https://github.com/PockyBum522/windows-setup-assistant#detailed-breakdown-of-whats-going-on-in-the-main-application)
 * [Helping With Development](https://github.com/PockyBum522/windows-setup-assistant#helping-with-development)
@@ -61,7 +63,7 @@ We are aiming to add more settings as the project progresses. We are still in th
 * Internet on said machine
 
 
-# Usage:
+# Usage
 
 For the end user, there are a few things you should know:
 

@@ -83,21 +83,7 @@ public class StateHandler
     /// </summary>
     public void LoadStateFromJsonIntoPersistentState(string profileJsonFilePath)
     {
-        var settings = new JsonSerializerSettings
-        {
-            TypeNameHandling = TypeNameHandling.Auto
-        };
-
-        if (!File.Exists(profileJsonFilePath)) throw new JsonSerializationException();
         
-        // Otherwise:
-        var jsonStateRaw = File.ReadAllText(profileJsonFilePath);
-
-        var loadedState = JsonConvert.DeserializeObject<MainWindowPersistentState>(jsonStateRaw, settings);
-        
-        if (loadedState is null) throw new NullReferenceException();
-
-        _uiThreadDispatcher.Invoke(() => { _mainWindowPersistentState = loadedState; });
         
         _logger.Debug("Loaded current state from disk into persistent state instance");
         _logger.Debug("Stage in LoadStateFromJsonIntoPersistentState() is: {Stage}", _mainWindowPersistentState.ScriptStage);

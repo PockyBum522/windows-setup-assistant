@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -26,6 +27,7 @@ public partial class MainWindow
 {
     private readonly ILogger _logger;
     private readonly Dispatcher _uiThreadDispatcher;
+    private readonly ExceptionHandler _exceptionHandler;
     private readonly MainWindowPersistentState _mainWindowPersistentState;
     private readonly StateHandler _stateHandler;
     private readonly SystemRebooter _systemRebooter;
@@ -66,6 +68,7 @@ public partial class MainWindow
     public MainWindow(
         ILogger logger,
         Dispatcher uiThreadDispatcher,
+        ExceptionHandler exceptionHandler,
         MainWindowPersistentState mainWindowPersistentState,
         FinalCleanupHelper finalCleanupHelper,
         ProfileHandler profileHandler,
@@ -84,6 +87,7 @@ public partial class MainWindow
     {
         _logger = logger;
         _uiThreadDispatcher = uiThreadDispatcher;
+        _exceptionHandler = exceptionHandler;
         _mainWindowPersistentState = mainWindowPersistentState;
         _finalCleanupHelper = finalCleanupHelper;
         _profileHandler = profileHandler;
@@ -98,12 +102,12 @@ public partial class MainWindow
         _taskbarSettingsSectionBuilder = taskbarSettingsSectionBuilder;
         _desktopSettingsSectionBuilder = desktopSettingsSectionBuilder;
         _windowSettingsSectionBuilder = windowSettingsSectionBuilder;
+
+        _exceptionHandler.SetupExceptionHandlingEvents();
         
         availableApplicationsJsonLoader.LoadAvailableInstallersFromJsonFile();
         
         LoadAllSettingsSections();
-        
-        DataContext = _mainWindowPersistentState;
         
         InitializeComponent();
     }
@@ -386,11 +390,6 @@ public partial class MainWindow
 
     private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
     {
-        _uiThreadDispatcher.Invoke(LoadExistingStateJsonFileIfPresent);
-        
-        if (_mainWindowPersistentState.ScriptStage == ScriptStageEnum.Uninitialized) return;
-
-        // Otherwise:
         CheckStageAndWorkOnRerun();
     }
 }

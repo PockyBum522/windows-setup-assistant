@@ -113,24 +113,32 @@ public class DiContainerBuilder
 
     private void RegisterMainDependencies()
     {
+        _builder.RegisterType<MainWindowPersistentState>().AsSelf().SingleInstance();
+        
         _builder.RegisterType<ExceptionHandler>().AsSelf().SingleInstance();
+        _builder.RegisterType<StartupScriptWriter>().AsSelf().SingleInstance();
+        _builder.RegisterType<SystemRebooter>().AsSelf().SingleInstance();
+        _builder.RegisterType<StateHandler>().AsSelf().SingleInstance();
+        _builder.RegisterType<FinalCleanupHelper>().AsSelf().SingleInstance();
     }
     
     private void RegisterTaskHelpers()
     {
         _builder.RegisterType<DesktopHelper>().AsSelf();
         _builder.RegisterType<PowerHelper>().AsSelf();
-        _builder.RegisterType<TaskbarHelper>().AsSelf().SingleInstance();
-        _builder.RegisterType<TimeHelper>().AsSelf().SingleInstance();
-        _builder.RegisterType<WindowHelper>().AsSelf().SingleInstance();
+        _builder.RegisterType<TaskbarHelper>().AsSelf();
+        _builder.RegisterType<TimeHelper>().AsSelf();
+        _builder.RegisterType<WindowHelper>().AsSelf();
         _builder.RegisterType<WindowsHostnameHelper>().AsSelf();
         _builder.RegisterType<WindowsUpdater>().AsSelf();
     }
 
     private void RegisterMainWindowLoaders()
     {
-        _builder.RegisterType<RegistryFileAsOptionLoader>().AsSelf().SingleInstance();
-        _builder.RegisterType<AvailableApplicationsJsonLoader>().AsSelf().SingleInstance();
+        _builder.RegisterType<RegistryFileAsOptionLoader>().AsSelf();
+        _builder.RegisterType<AvailableApplicationsJsonLoader>().AsSelf();
+        _builder.RegisterType<ProfileHandler>().AsSelf();
+        _builder.RegisterType<StateHandler>().AsSelf();
     }
 
     private void RegisterInstallerModels()
@@ -153,7 +161,6 @@ public class DiContainerBuilder
     {
         _builder.RegisterInstance(Dispatcher.CurrentDispatcher).AsSelf().SingleInstance();
         
-        _builder.RegisterType<MainWindowPartialViewModel>().AsSelf();
         _builder.RegisterType<MainWindow>().AsSelf().SingleInstance();
     }
 }

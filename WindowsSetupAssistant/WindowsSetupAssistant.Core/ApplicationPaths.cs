@@ -59,6 +59,12 @@ namespace WindowsSetupAssistant.Core
                     "Styles.xaml");
 
         /// <summary>
+        /// Where to put the JSON file representing what state the setup is in, state is based on user selection in
+        /// MainWindow
+        /// </summary>
+        public static string StatePath => @"C:\Users\Public\Documents\CSharpInstallerScriptState.json";
+
+        /// <summary>
         /// Contains paths specific to resources such as JSON files, configuration files
         /// </summary>
         public static class ResourcePaths

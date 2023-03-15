@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=PresentationFramework"
         xmlns:models="clr-namespace:WindowsSetupAssistant.Core.Models;assembly=WindowsSetupAssistant.Core"
-        d:DataContext="{d:DesignInstance Type=models:MainWindowPartialViewModel, IsDesignTimeCreatable=True}"
+        xmlns:iSelectableSettings="clr-namespace:WindowsSetupAssistant.Core.Models.ISelectableSettings;assembly=WindowsSetupAssistant.Core"
+        d:DataContext="{d:DesignInstance Type=models:MainWindowPersistentState, IsDesignTimeCreatable=True}"
         mc:Ignorable="d"
         Style="{StaticResource StandardWindow}"
         Title="MainWindow" Height="980" Width="1820"
@@ -15,7 +16,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="10" />
             <RowDefinition Height="1*" />
-            <RowDefinition Height="60" />
+            <RowDefinition Height="46" />
             <RowDefinition Height="10" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -23,7 +24,6 @@
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width="100" />
             <ColumnDefinition Width="10" />
         </Grid.ColumnDefinitions>
 
@@ -58,7 +58,7 @@
                 </Style.Triggers>
             </Style>
             
-            <DataTemplate x:Key="SettingsSectionTemplate">
+            <DataTemplate x:Key="SettingsSectionTemplate" DataType="{x:Type iSelectableSettings:SettingsSection}">
                 
                 <Expander Background="#222222"
                           Foreground="#FFFFFF"
@@ -71,12 +71,14 @@
 
                         <Border BorderBrush="Gray" BorderThickness="1" >
 
-                            <ItemsControl ItemsSource="{Binding Settings}">
+                            <ItemsControl ItemsSource="{Binding Settings}"> 
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                            <CheckBox Content="{Binding DisplayName}" 
-                                                      IsChecked ="{Binding IsSelected}"
-                                                      Margin="2" />
+                                        
+                                        <CheckBox Content="{Binding DisplayName}" 
+                                                  IsChecked ="{Binding IsSelected}"
+                                                  Margin="2" />
+                                        
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
@@ -308,22 +310,16 @@
                     Margin="5"
                     Width="100" />
 
-            <Button Content="TEST"
-                    Click="Test_OnClick"
-                    Padding="10"
-                    Margin="5"
-                    Width="100" />
-
         </DockPanel>
 
-            
         <DockPanel Grid.Row="2" Grid.Column="3" HorizontalAlignment="Center">
             
             <Button Content="Start Execution"
                     DockPanel.Dock="Right"
                     Width="200"
                     Click="StartExecution_OnClick"
-                    Padding="10" />
+                    Padding="10"
+                    Margin="5" />
             
         </DockPanel>
             

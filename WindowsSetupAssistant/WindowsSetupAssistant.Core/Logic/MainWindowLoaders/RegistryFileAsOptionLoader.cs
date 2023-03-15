@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using System.IO;
-using WindowsSetupAssistant.Core.Logic.Application;
+using WindowsSetupAssistant.Core.Models;
 using WindowsSetupAssistant.Core.Models.ISelectableSettings;
 using WindowsSetupAssistant.Core.Models.ISelectableSettings.ISelectableSettings;
 
@@ -12,13 +12,24 @@ namespace WindowsSetupAssistant.Core.Logic.MainWindowLoaders;
 /// </summary>
 public class RegistryFileAsOptionLoader
 {
+    private readonly MainWindowPersistentState _mainWindowPersistentState;
+
+    /// <summary>
+    /// Constructor for dependency injection
+    /// </summary>
+    /// <param name="mainWindowPersistentState">The main state of the application and user's choices that persists after a reboot</param>
+    public RegistryFileAsOptionLoader(
+        MainWindowPersistentState mainWindowPersistentState)
+    {
+        _mainWindowPersistentState = mainWindowPersistentState;
+    }
+    
     /// <summary>
     /// Takes a path to a .reg file, and turns it into an option in the settings section matching its parent folder name
     /// If no matching section name is found, a new section is made with that name
     /// </summary>
     /// <param name="fullPathToRegistryFile">Full path to the .reg file to add as a selectable option</param>
-    /// <param name="currentState">CurrentState to add the new option (and possibly new section) to</param>
-    public void AddRegistryFileAsOption(string fullPathToRegistryFile, CurrentState currentState)
+    public void AddRegistryFileAsOption(string fullPathToRegistryFile)
     {
         var parentFolderName =
             Path.GetFileName(
@@ -49,7 +60,7 @@ public class RegistryFileAsOptionLoader
         
         var foundSection = false;
         
-        foreach (var section in currentState.MainWindowPartialViewModel.SettingsSections)
+        foreach (var section in _mainWindowPersistentState.SettingsSections)
         {
             if (section.DisplayName != parentFolderName) continue;
             
@@ -68,6 +79,6 @@ public class RegistryFileAsOptionLoader
             
         newSection.Settings.Add(newOption);
         
-        currentState.MainWindowPartialViewModel.SettingsSections.Add(newSection);
+        _mainWindowPersistentState.SettingsSections.Add(newSection);
     }
 }

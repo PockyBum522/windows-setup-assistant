@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
+using WindowsSetupAssistant.Core.Models.Enums;
 using WindowsSetupAssistant.Core.Models.IInstallables.Interfaces;
 using WindowsSetupAssistant.Core.Models.ISelectableSettings;
 
@@ -8,7 +9,7 @@ namespace WindowsSetupAssistant.Core.Models;
 /// <summary>
 /// This holds our main window checkboxes state and available installers loaded from json
 /// </summary>
-public partial class MainWindowPartialViewModel : ObservableObject
+public partial class MainWindowPersistentState : ObservableObject
 {
     // Settings sections
     [ObservableProperty] private ObservableCollection<SettingsSection> _settingsSections = new();
@@ -28,4 +29,9 @@ public partial class MainWindowPartialViewModel : ObservableObject
     
     // Update windows
     [ObservableProperty] private bool _isCheckedUpdateWindows;
+    
+    /// <summary>
+    /// What stage the setup is in
+    /// </summary>
+    [ObservableProperty] private ScriptStageEnum _scriptStage;
 }

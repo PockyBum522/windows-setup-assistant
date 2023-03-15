@@ -1,4 +1,5 @@
 ﻿using System;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 using WindowsSetupAssistant.Core.Models.ISelectableSettings.Interfaces;
 
@@ -7,13 +8,12 @@ namespace WindowsSetupAssistant.Core.Models.ISelectableSettings.ISelectableSetti
 /// <summary>
 /// Represents a registry file on the filesystem to give the user the option to merge to registry
 /// </summary>
-public class OptionRegistryFile : ISelectableSetting
+public partial class OptionRegistryFile : ObservableObject, ISelectableSetting
 {
     /// <inheritdoc />
     public string DisplayName { get; set; } = "";
     
-    /// <inheritdoc />
-    public bool IsSelected { get; set; }
+    [ObservableProperty] private bool _isSelected;
 
     /// <summary>
     /// Full path to the .reg file

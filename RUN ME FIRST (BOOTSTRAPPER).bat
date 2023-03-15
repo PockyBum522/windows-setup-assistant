@@ -127,7 +127,7 @@ if "%1" neq "ELEV" (
 
     :: Bugfix that takes care of certain observed instances where 
     :: dot net dependencies were potentially not installed properly
-    choco install dotnet-sdk --force
+    :: choco install dotnet-sdk --force
 
     echo.
     echo Installing powershell core
@@ -166,9 +166,9 @@ if "%1" neq "ELEV" (
     
 	del "%AppData%\NuGet\NuGet.Config"
 	
-	dotnet restore "%~dp0WindowsSetupAssistant\WindowsSetupAssistant.Main\WindowsSetupAssistant.Main.csproj"
+	"C:\Program Files\dotnet\dotnet.exe" restore "%~dp0WindowsSetupAssistant\WindowsSetupAssistant.Main\WindowsSetupAssistant.Main.csproj"
 	
-	dotnet build "%~dp0WindowsSetupAssistant\WindowsSetupAssistant.Main\WindowsSetupAssistant.Main.csproj"
+	"C:\Program Files\dotnet\dotnet.exe" build "%~dp0WindowsSetupAssistant\WindowsSetupAssistant.Main\WindowsSetupAssistant.Main.csproj"
 
 	echo .
 	echo Running: "%~dp0WindowsSetupAssistant\WindowsSetupAssistant.Main\bin\Debug\net7.0-windows\WindowsSetupAssistant.Main.exe"

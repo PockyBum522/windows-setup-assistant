@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Microsoft.Win32;
 using Serilog;
 using WindowsSetupAssistant.Core;
 using WindowsSetupAssistant.Core.Logic.Application;
@@ -14,7 +11,6 @@ using WindowsSetupAssistant.Core.Logic.SettingsTaskHelpers;
 using WindowsSetupAssistant.Core.Models;
 using WindowsSetupAssistant.Core.Models.Enums;
 using WindowsSetupAssistant.Core.Models.IInstallables;
-using WindowsSetupAssistant.Core.Models.IInstallables.Interfaces;
 using WindowsSetupAssistant.UI.WindowResources.MainWindow.SettingsSections;
 
 namespace WindowsSetupAssistant.UI.WindowResources.MainWindow;
@@ -28,14 +24,19 @@ public partial class MainWindow
 #pragma warning restore MVVMTK0033
 {
     private readonly ILogger _logger;
+    private readonly MainWindowPersistentState _mainWindowPersistentState;
+    private readonly StateHandler _stateHandler;
+    private readonly SystemRebooter _systemRebooter;
     private readonly WindowsUpdater _windowsUpdater;
     private readonly PowerHelper _powerHelper;
     private readonly WindowsHostnameHelper _windowsHostnameHelper;
+    private readonly RegistryFileAsOptionLoader _registryFileAsOptionLoader;
     private readonly TimeSettingsSectionBuilder _timeSettingsSectionBuilder;
     private readonly TaskbarSettingsSectionBuilder _taskbarSettingsSectionBuilder;
     private readonly DesktopSettingsSectionBuilder _desktopSettingsSectionBuilder;
     private readonly WindowSettingsSectionBuilder _windowSettingsSectionBuilder;
-    private readonly CurrentState _currentState;
+    private readonly FinalCleanupHelper _finalCleanupHelper;
+    private readonly ProfileHandler _profileHandler;
 
     /// <summary>
     /// Main window constructor, loads in JSON files that need to be shown as controls, sets DataContext, sets up
@@ -43,19 +44,31 @@ public partial class MainWindow
     /// is one.
     /// </summary>
     /// <param name="logger">Injected ILogger to use</param>
+    /// <param name="systemRebooter">Injected</param>
     /// <param name="windowsUpdater">Windows update helper</param>
     /// <param name="powerHelper">Windows power settings helper</param>
     /// <param name="windowsHostnameHelper">Windows hostname helper</param>
+    /// <param name="registryFileAsOptionLoader">Loads registry files from disk and turns them into OptionRegistryFile(s)</param>
     /// <param name="availableApplicationsJsonLoader">Loads "Available Applications.json" file into CurrentState</param>
     /// <param name="timeSettingsSectionBuilder">Time settings section builder</param>
     /// <param name="taskbarSettingsSectionBuilder">Taskbar settings section builder</param>
     /// <param name="desktopSettingsSectionBuilder">Desktop settings section builder</param>
     /// <param name="windowSettingsSectionBuilder">Window settings section builder</param>
+    /// <param name="mainWindowPersistentState">The main state of the application and user's choices that persists after a reboot</param>
+    /// <param name="finalCleanupHelper">Injected to clean up all files on disk when application is finished</param>
+    /// <param name="profileHandler">Injected to save/load profiles for this window</param>
+    /// <param name="stateHandler">Injected to handle state loading and saving, and profile loading and saving</param>
     public MainWindow(
-        ILogger logger, 
+        ILogger logger,
+        MainWindowPersistentState mainWindowPersistentState,
+        FinalCleanupHelper finalCleanupHelper,
+        ProfileHandler profileHandler,
+        StateHandler stateHandler,
+        SystemRebooter systemRebooter,
         WindowsUpdater windowsUpdater,
         PowerHelper powerHelper,
         WindowsHostnameHelper windowsHostnameHelper,
+        RegistryFileAsOptionLoader registryFileAsOptionLoader,
         AvailableApplicationsJsonLoader availableApplicationsJsonLoader,
         TimeSettingsSectionBuilder timeSettingsSectionBuilder,
         TaskbarSettingsSectionBuilder taskbarSettingsSectionBuilder,
@@ -63,54 +76,129 @@ public partial class MainWindow
         WindowSettingsSectionBuilder windowSettingsSectionBuilder)
     {
         _logger = logger;
+        _mainWindowPersistentState = mainWindowPersistentState;
+        _finalCleanupHelper = finalCleanupHelper;
+        _profileHandler = profileHandler;
+        _stateHandler = stateHandler;
+        _systemRebooter = systemRebooter;
         _windowsUpdater = windowsUpdater;
         _powerHelper = powerHelper;
         _windowsHostnameHelper = windowsHostnameHelper;
+        _registryFileAsOptionLoader = registryFileAsOptionLoader;
         _timeSettingsSectionBuilder = timeSettingsSectionBuilder;
         _taskbarSettingsSectionBuilder = taskbarSettingsSectionBuilder;
         _desktopSettingsSectionBuilder = desktopSettingsSectionBuilder;
         _windowSettingsSectionBuilder = windowSettingsSectionBuilder;
-        _currentState = new(_logger);
-
-        DataContext = _currentState.MainWindowPartialViewModel;
         
-        availableApplicationsJsonLoader.LoadAvailableInstallersFromJsonFile(_currentState);
+        DataContext = _mainWindowPersistentState;
+        
+        availableApplicationsJsonLoader.LoadAvailableInstallersFromJsonFile(_finalCleanupHelper);
 
         LoadAllSettingsSections();
         
         InitializeComponent();
 
-        if (_currentState.ScriptStage == ScriptStageEnum.Uninitialized) return;
+        if (_mainWindowPersistentState.ScriptStage == ScriptStageEnum.Uninitialized) return;
 
         // Otherwise:
         CheckStageAndWorkOnRerun();
     }
     
-    private void Test_OnClick(object sender, RoutedEventArgs e)
+    private void ExecuteAllSelected()
     {
-        throw new NotImplementedException();
+        _mainWindowPersistentState.ScriptStage = ScriptStageEnum.WindowsHasBeenUpdatedOnce;
+        _stateHandler.SaveCurrentStateAsJson(ApplicationPaths.StatePath);
+
+        ExecuteSelectedSettingsInAllSections();
+
+        if (_mainWindowPersistentState.IsCheckedUpdateWindows)
+        {
+            _windowsUpdater.UpdateWindows();
+        
+            _systemRebooter.RebootComputerAndExit();    
+        }
+        else
+        {
+            _mainWindowPersistentState.ScriptStage = ScriptStageEnum.WindowsHasBeenUpdatedFully;
+            _stateHandler.SaveCurrentStateAsJson(ApplicationPaths.StatePath);
+        
+            CheckStageAndWorkOnRerun();
+        }
     }
 
+    private void CheckStageAndWorkOnRerun()
+    {
+        // Set long sleep and monitor off times so it doesn't sleep during install
+        _powerHelper.SetPowerSettingsTo();
+
+        switch (_mainWindowPersistentState.ScriptStage)
+        {
+            case ScriptStageEnum.WindowsHasBeenUpdatedOnce:
+
+                _windowsUpdater.UpdateWindows();
+
+                _mainWindowPersistentState.ScriptStage = ScriptStageEnum.WindowsHasBeenUpdatedTwice;
+
+                _stateHandler.SaveCurrentStateAsJson(ApplicationPaths.StatePath);
+                _systemRebooter.RebootComputerAndExit();
+
+                break;
+
+            case ScriptStageEnum.WindowsHasBeenUpdatedTwice:
+
+                _windowsUpdater.UpdateWindows();
+
+                _mainWindowPersistentState.ScriptStage = ScriptStageEnum.WindowsHasBeenUpdatedFully;
+
+                _stateHandler.SaveCurrentStateAsJson(ApplicationPaths.StatePath);
+                _systemRebooter.RebootComputerAndExit();
+
+                break;
+
+            case ScriptStageEnum.WindowsHasBeenUpdatedFully:
+
+                if (_mainWindowPersistentState.IsCheckedUpdateWindows)
+                {
+                    _windowsUpdater.UpdateWindows();
+                }
+
+                WorkAllApplicationInstallCheckboxes();
+
+                _finalCleanupHelper.DeleteSavedChoicesAndStageOnDisk();
+
+                if (!string.IsNullOrWhiteSpace(_mainWindowPersistentState.TextHostname))
+                {
+                    _windowsHostnameHelper.ChangeHostName(_mainWindowPersistentState.TextHostname);
+                }
+
+                SetPowerSettingsToUserChoicesAtStart();
+
+                _systemRebooter.PromptToRebootComputerAndExit();
+
+                break;
+        }
+    }
+    
     private void LoadAllSettingsSections()
     {
         var timeSection = _timeSettingsSectionBuilder.MakeSection();
-        _currentState.MainWindowPartialViewModel.SettingsSections.Add(timeSection);
+        _mainWindowPersistentState.SettingsSections.Add(timeSection);
 
         var taskbarSection = _taskbarSettingsSectionBuilder.MakeSection();
-        _currentState.MainWindowPartialViewModel.SettingsSections.Add(taskbarSection);
+        _mainWindowPersistentState.SettingsSections.Add(taskbarSection);
         
         var desktopSection = _desktopSettingsSectionBuilder.MakeSection();
-        _currentState.MainWindowPartialViewModel.SettingsSections.Add(desktopSection);
+        _mainWindowPersistentState.SettingsSections.Add(desktopSection);
 
         var windowSection = _windowSettingsSectionBuilder.MakeSection();
-        _currentState.MainWindowPartialViewModel.SettingsSections.Add(windowSection);
+        _mainWindowPersistentState.SettingsSections.Add(windowSection);
 
         // Load registry files from disk
         var registryFilePaths = GetAllRegistryFilePathsFromResources();
 
         foreach (var filePath in registryFilePaths)
         {
-            new RegistryFileAsOptionLoader().AddRegistryFileAsOption(filePath, _currentState);
+            _registryFileAsOptionLoader.AddRegistryFileAsOption(filePath);
         }
     }
 
@@ -132,210 +220,95 @@ public partial class MainWindow
         return returnPaths;
     }
 
-    private void StartExecution_OnClick(object sender, RoutedEventArgs e)
-    {
-        ExecuteAllSelected();
-    }
-
-    private void AvailableInstallsListView_OnPreviewMouseWheel(object sender, MouseWheelEventArgs e)
-    {
-        var listView = (ListView)sender;
-        var scv = (ScrollViewer)listView.Parent;
-
-        var scrollAmount = e.Delta / 2f;
-
-        scv.ScrollToVerticalOffset(scv.VerticalOffset - scrollAmount);
-
-        e.Handled = true;
-    }
-
-    private void SaveProfile_OnClick(object sender, RoutedEventArgs e)
-    {
-        var profilesDirectoryPath = Path.Join(
-                ApplicationPaths.SetupAssistantRootDir,
-                "Resources",
-                "Configuration",
-                "Profiles")
-            .Replace("/", @"\");
-
-        profilesDirectoryPath = Path.GetFullPath(profilesDirectoryPath);
-
-        Console.WriteLine(profilesDirectoryPath);
-
-        var fileDialog = new SaveFileDialog()
-            { Filter = "JSON Files | *.json", InitialDirectory = profilesDirectoryPath };
-
-        if (fileDialog.ShowDialog() != true) return;
-
-        var fullSelectedFilePath = fileDialog.FileName;
-
-        _currentState.SaveCurrentStateAsProfile(fullSelectedFilePath);
-    }
+    private void StartExecution_OnClick(object sender, RoutedEventArgs e) => ExecuteAllSelected();
+    private void SaveProfile_OnClick(object sender, RoutedEventArgs e) => _profileHandler.PromptUserToBrowseAndSaveProfile();
 
     private void LoadProfile_OnClick(object sender, RoutedEventArgs e)
     {
         ClearAllControls();
-
-        var profilesDirectoryPath = Path.Join(
-                ApplicationPaths.SetupAssistantRootDir,
-                "Resources",
-                "Configuration",
-                "Profiles")
-            .Replace("/", @"\");
-
-        profilesDirectoryPath = Path.GetFullPath(profilesDirectoryPath);
-
-        Console.WriteLine(profilesDirectoryPath);
-
-        var fileDialog = new OpenFileDialog()
-            { Filter = "JSON Files | *.json", InitialDirectory = profilesDirectoryPath };
-
-        if (fileDialog.ShowDialog() != true) return;
-
-        var fullSelectedFilePath = fileDialog.FileName;
-
-        var loadedProfileState = _currentState.GetStateFromDisk(fullSelectedFilePath);
-
-        foreach (var install in loadedProfileState.AvailableInstalls)
-        {
-            if (install.IsSelected)
-                GetInstallInListByDisplayName(install.DisplayName).IsSelected = true;
-        }
-
-        SetAllSettingsCheckBoxesToProfile(loadedProfileState);
-
-        _currentState.MainWindowPartialViewModel.TextHostname = loadedProfileState.TextHostname;
+        
+        _profileHandler.PromptUserForProfileThenLoadIt();
     }
     
     private void SelectAll_OnClick(object sender, RoutedEventArgs e)
     {
-        foreach (var propertyInfo in _currentState.MainWindowPartialViewModel.GetType().GetProperties())
+        foreach (var propertyInfo in _mainWindowPersistentState.GetType().GetProperties())
         {
             if (propertyInfo.PropertyType != typeof(bool)) continue;
 
             if (!propertyInfo.Name.Contains("Checked")) continue;
 
-            propertyInfo.SetValue(_currentState.MainWindowPartialViewModel, true);
+            propertyInfo.SetValue(_mainWindowPersistentState, true);
         }
 
-        foreach (var installer in _currentState.MainWindowPartialViewModel.AvailableInstalls)
+        foreach (var installer in _mainWindowPersistentState.AvailableInstalls)
         {
             installer.IsSelected = true;
         }
+        
+        foreach (var section in _mainWindowPersistentState.SettingsSections)
+        {
+            foreach (var setting in section.Settings)
+            {
+                setting.IsSelected = true;
+            }
+        }
     }
     
-    private void ClearAll_OnClick(object sender, RoutedEventArgs e)
-    {
-        ClearAllControls();
-    }
+    private void ClearAll_OnClick(object sender, RoutedEventArgs e) => ClearAllControls();
 
     private void ClearAllControls()
     {
-        foreach (var propertyInfo in _currentState.MainWindowPartialViewModel.GetType().GetProperties())
+        foreach (var propertyInfo in _mainWindowPersistentState.GetType().GetProperties())
         {
             if (propertyInfo.PropertyType != typeof(bool)) continue;
 
             if (!propertyInfo.Name.Contains("Checked")) continue;
 
-            propertyInfo.SetValue(_currentState.MainWindowPartialViewModel, false);
+            propertyInfo.SetValue(_mainWindowPersistentState, false);
         }
 
-        foreach (var installer in _currentState.MainWindowPartialViewModel.AvailableInstalls)
+        foreach (var installer in _mainWindowPersistentState.AvailableInstalls)
         {
             installer.IsSelected = false;
         }
 
-        _currentState.MainWindowPartialViewModel.TextHostname = "";
-    }
-
-    private void ExecuteAllSelected()
-    {
-        _currentState.ScriptStage = ScriptStageEnum.WindowsHasBeenUpdatedOnce;
-        _currentState.SaveCurrentStateForReboot();
-
-        ExecuteSelectedSettingsInAllSections();
-
-        if (_currentState.MainWindowPartialViewModel.IsCheckedUpdateWindows)
-        {
-            _windowsUpdater.UpdateWindows();
-        
-            _currentState.RebootComputerAndExit();    
-        }
-        else
-        {
-            _currentState.ScriptStage = ScriptStageEnum.WindowsHasBeenUpdatedFully;
-            _currentState.SaveCurrentStateForReboot();
-        
-            CheckStageAndWorkOnRerun();
-        }
-    }
-
-    private void ExecuteSelectedSettingsInAllSections()
-    {
-        foreach (var section in _currentState.MainWindowPartialViewModel.SettingsSections)
+        foreach (var section in _mainWindowPersistentState.SettingsSections)
         {
             foreach (var setting in section.Settings)
             {
-                if (setting.IsSelected)
-                {
-                    _logger.Debug("Executing setting: {Name}", setting.DisplayName);
-                    
-                    setting.ExecuteSetting?.Invoke();
-                }
+                setting.IsSelected = false;
             }
         }
+        
+        _mainWindowPersistentState.TextHostname = "";
+
+
+        _mainWindowPersistentState.IsCheckedUpdateWindows = false;
+        
+        _mainWindowPersistentState.TextHostname = "";
+
+        _mainWindowPersistentState.TextMonitorTimeoutOnAc = "";
+        _mainWindowPersistentState.TextMonitorTimeoutOnBattery = "";
+        _mainWindowPersistentState.TextStandbyTimeoutOnAc = "";
+        _mainWindowPersistentState.TextStandbyTimeoutOnBattery = "";
+        _mainWindowPersistentState.TextHibernateTimeoutOnAc = "";
+        _mainWindowPersistentState.TextHibernateTimeoutOnBattery = "";
     }
-
-    private void CheckStageAndWorkOnRerun()
+    
+    private void ExecuteSelectedSettingsInAllSections()
     {
-        // Set long sleep and monitor off times so it doesn't sleep during install
-        // _windowsSettingsHelper.SetPowerSettingsTo();
-
-        switch (_currentState.ScriptStage)
+        foreach (var section in _mainWindowPersistentState.SettingsSections)
         {
-            case ScriptStageEnum.WindowsHasBeenUpdatedOnce:
-
-                _windowsUpdater.UpdateWindows();
-
-                _currentState.ScriptStage = ScriptStageEnum.WindowsHasBeenUpdatedTwice;
-
-                _currentState.SaveCurrentStateForReboot();
-                _currentState.RebootComputerAndExit();
-
-                break;
-
-            case ScriptStageEnum.WindowsHasBeenUpdatedTwice:
-
-                _windowsUpdater.UpdateWindows();
-
-                _currentState.ScriptStage = ScriptStageEnum.WindowsHasBeenUpdatedFully;
-
-                _currentState.SaveCurrentStateForReboot();
-                _currentState.RebootComputerAndExit();
-
-                break;
-
-            case ScriptStageEnum.WindowsHasBeenUpdatedFully:
-
-                if (_currentState.MainWindowPartialViewModel.IsCheckedUpdateWindows)
-                {
-                     _windowsUpdater.UpdateWindows();
-                }
-
-                WorkAllApplicationInstallCheckboxes();
-
-                _currentState.DeleteSavedChoicesAndStageOnDisk();
-
-                if (!string.IsNullOrWhiteSpace(_currentState.MainWindowPartialViewModel.TextHostname))
-                {
-                    _windowsHostnameHelper.ChangeHostName(_currentState.MainWindowPartialViewModel.TextHostname);
-                }
-
-                SetPowerSettingsToUserChoicesAtStart();
-
-                _currentState.PromptToRebootComputerAndExit();
-
-                break;
+            foreach (var setting in section.Settings)
+            {
+                if (!setting.IsSelected) continue;
+                
+                // Otherwise:
+                _logger.Debug("Executing setting: {Name}", setting.DisplayName);
+                    
+                setting.ExecuteSetting?.Invoke();
+            }
         }
     }
 
@@ -347,20 +320,20 @@ public partial class MainWindow
         var standbyTimeoutOnBattery = 10;
         var hibernateTimeoutOnAc = 0;
         
-        if (!string.IsNullOrWhiteSpace(_currentState.MainWindowPartialViewModel.TextMonitorTimeoutOnAc))
-            monitorTimeoutOnAc = int.Parse(_currentState.MainWindowPartialViewModel.TextMonitorTimeoutOnAc);
+        if (!string.IsNullOrWhiteSpace(_mainWindowPersistentState.TextMonitorTimeoutOnAc))
+            monitorTimeoutOnAc = int.Parse(_mainWindowPersistentState.TextMonitorTimeoutOnAc);
         
-        if (!string.IsNullOrWhiteSpace(_currentState.MainWindowPartialViewModel.TextMonitorTimeoutOnBattery))
-            monitorTimeoutOnBattery = int.Parse(_currentState.MainWindowPartialViewModel.TextMonitorTimeoutOnBattery);
+        if (!string.IsNullOrWhiteSpace(_mainWindowPersistentState.TextMonitorTimeoutOnBattery))
+            monitorTimeoutOnBattery = int.Parse(_mainWindowPersistentState.TextMonitorTimeoutOnBattery);
         
-        if (!string.IsNullOrWhiteSpace(_currentState.MainWindowPartialViewModel.TextStandbyTimeoutOnAc))
-            standbyTimeoutOnAc = int.Parse(_currentState.MainWindowPartialViewModel.TextStandbyTimeoutOnAc);
+        if (!string.IsNullOrWhiteSpace(_mainWindowPersistentState.TextStandbyTimeoutOnAc))
+            standbyTimeoutOnAc = int.Parse(_mainWindowPersistentState.TextStandbyTimeoutOnAc);
 
-        if (!string.IsNullOrWhiteSpace(_currentState.MainWindowPartialViewModel.TextStandbyTimeoutOnBattery))
-            standbyTimeoutOnBattery = int.Parse(_currentState.MainWindowPartialViewModel.TextStandbyTimeoutOnBattery);
+        if (!string.IsNullOrWhiteSpace(_mainWindowPersistentState.TextStandbyTimeoutOnBattery))
+            standbyTimeoutOnBattery = int.Parse(_mainWindowPersistentState.TextStandbyTimeoutOnBattery);
         
-        if (!string.IsNullOrWhiteSpace(_currentState.MainWindowPartialViewModel.TextHibernateTimeoutOnAc))
-            hibernateTimeoutOnAc = int.Parse(_currentState.MainWindowPartialViewModel.TextHibernateTimeoutOnAc);
+        if (!string.IsNullOrWhiteSpace(_mainWindowPersistentState.TextHibernateTimeoutOnAc))
+            hibernateTimeoutOnAc = int.Parse(_mainWindowPersistentState.TextHibernateTimeoutOnAc);
         
         _powerHelper.SetPowerSettingsTo(monitorTimeoutOnAc, monitorTimeoutOnBattery, standbyTimeoutOnAc, standbyTimeoutOnBattery, hibernateTimeoutOnAc);
     }
@@ -372,7 +345,7 @@ public partial class MainWindow
         new ChocolateyInstaller() { ChocolateyId = "7Zip" }.ExecuteInstall(_logger);
 
         // Run non-executable installers and get them out of the way first since they require no user interaction
-        foreach (var installer in _currentState.MainWindowPartialViewModel.AvailableInstalls)
+        foreach (var installer in _mainWindowPersistentState.AvailableInstalls)
         {
             if (!installer.IsSelected) continue;
 
@@ -381,7 +354,7 @@ public partial class MainWindow
         }
 
         // Do the executableInstallers last
-        foreach (var installer in _currentState.MainWindowPartialViewModel.AvailableInstalls)
+        foreach (var installer in _mainWindowPersistentState.AvailableInstalls)
         {
             if (!installer.IsSelected) continue;
 
@@ -390,21 +363,5 @@ public partial class MainWindow
         }
     }
 
-    private void SetAllSettingsCheckBoxesToProfile(MainWindowPartialViewModel loadedProfileState)
-    {
-
-    }
-
-    private IInstallable GetInstallInListByDisplayName(string displayName)
-    {
-        foreach (var install in _currentState.MainWindowPartialViewModel.AvailableInstalls)
-        {
-            if (displayName == install.DisplayName)
-                return install;
-        }
-
-        // Just return something it can't act on that will affect the main window
-        return new ArchiveInstaller();
-    }
-
+    private void AvailableInstallsListView_OnPreviewMouseWheel(object sender, MouseWheelEventArgs e) => ControlHelpers.OnPreviewMouseWheelMove(sender, e);
 }

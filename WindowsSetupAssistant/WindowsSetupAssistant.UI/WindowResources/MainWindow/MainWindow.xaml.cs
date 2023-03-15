@@ -94,14 +94,13 @@ public partial class MainWindow
         _desktopSettingsSectionBuilder = desktopSettingsSectionBuilder;
         _windowSettingsSectionBuilder = windowSettingsSectionBuilder;
 
-        if (File.Exists(ApplicationPaths.StatePath))
-            _mainWindowPersistentState = _stateHandler.GetStateFromJson(ApplicationPaths.StatePath);
+        LoadExistingStateJsonFileIfPresent();
+        
+        availableApplicationsJsonLoader.LoadAvailableInstallersFromJsonFile();
+        
+        LoadAllSettingsSections();
         
         DataContext = _mainWindowPersistentState;
-        
-        availableApplicationsJsonLoader.LoadAvailableInstallersFromJsonFile(_finalCleanupHelper);
-
-        LoadAllSettingsSections();
         
         InitializeComponent();
 
@@ -110,13 +109,27 @@ public partial class MainWindow
         // Otherwise:
         CheckStageAndWorkOnRerun();
     }
-    
+
+    private void LoadExistingStateJsonFileIfPresent()
+    {
+        if (!File.Exists(ApplicationPaths.StatePath)) return;
+        
+        // Otherwise:
+        _logger.Information("Loaded existing state file from public documents");
+        _logger.Information("Got stage: {Stage}", _mainWindowPersistentState.ScriptStage);
+
+        _stateHandler.LoadStateFromJsonIntoPersistentState(ApplicationPaths.StatePath);
+    }
+
     private void ExecuteAllSelected()
     {
         _mainWindowPersistentState.ScriptStage = ScriptStageEnum.WindowsHasBeenUpdatedOnce;
         _stateHandler.SaveCurrentStateAsJson(ApplicationPaths.StatePath);
         _startupScriptWriter.CreateRebootScriptInStartup();
 
+        // Set long sleep and monitor off times so it doesn't sleep during install
+        _powerHelper.SetPowerSettingsTo();
+        
         ExecuteSelectedSettingsInAllSections();
 
         if (_mainWindowPersistentState.IsCheckedUpdateWindows)

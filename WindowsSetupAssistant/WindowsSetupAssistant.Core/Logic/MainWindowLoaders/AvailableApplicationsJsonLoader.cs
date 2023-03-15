@@ -32,9 +32,8 @@ public class AvailableApplicationsJsonLoader
     /// <summary>
     /// Load in the "Available Installs.json" and updates currentState with entries
     /// </summary>
-    /// <param name="finalCleanupHelper">CurrentState object to update</param>
     /// <exception cref="NullReferenceException">Thrown if deserialized available installs object is null</exception>
-    public void LoadAvailableInstallersFromJsonFile(FinalCleanupHelper finalCleanupHelper)
+    public void LoadAvailableInstallersFromJsonFile()
     {
         var availableInstallsJsonRaw = File.ReadAllText(ApplicationPaths.ResourcePaths.InstallsFileJsonPath);
 

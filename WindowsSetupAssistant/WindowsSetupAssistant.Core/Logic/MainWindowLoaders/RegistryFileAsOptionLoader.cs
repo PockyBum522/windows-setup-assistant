@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.IO;
+using Serilog;
 using WindowsSetupAssistant.Core.Models;
 using WindowsSetupAssistant.Core.Models.ISelectableSettings;
 using WindowsSetupAssistant.Core.Models.ISelectableSettings.ISelectableSettings;
@@ -12,15 +13,19 @@ namespace WindowsSetupAssistant.Core.Logic.MainWindowLoaders;
 /// </summary>
 public class RegistryFileAsOptionLoader
 {
+    private readonly ILogger _logger;
     private readonly MainWindowPersistentState _mainWindowPersistentState;
 
     /// <summary>
     /// Constructor for dependency injection
     /// </summary>
+    /// <param name="logger">Injected ILogger to use</param>
     /// <param name="mainWindowPersistentState">The main state of the application and user's choices that persists after a reboot</param>
     public RegistryFileAsOptionLoader(
+        ILogger logger,
         MainWindowPersistentState mainWindowPersistentState)
     {
+        _logger = logger;
         _mainWindowPersistentState = mainWindowPersistentState;
     }
     
@@ -38,6 +43,8 @@ public class RegistryFileAsOptionLoader
         // Make option
 
         var displayName = Path.GetFileNameWithoutExtension(fullPathToRegistryFile);
+
+        var importArguments = $"import \"{fullPathToRegistryFile}\"";
         
         var newOption = new OptionRegistryFile()
         {
@@ -48,10 +55,12 @@ public class RegistryFileAsOptionLoader
                 {
                     Verb = "runas",
                     FileName = "reg",
-                    Arguments = $"import \"{fullPathToRegistryFile}\"",
+                    Arguments = importArguments,
                     UseShellExecute = true
                 };
 
+                _logger.Information("About to import reg file: {FilePath} with arguments: reg {Arguments}", fullPathToRegistryFile, importArguments);
+                
                 var proc = Process.Start(processStartInfo);
 
                 proc?.WaitForExit();

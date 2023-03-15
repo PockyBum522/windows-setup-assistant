@@ -11,7 +11,7 @@ namespace WindowsSetupAssistant.Core.Logic.MainWindowLoaders;
 public class StateHandler
 {
     private readonly ILogger _logger;
-    private readonly MainWindowPersistentState _mainWindowPersistentState;
+    private MainWindowPersistentState _mainWindowPersistentState;
 
     /// <summary>
     /// Constructor for dependency injection
@@ -69,5 +69,27 @@ public class StateHandler
         _logger.Debug("Loaded current state from disk");
             
         return newMainWindowPartialViewModel;
+    }
+    
+    /// <summary>
+    /// Saves the current state to disk at location specified by StatePath
+    /// </summary>
+    public void LoadStateFromJsonIntoPersistentState(string profileJsonFilePath)
+    {
+        var settings = new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.Auto
+        };
+
+        if (!File.Exists(profileJsonFilePath)) throw new JsonSerializationException();
+        
+        // Otherwise:
+        var jsonStateRaw = File.ReadAllText(profileJsonFilePath);
+
+        _mainWindowPersistentState =
+            JsonConvert.DeserializeObject<MainWindowPersistentState>(jsonStateRaw, settings) ??
+            new MainWindowPersistentState();
+
+        _logger.Debug("Loaded current state from disk into persistent state instance");
     }
 }

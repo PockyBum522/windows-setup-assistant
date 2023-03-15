@@ -92,6 +92,8 @@ if "%1" neq "ELEV" (
 
     choco upgrade chocolatey
 
+    choco config set --name cacheLocation --value "%~dp0WindowsSetupAssistant\Resources\ChocolateyCache"
+	
     choco upgrade autologon
 
     echo.

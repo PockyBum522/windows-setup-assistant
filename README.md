@@ -93,11 +93,15 @@ If you have chosen to install standard .exe or .msi installers, they will be sav
 
 * Better progress indication. Right now a lot of things happen invisibly. Not great.
 
+* Move work to be async, although that will mean needing to disable changes to the Main Window controls during the process. Not a big deal, though.
+
 * Application settings able to be set, not just Windows settings
 
 * Better logging and failure recovery
 
 * Considering: Integration of AutoHotKey scripts for both program installation/installation automation as well as changing settings
+
+* Making desktop and start menu shortcuts if specified for PortableApplicationInstaller and ArchiveInstaller.
 
 ### Long-Term
 
@@ -223,13 +227,15 @@ Unused for now, this will later allow you to specify an .exe to make a shortcut 
 
 # Extensible Configuration - Windows Settings
 
-* End users can easily add reg files under WindowsSetupAssistant\Resources\Configuration\Registry Files\XYZ\Example Setting.reg
+Some of the setting changes are built into the program itself. These are added to the main window in \WindowsSetupAssistant.UI\WindowResources\MainWindow\SettingSections\
 
-Can be one level deep only
+However, end users can easily add additional settings change functionality in the form of standard Windows registry files. To do so, simply add your .reg files under \WindowsSetupAssistant\Resources\Configuration\Registry Files\XYZ\Example Setting.reg
 
-If folder name (XYZ above) matches existing header in panel in main window, it will add those reg files as selectable items in that panel
+Right now there can only be one level deeper than the "Registry Files" folder. (In the above example, XYZ)
 
-If no section matches the folder name, a new section will be created
+If the folder name in the "Registry Files" folder (XYZ above) matches an existing header in panel in main window, then the registry file will show up as a selectable option in that panel. The name of the option will be the registry file's name (Without the .reg extension)
+
+If no section matches the folder name, a new section will be created in the main window and the registry file name (Minus the .reg extension) will show up in that new panel/section. 
 
 # Detailed Breakdown of What's Going On in the Batch File Bootstrapper
 

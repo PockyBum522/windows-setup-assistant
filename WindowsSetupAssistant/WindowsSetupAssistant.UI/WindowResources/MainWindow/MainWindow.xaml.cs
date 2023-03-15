@@ -93,6 +93,9 @@ public partial class MainWindow
         _taskbarSettingsSectionBuilder = taskbarSettingsSectionBuilder;
         _desktopSettingsSectionBuilder = desktopSettingsSectionBuilder;
         _windowSettingsSectionBuilder = windowSettingsSectionBuilder;
+
+        if (File.Exists(ApplicationPaths.StatePath))
+            _mainWindowPersistentState = _stateHandler.GetStateFromJson(ApplicationPaths.StatePath);
         
         DataContext = _mainWindowPersistentState;
         

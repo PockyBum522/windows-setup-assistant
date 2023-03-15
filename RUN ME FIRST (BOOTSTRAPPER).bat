@@ -149,7 +149,7 @@ if "%1" neq "ELEV" (
     call :RefreshEnvironmentVariables
 
     echo.
-    echo Deleting lockfile that represents admin stuff is running, now.
+    echo Deleting lockfile that represents admin stuff is running
     echo.
 
     del %PUBLIC%\Documents\elevatedActionsScriptV01.lockfile
@@ -255,9 +255,14 @@ if "%1" neq "ELEV" (
 
     timeout /t 10
 
-
     IF EXIST %PUBLIC%\Documents\elevatedActionsScriptV01.lockfile goto pauseUntilElevatedActionsFinish
-    
+
+    echo.
+    echo Refreshing environment variables for this shell instance
+    echo.
+    ::echo "RefreshEnv.cmd only works from cmd.exe, please install the Chocolatey Profile to take advantage of refreshenv from PowerShell"
+    call :RefreshEnvironmentVariables
+
     exit /B
 
 ::::::::::::::::::::::::::::::::::::::::::::

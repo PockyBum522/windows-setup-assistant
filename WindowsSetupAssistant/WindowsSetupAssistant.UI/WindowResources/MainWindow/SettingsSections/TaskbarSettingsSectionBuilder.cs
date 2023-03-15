@@ -48,18 +48,8 @@ public class TaskbarSettingsSectionBuilder
             }
         };
         
-        var turnOffNewsAndInterests = new OptionInternalMethod()
-        {
-            DisplayName = "Disable news and interests on taskbar",
-            ExecuteSetting = () =>
-            {
-                _taskbarHelper.DisableNewsAndInterestsOnTaskbar();
-            }
-        };
-        
         parentSection.Settings.Add(taskbarSearchToHidden);
         parentSection.Settings.Add(taskbarSearchToIcon);
-        parentSection.Settings.Add(turnOffNewsAndInterests);
 
         return parentSection;
     }

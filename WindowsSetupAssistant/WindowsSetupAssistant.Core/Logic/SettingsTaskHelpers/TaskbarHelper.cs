@@ -19,19 +19,6 @@ public class TaskbarHelper
     {
         _logger = logger;
     }
-
-    /// <summary>
-    /// Turns off news and interests on taskbar
-    /// </summary>
-    /// <exception cref="NullReferenceException">Throws if registry access error</exception>
-    public void DisableNewsAndInterestsOnTaskbar()
-    {
-        _logger.Information("Running {ThisName}", System.Reflection.MethodBase.GetCurrentMethod()?.Name);
-
-        using var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Feeds", true);
-
-        key?.SetValue("ShellFeedsTaskbarViewMode", 2);
-    }
     
     /// <summary>
     /// Collapses the search in taskbar to just an icon 

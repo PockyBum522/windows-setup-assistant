@@ -32,6 +32,7 @@ public partial class MainWindow
     private readonly PowerHelper _powerHelper;
     private readonly WindowsHostnameHelper _windowsHostnameHelper;
     private readonly RegistryFileAsOptionLoader _registryFileAsOptionLoader;
+    private readonly AvailableApplicationsJsonLoader _availableApplicationsJsonLoader;
     private readonly TimeSettingsSectionBuilder _timeSettingsSectionBuilder;
     private readonly TaskbarSettingsSectionBuilder _taskbarSettingsSectionBuilder;
     private readonly DesktopSettingsSectionBuilder _desktopSettingsSectionBuilder;
@@ -89,14 +90,11 @@ public partial class MainWindow
         _powerHelper = powerHelper;
         _windowsHostnameHelper = windowsHostnameHelper;
         _registryFileAsOptionLoader = registryFileAsOptionLoader;
+        _availableApplicationsJsonLoader = availableApplicationsJsonLoader;
         _timeSettingsSectionBuilder = timeSettingsSectionBuilder;
         _taskbarSettingsSectionBuilder = taskbarSettingsSectionBuilder;
         _desktopSettingsSectionBuilder = desktopSettingsSectionBuilder;
         _windowSettingsSectionBuilder = windowSettingsSectionBuilder;
-        
-        availableApplicationsJsonLoader.LoadAvailableInstallersFromJsonFile();
-        
-        LoadAllSettingsSections();
         
         InitializeComponent();
     }
@@ -110,6 +108,16 @@ public partial class MainWindow
 
         switch (_mainWindowPersistentState.ScriptStage)
         {
+            case ScriptStageEnum.Uninitialized:
+                
+                // We don't need to do those except for the first time, because the rest of the time they'll come from 
+                // the CSharpInstallerScriptState.json file on the disk
+                
+                _availableApplicationsJsonLoader.LoadAvailableInstallersFromJsonFile();
+                LoadAllSettingsSections();
+                
+                break;
+            
             case ScriptStageEnum.FirstRun:
                 
                 _mainWindowPersistentState.ScriptStage = ScriptStageEnum.WindowsHasBeenUpdatedOnce;
@@ -168,15 +176,15 @@ public partial class MainWindow
 
                 WorkAllApplicationInstallCheckboxes();
 
-                _finalCleanupHelper.DeleteSavedChoicesAndStageOnDisk();
-
                 if (!string.IsNullOrWhiteSpace(_mainWindowPersistentState.TextHostname))
                 {
                     _windowsHostnameHelper.ChangeHostName(_mainWindowPersistentState.TextHostname);
                 }
 
                 SetPowerSettingsToUserChoicesAtStart();
-
+                
+                _finalCleanupHelper.DeleteSavedChoicesAndStageOnDisk();
+                
                 _systemRebooter.PromptToRebootComputerAndExit();
 
                 break;
@@ -356,6 +364,8 @@ public partial class MainWindow
         // Run non-executable installers and get them out of the way first since they require no user interaction
         foreach (var installer in _mainWindowPersistentState.AvailableInstalls)
         {
+            _logger.Information("Checking installer: {DisplayName} which IsSelected? {IsSelected}", installer.DisplayName, installer.IsSelected);
+            
             if (!installer.IsSelected) continue;
 
             if (installer is not ExecutableInstaller)

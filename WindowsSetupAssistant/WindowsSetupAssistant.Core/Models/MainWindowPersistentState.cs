@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using WindowsSetupAssistant.Core.Models.Enums;
 using WindowsSetupAssistant.Core.Models.IInstallables.Interfaces;
@@ -34,4 +35,29 @@ public partial class MainWindowPersistentState : ObservableObject
     /// What stage the setup is in
     /// </summary>
     [ObservableProperty] private ScriptStageEnum _scriptStage;
+
+    /// <summary>
+    /// Friendlier readout of helpful information for debugging
+    /// </summary>
+    /// <returns>Information about some of the properties and installers</returns>
+    public override string ToString()
+    {
+        var returnString = $"IsCheckedUpdateWindows: {IsCheckedUpdateWindows}" + Environment.NewLine +
+
+                           $"TextMonitorTimeoutOnAc: {TextMonitorTimeoutOnAc}" + Environment.NewLine;
+
+        if (AvailableInstalls.Count > 4)
+        {
+            returnString +=
+                $"Installable 0 DisplayName: {AvailableInstalls[0].DisplayName}, Installable 0 IsSelected: {AvailableInstalls[0].IsSelected}" +
+                Environment.NewLine +
+                $"Installable 1 DisplayName: {AvailableInstalls[1].DisplayName}, Installable 1 IsSelected: {AvailableInstalls[1].IsSelected}" +
+                Environment.NewLine +
+                $"Installable 2 DisplayName: {AvailableInstalls[2].DisplayName}, Installable 2 IsSelected: {AvailableInstalls[2].IsSelected}" +
+                Environment.NewLine +
+                $"Installable 3 DisplayName: {AvailableInstalls[3].DisplayName}, Installable 3 IsSelected: {AvailableInstalls[3].IsSelected}";
+        }
+        
+        return returnString;
+    }
 }

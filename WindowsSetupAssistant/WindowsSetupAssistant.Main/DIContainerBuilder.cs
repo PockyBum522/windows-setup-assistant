@@ -67,6 +67,8 @@ public class DiContainerBuilder
         
         // All of these methods set up and initialize all necessary resources and dependencies,
         // then register the thing for Dependency Injection
+
+        DeserializeStateFromDiskIntoPersistentState();
         
         RegisterApplicationConfiguration();
         
@@ -78,13 +80,31 @@ public class DiContainerBuilder
 
         RegisterSectionBuilders();
         
-        RegisterInstallerModels();
-        
         RegisterUiDependencies();
 
         var container = _builder.Build();
         
         return container;
+    }
+
+    private void DeserializeStateFromDiskIntoPersistentState()
+    {
+        var settings = new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.Auto
+        };
+
+        if (File.Exists(ApplicationPaths.StatePath))
+        {
+            // Otherwise:
+            var jsonStateRaw = File.ReadAllText(ApplicationPaths.StatePath);
+
+            _mainWindowPersistentState = JsonConvert.DeserializeObject<MainWindowPersistentState>(jsonStateRaw, settings) ?? throw new NullReferenceException();
+        }
+        else
+        {
+            _mainWindowPersistentState = new MainWindowPersistentState();
+        }
     }
 
     private void AddThemeResourceMergedDictionary()
@@ -141,6 +161,9 @@ public class DiContainerBuilder
     {
         _builder.RegisterInstance(_mainWindowPersistentState).As<MainWindowPersistentState>().SingleInstance();
         
+        if (_logger is not null)
+            _logger.Debug("Deserialized JSON: {ToString}", _mainWindowPersistentState.ToString());
+        
         _builder.RegisterType<ExceptionHandler>().AsSelf().SingleInstance();
         _builder.RegisterType<StartupScriptWriter>().AsSelf().SingleInstance();
         _builder.RegisterType<SystemRebooter>().AsSelf().SingleInstance();
@@ -167,14 +190,6 @@ public class DiContainerBuilder
         _builder.RegisterType<StateHandler>().AsSelf();
     }
 
-    private void RegisterInstallerModels()
-    {
-        _builder.RegisterType<ArchiveInstaller>().AsSelf();
-        _builder.RegisterType<ChocolateyInstaller>().AsSelf();
-        _builder.RegisterType<ExecutableInstaller>().AsSelf();
-        _builder.RegisterType<PortableApplicationInstaller>().AsSelf();
-    }
-    
     private void RegisterSectionBuilders()
     {
         _builder.RegisterType<TimeSettingsSectionBuilder>().AsSelf();

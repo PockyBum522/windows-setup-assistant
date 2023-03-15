@@ -92,6 +92,8 @@ if "%1" neq "ELEV" (
 
     choco upgrade chocolatey
 
+    choco config set --name cacheLocation --value "%~dp0WindowsSetupAssistant\Resources\ChocolateyCache"
+	
     choco upgrade autologon
 
     echo.
@@ -127,7 +129,7 @@ if "%1" neq "ELEV" (
 
     :: Bugfix that takes care of certain observed instances where 
     :: dot net dependencies were potentially not installed properly
-    choco install dotnet-sdk --force
+    :: choco install dotnet-sdk --force
 
     echo.
     echo Installing powershell core
@@ -149,7 +151,7 @@ if "%1" neq "ELEV" (
     call :RefreshEnvironmentVariables
 
     echo.
-    echo Deleting lockfile that represents admin stuff is running, now.
+    echo Deleting lockfile that represents admin stuff is running
     echo.
 
     del %PUBLIC%\Documents\elevatedActionsScriptV01.lockfile
@@ -166,9 +168,9 @@ if "%1" neq "ELEV" (
     
 	del "%AppData%\NuGet\NuGet.Config"
 	
-	dotnet restore "%~dp0WindowsSetupAssistant\WindowsSetupAssistant.Main\WindowsSetupAssistant.Main.csproj"
+	"C:\Program Files\dotnet\dotnet.exe" restore "%~dp0WindowsSetupAssistant\WindowsSetupAssistant.Main\WindowsSetupAssistant.Main.csproj"
 	
-	dotnet build "%~dp0WindowsSetupAssistant\WindowsSetupAssistant.Main\WindowsSetupAssistant.Main.csproj"
+	"C:\Program Files\dotnet\dotnet.exe" build "%~dp0WindowsSetupAssistant\WindowsSetupAssistant.Main\WindowsSetupAssistant.Main.csproj"
 
 	echo .
 	echo Running: "%~dp0WindowsSetupAssistant\WindowsSetupAssistant.Main\bin\Debug\net7.0-windows\WindowsSetupAssistant.Main.exe"
@@ -255,9 +257,14 @@ if "%1" neq "ELEV" (
 
     timeout /t 10
 
-
     IF EXIST %PUBLIC%\Documents\elevatedActionsScriptV01.lockfile goto pauseUntilElevatedActionsFinish
-    
+
+    echo.
+    echo Refreshing environment variables for this shell instance
+    echo.
+    ::echo "RefreshEnv.cmd only works from cmd.exe, please install the Chocolatey Profile to take advantage of refreshenv from PowerShell"
+    call :RefreshEnvironmentVariables
+
     exit /B
 
 ::::::::::::::::::::::::::::::::::::::::::::

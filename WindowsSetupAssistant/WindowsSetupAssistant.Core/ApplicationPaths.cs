@@ -40,7 +40,7 @@ namespace WindowsSetupAssistant.Core
         /// </summary>
         public static string SetupAssistantRootDir => 
             Path.Join(
-                ApplicationPaths.ThisApplicationRunFromDirectoryPath, "../../../..");
+                ThisApplicationRunFromDirectoryPath, "../../../..");
         
         /// <summary>
         /// The full path to this application's running assembly
@@ -59,6 +59,12 @@ namespace WindowsSetupAssistant.Core
                     "Styles.xaml");
 
         /// <summary>
+        /// Where to put the JSON file representing what state the setup is in, state is based on user selection in
+        /// MainWindow
+        /// </summary>
+        public static string StatePath => @"C:\Users\Public\Documents\CSharpInstallerScriptState.json";
+
+        /// <summary>
         /// Contains paths specific to resources such as JSON files, configuration files
         /// </summary>
         public static class ResourcePaths
@@ -72,6 +78,17 @@ namespace WindowsSetupAssistant.Core
                     "Resources",
                     "Configuration",
                     "Available Installs.json");
+            
+            /// <summary>
+            /// Path to the file containing all information about available installers to show in main window on load
+            /// </summary>
+            public static string ResourceDirectoryRegistryFiles =>
+                Path.GetFullPath(
+                    Path.Join(
+                        SetupAssistantRootDir,
+                        "Resources",
+                        "Configuration",
+                        "Registry Files"));
         }
     }
 }

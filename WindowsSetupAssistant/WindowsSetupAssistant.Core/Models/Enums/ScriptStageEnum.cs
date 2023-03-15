@@ -11,6 +11,11 @@ public enum ScriptStageEnum
     Uninitialized,
     
     /// <summary>
+    /// First run
+    /// </summary>
+    FirstRun,
+    
+    /// <summary>
     /// After we have run windows update once
     /// </summary>
     WindowsHasBeenUpdatedOnce,

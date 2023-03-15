@@ -4,11 +4,16 @@ using System.Windows;
 using System.Windows.Threading;
 using Autofac;
 using JetBrains.Annotations;
+using Newtonsoft.Json;
 using Serilog;
-using WindowsSetupAssistant.Core.Logic;
+using WindowsSetupAssistant.Core;
+using WindowsSetupAssistant.Core.Logic.Application;
+using WindowsSetupAssistant.Core.Logic.MainWindowLoaders;
+using WindowsSetupAssistant.Core.Logic.SettingsTaskHelpers;
+using WindowsSetupAssistant.Core.Models;
 using WindowsSetupAssistant.Core.Models.IInstallables;
-using WindowsSetupAssistant.Core.Models.ViewModels;
-using WindowsSetupAssistant.UI.WindowResources;
+using WindowsSetupAssistant.UI.WindowResources.MainWindow;
+using WindowsSetupAssistant.UI.WindowResources.MainWindow.SettingsSections;
 
 namespace WindowsSetupAssistant.Main;
 
@@ -20,8 +25,32 @@ namespace WindowsSetupAssistant.Main;
 [PublicAPI]
 public class DiContainerBuilder
 {
+    /// <summary>
+    /// Constructor so the null check on _mainWindowPersistentState is happy
+    /// </summary>
+    public DiContainerBuilder()
+    {
+        var settings = new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.Auto
+        };
+
+        if (File.Exists(ApplicationPaths.StatePath))
+        {
+            var jsonStateRaw = File.ReadAllText(ApplicationPaths.StatePath);
+
+            _mainWindowPersistentState = JsonConvert.DeserializeObject<MainWindowPersistentState>(jsonStateRaw, settings) ?? new MainWindowPersistentState();
+        }
+        else
+        {
+            _mainWindowPersistentState = new();
+        }
+    }
+    
     private readonly ContainerBuilder _builder = new ();
     private ILogger? _logger;
+    private MainWindowPersistentState _mainWindowPersistentState;
+    
     //private ISettingsApplicationLocal _settingsApplicationLocal;
 
     /// <summary>
@@ -38,18 +67,44 @@ public class DiContainerBuilder
         
         // All of these methods set up and initialize all necessary resources and dependencies,
         // then register the thing for Dependency Injection
+
+        DeserializeStateFromDiskIntoPersistentState();
         
         RegisterApplicationConfiguration();
         
         RegisterMainDependencies();
 
-        RegisterInstallerModels();
+        RegisterTaskHelpers();
+
+        RegisterMainWindowLoaders();
+
+        RegisterSectionBuilders();
         
         RegisterUiDependencies();
-        
+
         var container = _builder.Build();
         
         return container;
+    }
+
+    private void DeserializeStateFromDiskIntoPersistentState()
+    {
+        var settings = new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.Auto
+        };
+
+        if (File.Exists(ApplicationPaths.StatePath))
+        {
+            // Otherwise:
+            var jsonStateRaw = File.ReadAllText(ApplicationPaths.StatePath);
+
+            _mainWindowPersistentState = JsonConvert.DeserializeObject<MainWindowPersistentState>(jsonStateRaw, settings) ?? throw new NullReferenceException();
+        }
+        else
+        {
+            _mainWindowPersistentState = new MainWindowPersistentState();
+        }
     }
 
     private void AddThemeResourceMergedDictionary()
@@ -104,24 +159,49 @@ public class DiContainerBuilder
 
     private void RegisterMainDependencies()
     {
+        _builder.RegisterInstance(_mainWindowPersistentState).As<MainWindowPersistentState>().SingleInstance();
+        
+        if (_logger is not null)
+            _logger.Debug("Deserialized JSON: {ToString}", _mainWindowPersistentState.ToString());
+        
         _builder.RegisterType<ExceptionHandler>().AsSelf().SingleInstance();
-
-        //_builder.RegisterType<AutofacContractResolver>().AsSelf().SingleInstance();
+        _builder.RegisterType<StartupScriptWriter>().AsSelf().SingleInstance();
+        _builder.RegisterType<SystemRebooter>().AsSelf().SingleInstance();
+        _builder.RegisterType<StateHandler>().AsSelf().SingleInstance();
+        _builder.RegisterType<FinalCleanupHelper>().AsSelf().SingleInstance();
     }
     
-    private void RegisterInstallerModels()
+    private void RegisterTaskHelpers()
     {
-        _builder.RegisterType<ArchiveInstaller>().AsSelf();
-        _builder.RegisterType<ChocolateyInstaller>().AsSelf();
-        _builder.RegisterType<ExecutableInstaller>().AsSelf();
-        _builder.RegisterType<PortableApplicationInstaller>().AsSelf();
+        _builder.RegisterType<DesktopHelper>().AsSelf();
+        _builder.RegisterType<PowerHelper>().AsSelf();
+        _builder.RegisterType<TaskbarHelper>().AsSelf();
+        _builder.RegisterType<TimeHelper>().AsSelf();
+        _builder.RegisterType<WindowHelper>().AsSelf();
+        _builder.RegisterType<WindowsHostnameHelper>().AsSelf();
+        _builder.RegisterType<WindowsUpdater>().AsSelf();
+    }
+
+    private void RegisterMainWindowLoaders()
+    {
+        _builder.RegisterType<RegistryFileAsOptionLoader>().AsSelf();
+        _builder.RegisterType<AvailableApplicationsJsonLoader>().AsSelf();
+        _builder.RegisterType<ProfileHandler>().AsSelf();
+        _builder.RegisterType<StateHandler>().AsSelf();
+    }
+
+    private void RegisterSectionBuilders()
+    {
+        _builder.RegisterType<TimeSettingsSectionBuilder>().AsSelf();
+        _builder.RegisterType<TaskbarSettingsSectionBuilder>().AsSelf();
+        _builder.RegisterType<DesktopSettingsSectionBuilder>().AsSelf();
+        _builder.RegisterType<WindowSettingsSectionBuilder>().AsSelf();
     }
     
     private void RegisterUiDependencies()
     {
         _builder.RegisterInstance(Dispatcher.CurrentDispatcher).AsSelf().SingleInstance();
         
-        _builder.RegisterType<MainWindowPartialViewModel>().AsSelf();
         _builder.RegisterType<MainWindow>().AsSelf().SingleInstance();
     }
 }

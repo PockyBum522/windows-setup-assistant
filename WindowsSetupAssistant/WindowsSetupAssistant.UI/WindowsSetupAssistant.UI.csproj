@@ -20,15 +20,15 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Page Update="WindowResources\MainWindow.xaml">
+      <ProjectReference Include="..\WindowsSetupAssistant.Core\WindowsSetupAssistant.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Page Update="WindowResources\MainWindow\MainWindow.xaml">
         <Generator>MSBuild:Compile</Generator>
         <XamlRuntime>Wpf</XamlRuntime>
         <SubType>Designer</SubType>
       </Page>
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\WindowsSetupAssistant.Core\WindowsSetupAssistant.Core.csproj" />
     </ItemGroup>
 
 </Project>

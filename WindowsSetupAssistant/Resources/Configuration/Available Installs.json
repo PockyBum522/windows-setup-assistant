@@ -101,7 +101,7 @@
 	{
 		"$type": "WindowsSetupAssistant.Core.Models.IInstallables.ArchiveInstaller, WindowsSetupAssistant.Core",
 		"ArchiveFilename": "arduino-latest.7z",
-		"DestinationPath": "C:\\PortableApplications\\Arduino IDE\\",
+		"DestinationPath": "C:\\PortableApplications\\arduino-latest\\",
 		"DisplayName": "Arduino IDE",
 		"IsSelected": false
 	},

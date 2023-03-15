@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Serilog;
-using WindowsSetupAssistant.Core.Interfaces;
+using WindowsSetupAssistant.Core.Models.IInstallables.Interfaces;
 
 namespace WindowsSetupAssistant.Core.Models.IInstallables;
 

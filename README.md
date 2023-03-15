@@ -48,13 +48,15 @@ Through the use of AutoLogon64 from Microsoft SysInternals, you can make the who
 * Unattended Application Installation/Settings Apply/Windows Update with reboots - Complete! 
 * Profile load/save - Complete!
 * GUI - Complete!
-* windows Settings - Some! 
+* windows Settings - Complete!
+* End-user easily customizable additional windows settings - Complete!
+* End-user easily customizable application installs - Complete!
 
 We are aiming to add more settings as the project progresses. We are still in the early stages of setting this up and making something that should be useful to everyone. Your help and pull requests are gratefully welcome!
 
 # Prerequisites
 
-* A Windows 10 Installation that is not configured with your preferred settings or applications.
+* A Windows 10 installation that is not configured with your preferred settings or applications.
 
 * Internet on said machine
 
@@ -63,22 +65,22 @@ We are aiming to add more settings as the project progresses. We are still in th
 
 For the end user, there are a few things you should know:
 
-First off, if you just want to try it, download the repo (Likely the easiest way is as a zip) and then just double click "RUN ME FIRST (BOOTSTRAPPER).bat"
+First off, if you just want to try it, download the latest release and then just double click "RUN ME FIRST (BOOTSTRAPPER).bat"
 
-This will set up a few things necessary for unattended install, like disabling UAC prompts (You can re-enable them after the application is finished configuring your computer) and setting up Automatic Logon to your user with Microsoft's AutoLogon.
+This will set up a few things necessary for unattended install, like prompting you to disable UAC prompts (You can re-enable them after the application is finished configuring your computer) and setting up Automatic Logon to your user with Microsoft's AutoLogon.
 
 After the batch file runs, it should build the main application with .NET 7 SDK, which will be installed automatically. 
 
 Once you see the main window:
 
-<a href="img/documentation/getting-started/MainWindow.png">
-    <img src="img/documentation/getting-started/MainWindow.png" 
+<a href="documentation/img/getting-started/MainWindow.png">
+    <img src="documentation/img/getting-started/MainWindow.png"
         alt="Picture of the Main Window of the application, where almost all of the settings are set and applications can be selected for install" 
         width=300 />
 </a>
 
 <br/>
-You are ready to go. Pick what applications you'd like to have installed, and what settings you would like to have applied, and click "Save Profile" if you'd like to re-use this selection later. 
+You are ready to go. Pick what applications you'd like to have installed, and what settings you would like to have applied, and click "Save Profile" if you'd like to re-use the current selections again in the future. 
 
 When finished, click "Start Execution" and then you can sit back and relax or walk away. Everything from here on out will be taken care of without user interaction.
 
@@ -91,7 +93,7 @@ If you have chosen to install standard .exe or .msi installers, they will be sav
 
 * Better progress indication. Right now a lot of things happen invisibly. Not great.
 
-* A better organization system for system settings, including the ability to have windows-setup-assistant crawl folders underneath it for .reg files which will then show up as selectable in the Main Window.
+* Move work to be async, although that will mean needing to disable changes to the Main Window controls during the process. Not a big deal, though.
 
 * Application settings able to be set, not just Windows settings
 
@@ -99,12 +101,14 @@ If you have chosen to install standard .exe or .msi installers, they will be sav
 
 * Considering: Integration of AutoHotKey scripts for both program installation/installation automation as well as changing settings
 
+* Making desktop and start menu shortcuts if specified for PortableApplicationInstaller and ArchiveInstaller.
+
 ### Long-Term
 
 * Windows 11 Support
 
 
-# Custom Configuration
+# Extensible Configuration - Installers
 
 Users can add their own application installs that will show up in the "Install Applications" list. 
 
@@ -221,6 +225,17 @@ Unused for now, this will later allow you to specify an .exe to make a shortcut 
 
 Unused for now, this will later allow you to specify an .exe to make a shortcut to that will show up on your desktop.
 
+# Extensible Configuration - Windows Settings
+
+Some of the setting changes are built into the program itself. These are added to the main window in \WindowsSetupAssistant.UI\WindowResources\MainWindow\SettingSections\
+
+However, end users can easily add additional settings change functionality in the form of standard Windows registry files. To do so, simply add your .reg files under \WindowsSetupAssistant\Resources\Configuration\Registry Files\XYZ\Example Setting.reg
+
+Right now there can only be one level deeper than the "Registry Files" folder. (In the above example, XYZ)
+
+If the folder name in the "Registry Files" folder (XYZ above) matches an existing header in panel in main window, then the registry file will show up as a selectable option in that panel. The name of the option will be the registry file's name (Without the .reg extension)
+
+If no section matches the folder name, a new section will be created in the main window and the registry file name (Minus the .reg extension) will show up in that new panel/section. 
 
 # Detailed Breakdown of What's Going On in the Batch File Bootstrapper
 

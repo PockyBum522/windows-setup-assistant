@@ -25,6 +25,28 @@ namespace WindowsSetupAssistant.Main;
 [PublicAPI]
 public class DiContainerBuilder
 {
+    /// <summary>
+    /// Constructor so the null check on _mainWindowPersistentState is happy
+    /// </summary>
+    public DiContainerBuilder()
+    {
+        var settings = new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.Auto
+        };
+
+        if (File.Exists(ApplicationPaths.StatePath))
+        {
+            var jsonStateRaw = File.ReadAllText(ApplicationPaths.StatePath);
+
+            _mainWindowPersistentState = JsonConvert.DeserializeObject<MainWindowPersistentState>(jsonStateRaw, settings) ?? new MainWindowPersistentState();
+        }
+        else
+        {
+            _mainWindowPersistentState = new();
+        }
+    }
+    
     private readonly ContainerBuilder _builder = new ();
     private ILogger? _logger;
     private MainWindowPersistentState _mainWindowPersistentState;
@@ -45,8 +67,6 @@ public class DiContainerBuilder
         
         // All of these methods set up and initialize all necessary resources and dependencies,
         // then register the thing for Dependency Injection
-
-        DeserializeAndRegisterMainWindowPersistentStateInstance();
         
         RegisterApplicationConfiguration();
         
@@ -65,29 +85,6 @@ public class DiContainerBuilder
         var container = _builder.Build();
         
         return container;
-    }
-
-    private void DeserializeAndRegisterMainWindowPersistentStateInstance()
-    {
-        var settings = new JsonSerializerSettings
-        {
-            TypeNameHandling = TypeNameHandling.Auto
-        };
-
-        if (File.Exists(ApplicationPaths.StatePath))
-        {
-            var jsonStateRaw = File.ReadAllText(ApplicationPaths.StatePath);
-
-            _mainWindowPersistentState = JsonConvert.DeserializeObject<MainWindowPersistentState>(jsonStateRaw, settings);
-        }
-        else
-        {
-            _mainWindowPersistentState = new();
-        }
-
-        if (_mainWindowPersistentState is null) throw new NullReferenceException();
-        
-        _builder.RegisterInstance(_mainWindowPersistentState).As<MainWindowPersistentState>().SingleInstance();
     }
 
     private void AddThemeResourceMergedDictionary()
@@ -142,6 +139,8 @@ public class DiContainerBuilder
 
     private void RegisterMainDependencies()
     {
+        _builder.RegisterInstance(_mainWindowPersistentState).As<MainWindowPersistentState>().SingleInstance();
+        
         _builder.RegisterType<ExceptionHandler>().AsSelf().SingleInstance();
         _builder.RegisterType<StartupScriptWriter>().AsSelf().SingleInstance();
         _builder.RegisterType<SystemRebooter>().AsSelf().SingleInstance();

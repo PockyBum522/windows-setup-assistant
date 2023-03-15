@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Windows.Threading;
 using Newtonsoft.Json;
 using Serilog;
 using WindowsSetupAssistant.Core.Models;
@@ -13,22 +12,18 @@ namespace WindowsSetupAssistant.Core.Logic.MainWindowLoaders;
 public class StateHandler
 {
     private readonly ILogger _logger;
-    private readonly Dispatcher _uiThreadDispatcher;
     private MainWindowPersistentState _mainWindowPersistentState;
 
     /// <summary>
     /// Constructor for dependency injection
     /// </summary>
     /// <param name="logger">Injected ILogger to use</param>
-    /// <param name="uiThreadDispatcher">UI thread dispatcher, injected. Registered in DiContainerBuilder</param>
     /// <param name="mainWindowPersistentState">The main state of the application and user's choices that persists after a reboot</param>
     public StateHandler(
         ILogger logger,
-        Dispatcher uiThreadDispatcher,
         MainWindowPersistentState mainWindowPersistentState)
     {
         _logger = logger;
-        _uiThreadDispatcher = uiThreadDispatcher;
         _mainWindowPersistentState = mainWindowPersistentState;
     }
     

@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Serilog;
 using WindowsSetupAssistant.Core;
@@ -26,8 +24,6 @@ public partial class MainWindow
 #pragma warning restore MVVMTK0033
 {
     private readonly ILogger _logger;
-    private readonly Dispatcher _uiThreadDispatcher;
-    private readonly ExceptionHandler _exceptionHandler;
     private readonly MainWindowPersistentState _mainWindowPersistentState;
     private readonly StateHandler _stateHandler;
     private readonly SystemRebooter _systemRebooter;
@@ -60,15 +56,12 @@ public partial class MainWindow
     /// <param name="taskbarSettingsSectionBuilder">Taskbar settings section builder</param>
     /// <param name="desktopSettingsSectionBuilder">Desktop settings section builder</param>
     /// <param name="windowSettingsSectionBuilder">Window settings section builder</param>
-    /// <param name="uiThreadDispatcher">UI thread dispatcher, injected. Registered in DiContainerBuilder</param>
     /// <param name="mainWindowPersistentState">The main state of the application and user's choices that persists after a reboot</param>
     /// <param name="finalCleanupHelper">Injected to clean up all files on disk when application is finished</param>
     /// <param name="profileHandler">Injected to save/load profiles for this window</param>
     /// <param name="stateHandler">Injected to handle state loading and saving, and profile loading and saving</param>
     public MainWindow(
         ILogger logger,
-        Dispatcher uiThreadDispatcher,
-        ExceptionHandler exceptionHandler,
         MainWindowPersistentState mainWindowPersistentState,
         FinalCleanupHelper finalCleanupHelper,
         ProfileHandler profileHandler,
@@ -86,8 +79,6 @@ public partial class MainWindow
         WindowSettingsSectionBuilder windowSettingsSectionBuilder)
     {
         _logger = logger;
-        _uiThreadDispatcher = uiThreadDispatcher;
-        _exceptionHandler = exceptionHandler;
         _mainWindowPersistentState = mainWindowPersistentState;
         _finalCleanupHelper = finalCleanupHelper;
         _profileHandler = profileHandler;
@@ -102,25 +93,12 @@ public partial class MainWindow
         _taskbarSettingsSectionBuilder = taskbarSettingsSectionBuilder;
         _desktopSettingsSectionBuilder = desktopSettingsSectionBuilder;
         _windowSettingsSectionBuilder = windowSettingsSectionBuilder;
-
-        _exceptionHandler.SetupExceptionHandlingEvents();
         
         availableApplicationsJsonLoader.LoadAvailableInstallersFromJsonFile();
         
         LoadAllSettingsSections();
         
         InitializeComponent();
-    }
-
-    private void LoadExistingStateJsonFileIfPresent()
-    {
-        if (!File.Exists(ApplicationPaths.StatePath)) return;
-        
-        // Otherwise:
-        _stateHandler.LoadStateFromJsonIntoPersistentState(ApplicationPaths.StatePath);
-        
-        _logger.Information("Loaded existing state file from public documents");
-        _logger.Information("Got stage: {Stage}", _mainWindowPersistentState.ScriptStage);
     }
 
     private void ExecuteAllSelected()

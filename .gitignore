@@ -15,6 +15,7 @@
 /WindowsSetupAssistant/Resources/Installers/Portable Applications/*
 /WindowsSetupAssistant/Resources/Configuration/Profiles/*
 /WindowsSetupAssistant/Resources/Drivers/Network/*
+/WindowsSetupAssistant/Resources/ChocolateyCache/*
 
 # User-specific files (Jetbrains Rider)
 *.DotSettings.user

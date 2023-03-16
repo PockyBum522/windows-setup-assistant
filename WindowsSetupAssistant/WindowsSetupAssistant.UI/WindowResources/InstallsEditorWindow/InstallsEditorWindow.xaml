@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:installsEditorWindow="clr-namespace:WindowsSetupAssistant.UI.WindowResources.InstallsEditorWindow"
+        xmlns:global="clr-namespace:"
         mc:Ignorable="d"
         Title="InstallsEditorWindow" Height="700" Width="800"
         d:DataContext="{d:DesignInstance Type=installsEditorWindow:InstallsEditorViewModel, IsDesignTimeCreatable=True}"
@@ -29,11 +30,17 @@
         <!-- Row 0: List view and add/remove buttons -->
         <DockPanel Grid.Row="0">
             <DockPanel DockPanel.Dock="Right">
+                
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" Margin="5">
                     <Button Content="+"  Command="{Binding AddInstallerCommand}" Width="30" Height="30" Margin="0,0,5,0" />
-                    <Button Content="-"  Command="{Binding RemoveSelectedInstallerCommand}" Width="30" Height="30" />
+                    <Button Content="-"  Command="{Binding RemoveSelectedInstallerCommand}" Width="30" Height="30" Margin="0" />
                 </StackPanel>
 
+                <StackPanel Orientation="Vertical" DockPanel.Dock="Bottom" Margin="0,0,0,50" HorizontalAlignment="Left">
+                    <Button Content="⇡" FontWeight="Bold" FontSize="21" Command="{Binding MoveSelectedInstallerUpCommand}" Width="30" Height="30" Margin="0,0,0,5" />
+                    <Button Content="⇣" FontWeight="Bold" FontSize="21" Command="{Binding MoveSelectedInstallerDownCommand}" Width="30" Height="30" />
+                </StackPanel>
+                
                 <!-- Row 1: Radio buttons -->
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="10">
                     <RadioButton Content="Chocolatey Install" GroupName="InstallerType"
@@ -48,19 +55,17 @@
                     <RadioButton Content="Archive Install" GroupName="InstallerType"
                                  IsChecked="{Binding IsArchiveInstallerChecked, Mode=TwoWay }" Background="#333333"
                                  Margin="5" />
+                    <RadioButton Content="Separator" GroupName="InstallerType"
+                                 IsChecked="{Binding IsAddSeparatorChecked, Mode=TwoWay }" Background="#333333"
+                                 Margin="5" />
                 </StackPanel>
             </DockPanel>
 
             <ListView DockPanel.Dock="Left" 
                       ItemsSource="{Binding AvailableInstallersInJson}" 
                       SelectedItem="{Binding SelectedInstaller}"
+                      ItemTemplateSelector="{StaticResource InstallableListDataTemplateSelector}"
                       Background="#333333" Margin="5" >
-                
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding DisplayName}"/>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
                 
             </ListView>
         </DockPanel>
@@ -131,6 +136,16 @@
 
                         <TextBlock Text="Destination full path" Margin="5" />
                         <TextBox Text="{Binding TextArchiveInstallerDestinationPath}" Margin="5" />
+                    </StackPanel>
+                </DockPanel>
+            
+                <DockPanel Visibility="{Binding IsAddSeparatorVisible}">
+
+                    <TextBlock Text="Separator Details" DockPanel.Dock="Top" Margin="0,0,0,5" />
+
+                    <StackPanel Style="{StaticResource IndentedMarginStyle}">
+                        <TextBlock Text="Display name (Without decoration)" Margin="5" />
+                        <TextBox Text="{Binding TextDisplayName}" Margin="5" />
                     </StackPanel>
                 </DockPanel>
             </StackPanel>

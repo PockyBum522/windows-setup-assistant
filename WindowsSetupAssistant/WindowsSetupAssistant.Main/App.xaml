@@ -1,12 +1,49 @@
 ﻿<Application x:Class="WindowsSetupAssistant.Main.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:global="clr-namespace:;assembly=WindowsSetupAssistant.UI"
+             xmlns:windowResources="clr-namespace:WindowsSetupAssistant.UI.WindowResources;assembly=WindowsSetupAssistant.UI">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary
                     Source="Themes\SelenMetroDark\Styles.xaml"/>
+                
+                
+                <ResourceDictionary>
+                <!-- DataTemplate for Separators In Installers List -->
+                <DataTemplate x:Key="SeparatorDisplayTemplate">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="-----========== " Foreground="Green"/>
+                        <TextBlock Text="{Binding DisplayName}" Foreground="Green"/>
+                        <TextBlock Text=" ==========-----" Foreground="Green"/>
+                    </StackPanel>
+                </DataTemplate>
+
+                <!-- DataTemplate for IInstallables In Installers List -->
+                <DataTemplate x:Key="IInstallableDisplayTemplate">
+                  
+                    <StackPanel Orientation="Horizontal">
+
+                        <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                                  Content="{Binding DisplayName}"
+                                  Margin="2,2,0,0" />
+
+                    </StackPanel>
+                    
+                </DataTemplate>
+
+                <!-- Custom DataTemplateSelector -->
+                <windowResources:IInstallableListDataTemplateSelector x:Key="InstallableListDataTemplateSelector"
+                                                             SeparatorDisplayTemplate="{StaticResource SeparatorDisplayTemplate}"
+                                                             IInstallableDisplayTemplate="{StaticResource IInstallableDisplayTemplate}" />
+        
+                </ResourceDictionary>
+                
             </ResourceDictionary.MergedDictionaries>
+        
         </ResourceDictionary>
+                       
+        
     </Application.Resources>
 </Application>

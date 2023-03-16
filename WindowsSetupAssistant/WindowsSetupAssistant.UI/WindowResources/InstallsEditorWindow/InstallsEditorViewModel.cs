@@ -86,13 +86,14 @@ public partial class InstallsEditorViewModel : ObservableObject
             convertedInstaller.ArchiveFilename = TextArchiveInstallerFileName;
             convertedInstaller.DestinationPath = TextArchiveInstallerDestinationPath;
         }
-
+        
         SaveAllEditedInstallersToJsonFile();
 
         IsChocolateyInstallerChecked = false;
         IsExecutableInstallerChecked = false;
         IsArchiveInstallerChecked = false;
         IsPortableApplicationInstallerChecked = false;
+        IsAddSeparatorChecked = false;
     }
     
     [RelayCommand]
@@ -117,6 +118,7 @@ public partial class InstallsEditorViewModel : ObservableObject
         IsExecutableInstallerChecked = false;
         IsArchiveInstallerChecked = false;
         IsPortableApplicationInstallerChecked = false;
+        IsAddSeparatorChecked = false;
     }
     
     [RelayCommand]
@@ -224,6 +226,16 @@ public partial class InstallsEditorViewModel : ObservableObject
                     ArchiveFilename = TextArchiveInstallerFileName
                 });
         }
+        
+        if (IsAddSeparatorChecked)
+        {           
+            AvailableInstallersInJson.Insert(
+                AvailableInstallersInJson.IndexOf(SelectedInstaller),
+                new SeparatorForInstallersList()
+                {
+                    DisplayName = TextDisplayName
+                });
+        }
     }
 
     [RelayCommand]
@@ -238,7 +250,33 @@ public partial class InstallsEditorViewModel : ObservableObject
             break;
         }
     }
-
+    
+    [RelayCommand]
+    private void MoveSelectedInstallerUp()
+    {
+        for (var i = 0; i < AvailableInstallersInJson.Count; i++)
+        {
+            if (SelectedInstaller.DisplayName != AvailableInstallersInJson[i].DisplayName) continue;
+            
+            // Otherwise:
+            AvailableInstallersInJson.Move(i, i - 1);
+            break;
+        }
+    }
+    
+    [RelayCommand]
+    private void MoveSelectedInstallerDown()
+    {
+        for (var i = 0; i < AvailableInstallersInJson.Count; i++)
+        {
+            if (SelectedInstaller.DisplayName != AvailableInstallersInJson[i].DisplayName) continue;
+            
+            // Otherwise:
+            AvailableInstallersInJson.Move(i, i + 1);
+            break;
+        }
+    }
+    
     /// <summary>
     /// Bound to the ChocolateyInstaller radio button
     /// </summary>
@@ -291,6 +329,20 @@ public partial class InstallsEditorViewModel : ObservableObject
         {
             OnPropertyChanging();
             IsArchiveInstallerVisible = value ? Visibility.Visible : Visibility.Collapsed;
+            OnPropertyChanged();
+        }
+    }
+    
+    /// <summary>
+    /// Bound to the Separator radio button
+    /// </summary>
+    public bool IsAddSeparatorChecked
+    {
+        get => IsAddSeparatorVisible == Visibility.Visible;
+        set
+        {
+            OnPropertyChanging();
+            IsAddSeparatorVisible = value ? Visibility.Visible : Visibility.Collapsed;
             OnPropertyChanged();
         }
     }
@@ -366,6 +418,7 @@ public partial class InstallsEditorViewModel : ObservableObject
     [ObservableProperty] private Visibility _isExecutableInstallerVisible = Visibility.Collapsed;
     [ObservableProperty] private Visibility _isPortableApplicationInstallerVisible = Visibility.Collapsed;
     [ObservableProperty] private Visibility _isArchiveInstallerVisible = Visibility.Collapsed;
+    [ObservableProperty] private Visibility _isAddSeparatorVisible = Visibility.Collapsed;
 
     private IInstallable _selectedInstaller = new ChocolateyInstaller(); // New, just so it's not null
     

@@ -11,7 +11,8 @@
         Style="{StaticResource StandardWindow}"
         Title="MainWindow" Height="980" Width="1820"
         Background="#222222"
-        Loaded="MainWindow_OnLoaded">
+        Loaded="MainWindow_OnLoaded"
+        Closed="MainWindow_OnClosed">
 
     <Grid>
         <Grid.RowDefinitions>

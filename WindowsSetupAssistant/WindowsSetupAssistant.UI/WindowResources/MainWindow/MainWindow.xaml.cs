@@ -424,4 +424,10 @@ public partial class MainWindow
     {
         _availableApplicationsJsonLoader.LoadAvailableInstallersFromJsonFile();
     }
+
+    private void MainWindow_OnClosed(object? sender, EventArgs e)
+    {
+        // Taking the lazy way out, it stays open because the editors window is just hidden when the user "closes" it
+        Environment.Exit(0);
+    }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Versioning;
 using System.Windows;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -99,8 +100,10 @@ public partial class MainWindow
         InitializeComponent();
     }
 
+    [SupportedOSPlatform("Windows7.0")]
     private void MainWindow_OnLoaded(object sender, RoutedEventArgs e) => CheckStageAndWork();
     
+    [SupportedOSPlatform("Windows7.0")]
     private void CheckStageAndWork()
     {
         // Set long sleep and monitor off times so it doesn't sleep during install
@@ -191,6 +194,7 @@ public partial class MainWindow
         }
     }
     
+    [SupportedOSPlatform("Windows7.0")]
     private void LoadAllSettingsSections()
     {
         var timeSection = _timeSettingsSectionBuilder.MakeSection();
@@ -214,6 +218,7 @@ public partial class MainWindow
         }
     }
 
+    [SupportedOSPlatform("Windows7.0")]
     private List<string> GetAllRegistryFilePathsFromResources()
     {
         var topLevelDirectories =
@@ -232,14 +237,18 @@ public partial class MainWindow
         return returnPaths;
     }
 
+    [SupportedOSPlatform("Windows7.0")]
     private void StartExecution_OnClick(object sender, RoutedEventArgs e)
     {
         _mainWindowPersistentState.ScriptStage = ScriptStageEnum.FirstRun;
         
         CheckStageAndWork();   
     }
+    
+    [SupportedOSPlatform("Windows7.0")]
     private void SaveProfile_OnClick(object sender, RoutedEventArgs e) => _profileHandler.PromptUserToBrowseAndSaveProfile();
 
+    [SupportedOSPlatform("Windows7.0")]
     private void LoadProfile_OnClick(object sender, RoutedEventArgs e)
     {
         ClearAllControls();
@@ -247,6 +256,7 @@ public partial class MainWindow
         _profileHandler.PromptUserForProfileThenLoadIt();
     }
     
+    [SupportedOSPlatform("Windows7.0")]
     private void SelectAll_OnClick(object sender, RoutedEventArgs e)
     {
         foreach (var propertyInfo in _mainWindowPersistentState.GetType().GetProperties())
@@ -272,8 +282,10 @@ public partial class MainWindow
         }
     }
     
+    [SupportedOSPlatform("Windows7.0")]
     private void ClearAll_OnClick(object sender, RoutedEventArgs e) => ClearAllControls();
 
+    [SupportedOSPlatform("Windows7.0")]
     private void ClearAllControls()
     {
         foreach (var propertyInfo in _mainWindowPersistentState.GetType().GetProperties())
@@ -313,6 +325,7 @@ public partial class MainWindow
         _mainWindowPersistentState.TextHibernateTimeoutOnBattery = "";
     }
     
+    [SupportedOSPlatform("Windows7.0")]
     private void ExecuteSelectedSettingsInAllSections()
     {
         foreach (var section in _mainWindowPersistentState.SettingsSections)
@@ -329,6 +342,7 @@ public partial class MainWindow
         }
     }
 
+    [SupportedOSPlatform("Windows7.0")]
     private void SetPowerSettingsToUserChoicesAtStart()
     {
         var monitorTimeoutOnAc = 20; // Start with defaults
@@ -356,6 +370,7 @@ public partial class MainWindow
     }
 
     // ReSharper disable once CognitiveComplexity because it's extremely linear and it's fine
+    [SupportedOSPlatform("Windows7.0")]
     private void WorkAllApplicationInstallCheckboxes()
     {
         // Install 7zip no matter what because we need it later for the portable apps
@@ -383,6 +398,4 @@ public partial class MainWindow
     }
 
     private void AvailableInstallsListView_OnPreviewMouseWheel(object sender, MouseWheelEventArgs e) => ControlHelpers.OnPreviewMouseWheelMove(sender, e);
-
-    
 }

@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Serilog;
 using WindowsSetupAssistant.Core.Logic.Application;
@@ -37,6 +38,9 @@ public partial class ExecutableInstaller : ObservableObject, IInstallable
         var executableInstallerPath =
             FileSearcher.ReverseWalkDirectoriesFind(ApplicationPaths.ThisApplicationRunFromDirectoryPath, FileName, 8);
 
+        // Fix all the ../../../.. in the path
+        executableInstallerPath = Path.GetFullPath(executableInstallerPath);
+        
         logger.Information("Installing: {Path}", executableInstallerPath);
 
         var executableInstallerStartInfo = new ProcessStartInfo()

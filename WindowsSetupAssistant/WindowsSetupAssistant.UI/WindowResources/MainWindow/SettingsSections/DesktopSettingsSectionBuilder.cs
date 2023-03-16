@@ -1,4 +1,5 @@
-﻿using WindowsSetupAssistant.Core.Logic.SettingsTaskHelpers;
+﻿using System.Runtime.Versioning;
+using WindowsSetupAssistant.Core.Logic.SettingsTaskHelpers;
 using WindowsSetupAssistant.Core.Models.ISelectableSettings;
 using WindowsSetupAssistant.Core.Models.ISelectableSettings.ISelectableSettings;
 
@@ -23,6 +24,7 @@ public class DesktopSettingsSectionBuilder
     /// <summary>
     /// Creates the section in MainWindow relating to the time settings
     /// </summary>
+    [SupportedOSPlatform("Windows7.0")]
     public SettingsSection MakeSection()
     {
         var parentSection = new SettingsSection()

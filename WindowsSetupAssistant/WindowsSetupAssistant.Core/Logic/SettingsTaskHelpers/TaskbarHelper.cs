@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Versioning;
 using Microsoft.Win32;
 using Serilog;
 
@@ -24,6 +25,7 @@ public class TaskbarHelper
     /// Collapses the search in taskbar to just an icon 
     /// </summary>
     /// <exception cref="NullReferenceException">Throws on registry access error</exception>
+    [SupportedOSPlatform("Windows7.0")]
     public void CollapseSearchOnTaskbarToIcon()
     {
         _logger.Information("Running {ThisName}", System.Reflection.MethodBase.GetCurrentMethod()?.Name);
@@ -39,6 +41,7 @@ public class TaskbarHelper
     /// Collapses the search in taskbar to completely hidden 
     /// </summary>
     /// <exception cref="NullReferenceException">Throws on registry access error</exception>
+    [SupportedOSPlatform("Windows7.0")]
     public void CollapseSearchOnTaskbarToHidden()
     {
         _logger.Information("Running {ThisName}", System.Reflection.MethodBase.GetCurrentMethod()?.Name);

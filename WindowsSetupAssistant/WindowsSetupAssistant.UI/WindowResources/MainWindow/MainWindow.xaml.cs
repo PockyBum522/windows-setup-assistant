@@ -36,6 +36,7 @@ public partial class MainWindow
     private readonly AvailableApplicationsJsonLoader _availableApplicationsJsonLoader;
     private readonly TimeSettingsSectionBuilder _timeSettingsSectionBuilder;
     private readonly TaskbarSettingsSectionBuilder _taskbarSettingsSectionBuilder;
+    private readonly ApplicationsSettingsSectionBuilder _applicationsSettingsSectionBuilder;
     private readonly DesktopSettingsSectionBuilder _desktopSettingsSectionBuilder;
     private readonly WindowSettingsSectionBuilder _windowSettingsSectionBuilder;
     private readonly FinalCleanupHelper _finalCleanupHelper;
@@ -56,6 +57,7 @@ public partial class MainWindow
     /// <param name="availableApplicationsJsonLoader">Loads "Available Applications.json" file into CurrentState</param>
     /// <param name="timeSettingsSectionBuilder">Time settings section builder</param>
     /// <param name="taskbarSettingsSectionBuilder">Taskbar settings section builder</param>
+    /// <param name="applicationsSettingsSectionBuilder">Applications settings section builder</param>
     /// <param name="desktopSettingsSectionBuilder">Desktop settings section builder</param>
     /// <param name="windowSettingsSectionBuilder">Window settings section builder</param>
     /// <param name="mainWindowPersistentState">The main state of the application and user's choices that persists after a reboot</param>
@@ -77,6 +79,7 @@ public partial class MainWindow
         AvailableApplicationsJsonLoader availableApplicationsJsonLoader,
         TimeSettingsSectionBuilder timeSettingsSectionBuilder,
         TaskbarSettingsSectionBuilder taskbarSettingsSectionBuilder,
+        ApplicationsSettingsSectionBuilder applicationsSettingsSectionBuilder,
         DesktopSettingsSectionBuilder desktopSettingsSectionBuilder,
         WindowSettingsSectionBuilder windowSettingsSectionBuilder)
     {
@@ -94,6 +97,7 @@ public partial class MainWindow
         _availableApplicationsJsonLoader = availableApplicationsJsonLoader;
         _timeSettingsSectionBuilder = timeSettingsSectionBuilder;
         _taskbarSettingsSectionBuilder = taskbarSettingsSectionBuilder;
+        _applicationsSettingsSectionBuilder = applicationsSettingsSectionBuilder;
         _desktopSettingsSectionBuilder = desktopSettingsSectionBuilder;
         _windowSettingsSectionBuilder = windowSettingsSectionBuilder;
         
@@ -208,6 +212,9 @@ public partial class MainWindow
 
         var windowSection = _windowSettingsSectionBuilder.MakeSection();
         _mainWindowPersistentState.SettingsSections.Add(windowSection);
+        
+        var applicationsSection = _applicationsSettingsSectionBuilder.MakeSection();
+        _mainWindowPersistentState.SettingsSections.Add(applicationsSection);
 
         // Load registry files from disk
         var registryFilePaths = GetAllRegistryFilePathsFromResources();

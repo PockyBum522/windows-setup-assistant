@@ -11,14 +11,19 @@ namespace WindowsSetupAssistant.UI.WindowResources.MainWindow.SettingsSections;
 public class DesktopSettingsSectionBuilder
 {
     private readonly DesktopHelper _desktopHelper;
+    private readonly DisplayHelper _displayHelper;
 
     /// <summary>
     /// Constructor for dependency injection
     /// </summary>
     /// <param name="desktopHelper">Injected TimeHelper</param>
-    public DesktopSettingsSectionBuilder(DesktopHelper desktopHelper)
+    /// <param name="displayHelper">Injected DisplayHelper</param>
+    public DesktopSettingsSectionBuilder(
+        DesktopHelper desktopHelper,
+        DisplayHelper displayHelper)
     {
         _desktopHelper = desktopHelper;
+        _displayHelper = displayHelper;
     }
     
     /// <summary>
@@ -59,9 +64,19 @@ public class DesktopSettingsSectionBuilder
             }
         };
         
+        var allMonitorsFullScaling = new OptionInternalMethod()
+        {
+            DisplayName = "Set all monitors to 100% scaling",
+            ExecuteSetting = () =>
+            {
+                _displayHelper.SetDpiValueToZeroForAllMonitors();
+            }
+        };
+        
         parentSection.Settings.Add(taskbarSearchToHidden);
         parentSection.Settings.Add(taskbarSearchToIcon);
         parentSection.Settings.Add(wallpaperToDarkImage);
+        parentSection.Settings.Add(allMonitorsFullScaling);
 
         return parentSection;
     }

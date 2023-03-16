@@ -187,6 +187,8 @@ public class DiContainerBuilder
         _builder.RegisterType<WindowHelper>().AsSelf();
         _builder.RegisterType<WindowsHostnameHelper>().AsSelf();
         _builder.RegisterType<WindowsUpdater>().AsSelf();
+        _builder.RegisterType<DisplayHelper>().AsSelf();
+        _builder.RegisterType<WindowsStoreApplicationsUninstaller>().AsSelf();
     }
 
     [SupportedOSPlatform("Windows7.0")]
@@ -205,6 +207,7 @@ public class DiContainerBuilder
         _builder.RegisterType<TaskbarSettingsSectionBuilder>().AsSelf();
         _builder.RegisterType<DesktopSettingsSectionBuilder>().AsSelf();
         _builder.RegisterType<WindowSettingsSectionBuilder>().AsSelf();
+        _builder.RegisterType<ApplicationsSettingsSectionBuilder>().AsSelf();
     }
     
     [SupportedOSPlatform("Windows7.0")]

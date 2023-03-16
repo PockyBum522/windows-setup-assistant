@@ -3,6 +3,7 @@ using System.Windows;
 using Autofac;
 using WindowsSetupAssistant.Core.Logic.Application;
 using WindowsSetupAssistant.Core.Models;
+using WindowsSetupAssistant.UI.WindowResources.InstallsEditorWindow;
 using WindowsSetupAssistant.UI.WindowResources.MainWindow;
 
 namespace WindowsSetupAssistant.Main
@@ -35,6 +36,9 @@ namespace WindowsSetupAssistant.Main
             _mainWindow = _scope.Resolve<MainWindow>();
             _mainWindow.DataContext = _scope.Resolve<MainWindowPersistentState>();
             _mainWindow.Show();
+
+            var installsEditorWindow = new InstallsEditorWindow();
+            installsEditorWindow.Show();
         }
     }
 }

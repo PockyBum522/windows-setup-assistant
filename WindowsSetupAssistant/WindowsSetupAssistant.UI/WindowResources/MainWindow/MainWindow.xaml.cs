@@ -197,6 +197,10 @@ public partial class MainWindow
                     _windowsHostnameHelper.ChangeHostName(_mainWindowPersistentState.TextHostname);
                 }
 
+                // Some settings here need to be re-run at the end to take effect.
+                // Not to mention some have to be run at the end by their nature, such as desktop clean up
+                ExecuteSelectedSettingsInAllSections();
+                
                 SetPowerSettingsToUserChoicesAtStart();
                 
                 _systemRebooter.PromptToRebootComputerAndExit();

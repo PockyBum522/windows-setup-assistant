@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Versioning;
 using System.Windows;
@@ -114,6 +115,8 @@ public partial class MainWindow
     [SupportedOSPlatform("Windows7.0")]
     private void CheckStageAndWork()
     {
+        TextBlockUserName.Text = $"Running As DomainUser: {Environment.UserDomainName} | User: {Environment.UserName}";
+        
         // Set long sleep and monitor off times so it doesn't sleep during install
         _powerHelper.SetPowerSettingsTo();
 

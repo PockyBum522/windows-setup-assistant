@@ -7,6 +7,8 @@
         <UseWPF>true</UseWPF>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <Configurations>Debug;Release;Dabug</Configurations>
+        <Platforms>AnyCPU;x64</Platforms>
     </PropertyGroup>
 
     <ItemGroup>

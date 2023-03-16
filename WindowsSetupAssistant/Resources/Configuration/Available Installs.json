@@ -502,5 +502,14 @@
         "Parameters": "",
         "DisplayName": "Brave Browser",
         "IsSelected": false
-    }
+    },
+	{
+		"$type": "WindowsSetupAssistant.Core.Models.IInstallables.PortableApplicationInstaller, WindowsSetupAssistant.Core",
+		"FolderName": "Registry State Diff",
+		"DestinationPath": "C:\\PortableApplications\\",
+		"DesktopShortcutExePath": "",
+		"StartMenuShortcutExePath": "",
+		"DisplayName": "Nirsoft Windows Registry State Diff",
+		"IsSelected": false
+	}
 ]

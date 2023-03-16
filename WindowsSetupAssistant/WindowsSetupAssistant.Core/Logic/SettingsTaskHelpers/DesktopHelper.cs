@@ -61,21 +61,25 @@ public class DesktopHelper
     /// <summary>
     /// Deletes files on the desktop that match each pattern in patternsToDeleteWithoutWildcards
     /// </summary>
-    public void CleanDesktopOfAllFilesMatching(string[] patternsToDeleteWithoutWildcards)
+    public void CleanDesktopOfAllFilesMatching(string[] extensionsToDeleteWithoutWildcards)
     {
         var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         var publicDesktopPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonDesktopDirectory);
 
-        var filesOnDesktops = 
-            Directory.GetFiles(publicDesktopPath).Concat(
-            Directory.GetFiles(desktopPath)); 
-        
-        foreach (var file in filesOnDesktops)
+        foreach (var pattern in extensionsToDeleteWithoutWildcards)
         {
-            foreach (var pattern in patternsToDeleteWithoutWildcards)
-            {
-                if (file.EndsWith(pattern)) File.Delete(file);    
-            }
+            DeleteAllFilesWithExtension(desktopPath, pattern);
+            DeleteAllFilesWithExtension(publicDesktopPath, pattern);
+        }
+    }
+
+    private void DeleteAllFilesWithExtension(string pathToDeleteIn, string extensionToMatch)
+    {
+        var filesOnCommonDesktop = Directory.GetFiles(pathToDeleteIn); 
+        
+        foreach (var file in filesOnCommonDesktop)
+        {
+            if (file.EndsWith(extensionToMatch)) File.Delete(file);   
         }
     }
 }

@@ -177,6 +177,8 @@ public partial class MainWindow
                     _windowsUpdater.UpdateWindows();
                 }
 
+                _finalCleanupHelper.DeleteSavedStateFileOnDisk();
+                
                 WorkAllApplicationInstallCheckboxes();
 
                 if (!string.IsNullOrWhiteSpace(_mainWindowPersistentState.TextHostname))
@@ -185,8 +187,6 @@ public partial class MainWindow
                 }
 
                 SetPowerSettingsToUserChoicesAtStart();
-                
-                _finalCleanupHelper.DeleteSavedChoicesAndStageOnDisk();
                 
                 _systemRebooter.PromptToRebootComputerAndExit();
 

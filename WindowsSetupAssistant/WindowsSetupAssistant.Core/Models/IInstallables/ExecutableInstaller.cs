@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Serilog;
 using WindowsSetupAssistant.Core.Logic.Application;
@@ -50,6 +51,6 @@ public partial class ExecutableInstaller : ObservableObject, IInstallable
             FileName = executableInstallerPath
         };
         
-        Process.Start(executableInstallerStartInfo);
+        Task.Run(() => Process.Start(executableInstallerStartInfo));
     }
 }

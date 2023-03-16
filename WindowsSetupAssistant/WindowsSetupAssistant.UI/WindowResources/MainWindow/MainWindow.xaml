@@ -11,13 +11,15 @@
         Style="{StaticResource StandardWindow}"
         Title="MainWindow" Height="980" Width="1820"
         Background="#222222"
-        Loaded="MainWindow_OnLoaded">
+        Loaded="MainWindow_OnLoaded"
+        Closed="MainWindow_OnClosed">
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="10" />
             <RowDefinition Height="1*" />
             <RowDefinition Height="46" />
+            <RowDefinition Height="26" />
             <RowDefinition Height="10" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -324,6 +326,12 @@
                     Click="StartExecution_OnClick"
                     Padding="10"
                     Margin="5" />
+
+        </DockPanel>
+        
+        <DockPanel Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left">
+
+            <TextBlock Name="TextBlockUserName" />
 
         </DockPanel>
 

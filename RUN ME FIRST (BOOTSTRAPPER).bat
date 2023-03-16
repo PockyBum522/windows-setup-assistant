@@ -168,15 +168,15 @@ if "%1" neq "ELEV" (
     
 	del "%AppData%\NuGet\NuGet.Config"
 	
-	"C:\Program Files\dotnet\dotnet.exe" restore "%~dp0WindowsSetupAssistant\WindowsSetupAssistant.Main\WindowsSetupAssistant.Main.csproj"
+	"C:\Program Files\dotnet\dotnet.exe" restore "%~dp0WindowsSetupAssistant\WindowsSetupAssistant.sln"
 	
-	"C:\Program Files\dotnet\dotnet.exe" build "%~dp0WindowsSetupAssistant\WindowsSetupAssistant.Main\WindowsSetupAssistant.Main.csproj"
+	"C:\Program Files\dotnet\dotnet.exe" build "%~dp0WindowsSetupAssistant\WindowsSetupAssistant.sln"
 
 	echo .
-	echo Running: "%~dp0WindowsSetupAssistant\WindowsSetupAssistant.Main\bin\Debug\net7.0-windows\WindowsSetupAssistant.Main.exe"
+	echo Running: "%~dp0WindowsSetupAssistant\WindowsSetupAssistant.Main\bin\x64\Debug\net7.0-windows\WindowsSetupAssistant.Main.exe"
     echo .
 	
-	"%~dp0WindowsSetupAssistant\WindowsSetupAssistant.Main\bin\Debug\net7.0-windows\WindowsSetupAssistant.Main.exe"
+	"%~dp0WindowsSetupAssistant\WindowsSetupAssistant.Main\bin\x64\Debug\net7.0-windows\WindowsSetupAssistant.Main.exe"
 	
 	echo.
     echo Finished configuring this computer.

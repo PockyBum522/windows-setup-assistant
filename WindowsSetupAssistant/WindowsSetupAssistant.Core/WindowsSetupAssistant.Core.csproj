@@ -6,6 +6,8 @@
         <Nullable>enable</Nullable>
         <UseWPF>true</UseWPF>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <Configurations>Debug;Release</Configurations>
+        <Platforms>x64</Platforms>
     </PropertyGroup>
 
     <ItemGroup>

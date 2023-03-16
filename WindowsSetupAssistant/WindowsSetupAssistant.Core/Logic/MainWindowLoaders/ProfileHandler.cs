@@ -42,8 +42,6 @@ public class ProfileHandler
                 "Profiles")
             .Replace("/", @"\");
 
-        profilesDirectoryPath = Path.GetFullPath(profilesDirectoryPath);
-
         Console.WriteLine(profilesDirectoryPath);
 
         var fileDialog = new SaveFileDialog()
@@ -67,8 +65,6 @@ public class ProfileHandler
                 "Configuration",
                 "Profiles")
             .Replace("/", @"\");
-
-        profilesDirectoryPath = Path.GetFullPath(profilesDirectoryPath);
 
         Console.WriteLine(profilesDirectoryPath);
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Versioning;
 using System.Windows;
@@ -114,6 +115,8 @@ public partial class MainWindow
     [SupportedOSPlatform("Windows7.0")]
     private void CheckStageAndWork()
     {
+        TextBlockUserName.Text = $"Running As DomainUser: {Environment.UserDomainName} | User: {Environment.UserName}";
+        
         // Set long sleep and monitor off times so it doesn't sleep during install
         _powerHelper.SetPowerSettingsTo();
 
@@ -420,5 +423,11 @@ public partial class MainWindow
     private void ReloadInstallerList_OnClick(object sender, RoutedEventArgs e)
     {
         _availableApplicationsJsonLoader.LoadAvailableInstallersFromJsonFile();
+    }
+
+    private void MainWindow_OnClosed(object? sender, EventArgs e)
+    {
+        // Taking the lazy way out, it stays open because the editors window is just hidden when the user "closes" it
+        Environment.Exit(0);
     }
 }

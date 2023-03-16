@@ -259,7 +259,12 @@ public partial class InstallsEditorViewModel : ObservableObject
             if (SelectedInstaller.DisplayName != AvailableInstallersInJson[i].DisplayName) continue;
             
             // Otherwise:
-            AvailableInstallersInJson.Move(i, i - 1);
+
+            var newPosition = i - 1;
+            
+            if (newPosition >= 0)
+                AvailableInstallersInJson.Move(i, newPosition);
+            
             break;
         }
     }
@@ -272,7 +277,12 @@ public partial class InstallsEditorViewModel : ObservableObject
             if (SelectedInstaller.DisplayName != AvailableInstallersInJson[i].DisplayName) continue;
             
             // Otherwise:
-            AvailableInstallersInJson.Move(i, i + 1);
+            
+            var newPosition = i + 1;
+            
+            if (newPosition < AvailableInstallersInJson.Count)
+                AvailableInstallersInJson.Move(i, newPosition);
+            
             break;
         }
     }
@@ -364,7 +374,7 @@ public partial class InstallsEditorViewModel : ObservableObject
 
     private void SetTextBoxesToInstallerProperties(IInstallable? installable)
     {
-        if (installable is null)
+        if (installable is null || installable is SeparatorForInstallersList)
         {
             CancelEditingInstallerData();
             return;

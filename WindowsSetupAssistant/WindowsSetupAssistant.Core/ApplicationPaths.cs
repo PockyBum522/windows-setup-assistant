@@ -39,8 +39,9 @@ namespace WindowsSetupAssistant.Core
         /// This is the directory the bootstrapper bat file is in
         /// </summary>
         public static string SetupAssistantRootDir => 
-            Path.Join(
-                ThisApplicationRunFromDirectoryPath, "../../../..");
+            Path.GetFullPath(
+                Path.Join(
+                    ThisApplicationRunFromDirectoryPath, "../../../../.."));
         
         /// <summary>
         /// The full path to this application's running assembly
@@ -73,11 +74,12 @@ namespace WindowsSetupAssistant.Core
             /// Path to the file containing all information about available installers to show in main window on load
             /// </summary>
             public static string InstallsFileJsonPath =>
-                Path.Join(
-                    SetupAssistantRootDir,
-                    "Resources",
-                    "Configuration",
-                    "Available Installs.json");
+                Path.GetFullPath(
+                    Path.Join(
+                        SetupAssistantRootDir,
+                        "Resources",
+                        "Configuration",
+                        "Available Installs.json"));
             
             /// <summary>
             /// Path to the file containing all information about available installers to show in main window on load

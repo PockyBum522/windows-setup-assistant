@@ -34,14 +34,14 @@
 	{
 		"$type": "WindowsSetupAssistant.Core.Models.IInstallables.ArchiveInstaller, WindowsSetupAssistant.Core",
 		"ArchiveFilename": "Yubico Authenticator.7z",
-		"DestinationPath": "C:\\PortableApplications\\Yubico Authenticator\\",
+		"DestinationPath": "C:\\PortableApplications\\",
 		"DisplayName": "Yubico Authenticator (Modified)",
 		"IsSelected": false
 	},
 	{
 		"$type": "WindowsSetupAssistant.Core.Models.IInstallables.PortableApplicationInstaller, WindowsSetupAssistant.Core",
 		"FolderName": "CLCL",
-		"DestinationPath": "C:\\PortableApplications\\CLCL\\",
+		"DestinationPath": "C:\\PortableApplications\\",
 		"DesktopShortcutExePath": "",
 		"StartMenuShortcutExePath": "",
 		"DisplayName": "CLCL",
@@ -74,7 +74,7 @@
 	{
 		"$type": "WindowsSetupAssistant.Core.Models.IInstallables.PortableApplicationInstaller, WindowsSetupAssistant.Core",
 		"FolderName": "ngrok",
-		"DestinationPath": "C:\\PortableApplications\\ngrok\\",
+		"DestinationPath": "C:\\PortableApplications\\",
 		"DesktopShortcutExePath": "",
 		"StartMenuShortcutExePath": "",
 		"DisplayName": "Ngrok (Sigrok GUI for Logic Analyzers)",
@@ -83,7 +83,7 @@
 	{
 		"$type": "WindowsSetupAssistant.Core.Models.IInstallables.PortableApplicationInstaller, WindowsSetupAssistant.Core",
 		"FolderName": "Rufus",
-		"DestinationPath": "C:\\PortableApplications\\Rufus\\",
+		"DestinationPath": "C:\\PortableApplications\\",
 		"DesktopShortcutExePath": "",
 		"StartMenuShortcutExePath": "",
 		"DisplayName": "Rufus",
@@ -92,7 +92,7 @@
 	{
 		"$type": "WindowsSetupAssistant.Core.Models.IInstallables.PortableApplicationInstaller, WindowsSetupAssistant.Core",
 		"FolderName": "Windows Update Blocker v1.1",
-		"DestinationPath": "C:\\PortableApplications\\Windows Update Blocker\\",
+		"DestinationPath": "C:\\PortableApplications\\",
 		"DesktopShortcutExePath": "",
 		"StartMenuShortcutExePath": "",
 		"DisplayName": "Windows Update Blocker",
@@ -101,21 +101,21 @@
 	{
 		"$type": "WindowsSetupAssistant.Core.Models.IInstallables.ArchiveInstaller, WindowsSetupAssistant.Core",
 		"ArchiveFilename": "arduino-latest.7z",
-		"DestinationPath": "C:\\PortableApplications\\arduino-latest\\",
+		"DestinationPath": "C:\\PortableApplications\\",
 		"DisplayName": "Arduino IDE",
 		"IsSelected": false
 	},
 	{
 		"$type": "WindowsSetupAssistant.Core.Models.IInstallables.ArchiveInstaller, WindowsSetupAssistant.Core",
 		"ArchiveFilename": "Omnidome.7z",
-		"DestinationPath": "C:\\PortableApplications\\Omnidome\\",
+		"DestinationPath": "C:\\PortableApplications\\",
 		"DisplayName": "Omnidome",
 		"IsSelected": false
 	},
 	{
 		"$type": "WindowsSetupAssistant.Core.Models.IInstallables.ArchiveInstaller, WindowsSetupAssistant.Core",
 		"ArchiveFilename": "VeraCrypt.7z",
-		"DestinationPath": "C:\\PortableApplications\\VeraCrypt\\",
+		"DestinationPath": "C:\\PortableApplications\\",
 		"DisplayName": "VeraCrypt",
 		"IsSelected": false
 	},

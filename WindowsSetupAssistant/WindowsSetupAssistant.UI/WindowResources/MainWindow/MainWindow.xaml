@@ -57,6 +57,7 @@
                         <Setter Property="Foreground" Value="#FFFFFF" />
                     </Trigger>
                 </Style.Triggers>
+                
             </Style>
 
             <DataTemplate x:Key="SettingsSectionTemplate" DataType="{x:Type iSelectableSettings:SettingsSection}">
@@ -88,6 +89,7 @@
                     </DockPanel>
                 </Expander>
             </DataTemplate>
+            
         </Grid.Resources>
 
         <StackPanel Grid.Row="1" Grid.Column="1">
@@ -271,21 +273,9 @@
                         <ScrollViewer>
 
                             <ListView ItemsSource="{Binding AvailableInstalls}"
-                                      PreviewMouseWheel="AvailableInstallsListView_OnPreviewMouseWheel">
-
-                                <ListView.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-
-                                            <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}"
-                                                      Content="{Binding DisplayName}"
-                                                      Margin="2,2,0,0" />
-
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ListView.ItemTemplate>
-
-                            </ListView>
+                                      ItemTemplateSelector="{StaticResource InstallableListDataTemplateSelector}"
+                                      PreviewMouseWheel="AvailableInstallsListView_OnPreviewMouseWheel" />
+                            
                         </ScrollViewer>
                     </DockPanel>
                 </Border>

@@ -5,7 +5,5 @@
         <ResourceDictionary Source="Resources.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
-    <Style x:Key="StandardStackPanel" TargetType="StackPanel">
-    
-    </Style>
+    <Style x:Key="StandardStackPanel" TargetType="StackPanel" />
 </ResourceDictionary>

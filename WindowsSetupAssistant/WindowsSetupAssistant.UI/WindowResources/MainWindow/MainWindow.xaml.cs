@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Versioning;
 using System.Windows;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -25,6 +26,7 @@ public partial class MainWindow
 {
     private readonly ILogger _logger;
     private readonly MainWindowPersistentState _mainWindowPersistentState;
+    private readonly InstallsEditorWindow.InstallsEditorWindow _installsEditorWindow;
     private readonly StateHandler _stateHandler;
     private readonly SystemRebooter _systemRebooter;
     private readonly StartupScriptWriter _startupScriptWriter;
@@ -35,6 +37,7 @@ public partial class MainWindow
     private readonly AvailableApplicationsJsonLoader _availableApplicationsJsonLoader;
     private readonly TimeSettingsSectionBuilder _timeSettingsSectionBuilder;
     private readonly TaskbarSettingsSectionBuilder _taskbarSettingsSectionBuilder;
+    private readonly ApplicationsSettingsSectionBuilder _applicationsSettingsSectionBuilder;
     private readonly DesktopSettingsSectionBuilder _desktopSettingsSectionBuilder;
     private readonly WindowSettingsSectionBuilder _windowSettingsSectionBuilder;
     private readonly FinalCleanupHelper _finalCleanupHelper;
@@ -55,15 +58,18 @@ public partial class MainWindow
     /// <param name="availableApplicationsJsonLoader">Loads "Available Applications.json" file into CurrentState</param>
     /// <param name="timeSettingsSectionBuilder">Time settings section builder</param>
     /// <param name="taskbarSettingsSectionBuilder">Taskbar settings section builder</param>
+    /// <param name="applicationsSettingsSectionBuilder">Applications settings section builder</param>
     /// <param name="desktopSettingsSectionBuilder">Desktop settings section builder</param>
     /// <param name="windowSettingsSectionBuilder">Window settings section builder</param>
     /// <param name="mainWindowPersistentState">The main state of the application and user's choices that persists after a reboot</param>
+    /// <param name="installsEditorWindow">Injected Installs editor window</param>
     /// <param name="finalCleanupHelper">Injected to clean up all files on disk when application is finished</param>
     /// <param name="profileHandler">Injected to save/load profiles for this window</param>
     /// <param name="stateHandler">Injected to handle state loading and saving, and profile loading and saving</param>
     public MainWindow(
         ILogger logger,
         MainWindowPersistentState mainWindowPersistentState,
+        InstallsEditorWindow.InstallsEditorWindow installsEditorWindow,
         FinalCleanupHelper finalCleanupHelper,
         ProfileHandler profileHandler,
         StateHandler stateHandler,
@@ -76,11 +82,13 @@ public partial class MainWindow
         AvailableApplicationsJsonLoader availableApplicationsJsonLoader,
         TimeSettingsSectionBuilder timeSettingsSectionBuilder,
         TaskbarSettingsSectionBuilder taskbarSettingsSectionBuilder,
+        ApplicationsSettingsSectionBuilder applicationsSettingsSectionBuilder,
         DesktopSettingsSectionBuilder desktopSettingsSectionBuilder,
         WindowSettingsSectionBuilder windowSettingsSectionBuilder)
     {
         _logger = logger;
         _mainWindowPersistentState = mainWindowPersistentState;
+        _installsEditorWindow = installsEditorWindow;
         _finalCleanupHelper = finalCleanupHelper;
         _profileHandler = profileHandler;
         _stateHandler = stateHandler;
@@ -93,14 +101,17 @@ public partial class MainWindow
         _availableApplicationsJsonLoader = availableApplicationsJsonLoader;
         _timeSettingsSectionBuilder = timeSettingsSectionBuilder;
         _taskbarSettingsSectionBuilder = taskbarSettingsSectionBuilder;
+        _applicationsSettingsSectionBuilder = applicationsSettingsSectionBuilder;
         _desktopSettingsSectionBuilder = desktopSettingsSectionBuilder;
         _windowSettingsSectionBuilder = windowSettingsSectionBuilder;
         
         InitializeComponent();
     }
 
+    [SupportedOSPlatform("Windows7.0")]
     private void MainWindow_OnLoaded(object sender, RoutedEventArgs e) => CheckStageAndWork();
     
+    [SupportedOSPlatform("Windows7.0")]
     private void CheckStageAndWork()
     {
         // Set long sleep and monitor off times so it doesn't sleep during install
@@ -174,6 +185,8 @@ public partial class MainWindow
                     _windowsUpdater.UpdateWindows();
                 }
 
+                _finalCleanupHelper.DeleteSavedStateFileOnDisk();
+                
                 WorkAllApplicationInstallCheckboxes();
 
                 if (!string.IsNullOrWhiteSpace(_mainWindowPersistentState.TextHostname))
@@ -183,14 +196,13 @@ public partial class MainWindow
 
                 SetPowerSettingsToUserChoicesAtStart();
                 
-                _finalCleanupHelper.DeleteSavedChoicesAndStageOnDisk();
-                
                 _systemRebooter.PromptToRebootComputerAndExit();
 
                 break;
         }
     }
     
+    [SupportedOSPlatform("Windows7.0")]
     private void LoadAllSettingsSections()
     {
         var timeSection = _timeSettingsSectionBuilder.MakeSection();
@@ -204,6 +216,9 @@ public partial class MainWindow
 
         var windowSection = _windowSettingsSectionBuilder.MakeSection();
         _mainWindowPersistentState.SettingsSections.Add(windowSection);
+        
+        var applicationsSection = _applicationsSettingsSectionBuilder.MakeSection();
+        _mainWindowPersistentState.SettingsSections.Add(applicationsSection);
 
         // Load registry files from disk
         var registryFilePaths = GetAllRegistryFilePathsFromResources();
@@ -214,6 +229,7 @@ public partial class MainWindow
         }
     }
 
+    [SupportedOSPlatform("Windows7.0")]
     private List<string> GetAllRegistryFilePathsFromResources()
     {
         var topLevelDirectories =
@@ -232,14 +248,18 @@ public partial class MainWindow
         return returnPaths;
     }
 
+    [SupportedOSPlatform("Windows7.0")]
     private void StartExecution_OnClick(object sender, RoutedEventArgs e)
     {
         _mainWindowPersistentState.ScriptStage = ScriptStageEnum.FirstRun;
         
         CheckStageAndWork();   
     }
+    
+    [SupportedOSPlatform("Windows7.0")]
     private void SaveProfile_OnClick(object sender, RoutedEventArgs e) => _profileHandler.PromptUserToBrowseAndSaveProfile();
 
+    [SupportedOSPlatform("Windows7.0")]
     private void LoadProfile_OnClick(object sender, RoutedEventArgs e)
     {
         ClearAllControls();
@@ -247,6 +267,7 @@ public partial class MainWindow
         _profileHandler.PromptUserForProfileThenLoadIt();
     }
     
+    [SupportedOSPlatform("Windows7.0")]
     private void SelectAll_OnClick(object sender, RoutedEventArgs e)
     {
         foreach (var propertyInfo in _mainWindowPersistentState.GetType().GetProperties())
@@ -272,8 +293,10 @@ public partial class MainWindow
         }
     }
     
+    [SupportedOSPlatform("Windows7.0")]
     private void ClearAll_OnClick(object sender, RoutedEventArgs e) => ClearAllControls();
 
+    [SupportedOSPlatform("Windows7.0")]
     private void ClearAllControls()
     {
         foreach (var propertyInfo in _mainWindowPersistentState.GetType().GetProperties())
@@ -313,6 +336,7 @@ public partial class MainWindow
         _mainWindowPersistentState.TextHibernateTimeoutOnBattery = "";
     }
     
+    [SupportedOSPlatform("Windows7.0")]
     private void ExecuteSelectedSettingsInAllSections()
     {
         foreach (var section in _mainWindowPersistentState.SettingsSections)
@@ -329,6 +353,7 @@ public partial class MainWindow
         }
     }
 
+    [SupportedOSPlatform("Windows7.0")]
     private void SetPowerSettingsToUserChoicesAtStart()
     {
         var monitorTimeoutOnAc = 20; // Start with defaults
@@ -356,6 +381,7 @@ public partial class MainWindow
     }
 
     // ReSharper disable once CognitiveComplexity because it's extremely linear and it's fine
+    [SupportedOSPlatform("Windows7.0")]
     private void WorkAllApplicationInstallCheckboxes()
     {
         // Install 7zip no matter what because we need it later for the portable apps
@@ -384,5 +410,15 @@ public partial class MainWindow
 
     private void AvailableInstallsListView_OnPreviewMouseWheel(object sender, MouseWheelEventArgs e) => ControlHelpers.OnPreviewMouseWheelMove(sender, e);
 
-    
+    private void ShowInstallerEditorWindow_OnClick(object sender, RoutedEventArgs e)
+    {
+        _installsEditorWindow.Show();
+        
+        ((InstallsEditorWindow.InstallsEditorViewModel)_installsEditorWindow.DataContext).DeserializeInstallersJson();
+    }
+
+    private void ReloadInstallerList_OnClick(object sender, RoutedEventArgs e)
+    {
+        _availableApplicationsJsonLoader.LoadAvailableInstallersFromJsonFile();
+    }
 }

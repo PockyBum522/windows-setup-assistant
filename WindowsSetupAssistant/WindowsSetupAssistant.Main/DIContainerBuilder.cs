@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Runtime.Versioning;
 using System.Windows;
 using System.Windows.Threading;
 using Autofac;
@@ -11,7 +12,7 @@ using WindowsSetupAssistant.Core.Logic.Application;
 using WindowsSetupAssistant.Core.Logic.MainWindowLoaders;
 using WindowsSetupAssistant.Core.Logic.SettingsTaskHelpers;
 using WindowsSetupAssistant.Core.Models;
-using WindowsSetupAssistant.Core.Models.IInstallables;
+using WindowsSetupAssistant.UI.WindowResources.InstallsEditorWindow;
 using WindowsSetupAssistant.UI.WindowResources.MainWindow;
 using WindowsSetupAssistant.UI.WindowResources.MainWindow.SettingsSections;
 
@@ -28,6 +29,7 @@ public class DiContainerBuilder
     /// <summary>
     /// Constructor so the null check on _mainWindowPersistentState is happy
     /// </summary>
+    [SupportedOSPlatform("Windows7.0")]
     public DiContainerBuilder()
     {
         var settings = new JsonSerializerSettings
@@ -57,6 +59,7 @@ public class DiContainerBuilder
     /// Gets a built container with all local application and TeakTools.Common dependencies in it
     /// </summary>
     /// <returns>A built container with all local application and TeakTools.Common dependencies in it</returns>
+    [SupportedOSPlatform("Windows7.0")]
     public IContainer GetBuiltContainer(ILogger? testingLogger = null)
     {
         // Takes testing logger or if that's null builds the normal one and adds to DI container
@@ -87,6 +90,7 @@ public class DiContainerBuilder
         return container;
     }
 
+    [SupportedOSPlatform("Windows7.0")]
     private void DeserializeStateFromDiskIntoPersistentState()
     {
         var settings = new JsonSerializerSettings
@@ -107,6 +111,7 @@ public class DiContainerBuilder
         }
     }
 
+    [SupportedOSPlatform("Windows7.0")]
     private void AddThemeResourceMergedDictionary()
     {
         var resourcePath = ApplicationPaths.DarkThemePath;
@@ -115,6 +120,7 @@ public class DiContainerBuilder
         Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary() { Source = currentResource });
     }
 
+    [SupportedOSPlatform("Windows7.0")]
     private void RegisterLogger(ILogger? testingLogger)
     {
         Directory.CreateDirectory(Path.GetDirectoryName(ApplicationPaths.LogPath) ?? "");
@@ -157,6 +163,7 @@ public class DiContainerBuilder
         //     _settingsApplicationLocal.FoxitReaderExecutablePath = @"C:\Program Files (x86)\FoxitReader Basic\FoxitPDFReader.exe";
     }
 
+    [SupportedOSPlatform("Windows7.0")]
     private void RegisterMainDependencies()
     {
         _builder.RegisterInstance(_mainWindowPersistentState).As<MainWindowPersistentState>().SingleInstance();
@@ -171,6 +178,7 @@ public class DiContainerBuilder
         _builder.RegisterType<FinalCleanupHelper>().AsSelf().SingleInstance();
     }
     
+    [SupportedOSPlatform("Windows7.0")]
     private void RegisterTaskHelpers()
     {
         _builder.RegisterType<DesktopHelper>().AsSelf();
@@ -180,8 +188,11 @@ public class DiContainerBuilder
         _builder.RegisterType<WindowHelper>().AsSelf();
         _builder.RegisterType<WindowsHostnameHelper>().AsSelf();
         _builder.RegisterType<WindowsUpdater>().AsSelf();
+        _builder.RegisterType<DisplayHelper>().AsSelf();
+        _builder.RegisterType<WindowsStoreApplicationsUninstaller>().AsSelf();
     }
 
+    [SupportedOSPlatform("Windows7.0")]
     private void RegisterMainWindowLoaders()
     {
         _builder.RegisterType<RegistryFileAsOptionLoader>().AsSelf();
@@ -190,18 +201,24 @@ public class DiContainerBuilder
         _builder.RegisterType<StateHandler>().AsSelf();
     }
 
+    [SupportedOSPlatform("Windows7.0")]
     private void RegisterSectionBuilders()
     {
         _builder.RegisterType<TimeSettingsSectionBuilder>().AsSelf();
         _builder.RegisterType<TaskbarSettingsSectionBuilder>().AsSelf();
         _builder.RegisterType<DesktopSettingsSectionBuilder>().AsSelf();
         _builder.RegisterType<WindowSettingsSectionBuilder>().AsSelf();
+        _builder.RegisterType<ApplicationsSettingsSectionBuilder>().AsSelf();
     }
     
+    [SupportedOSPlatform("Windows7.0")]
     private void RegisterUiDependencies()
     {
         _builder.RegisterInstance(Dispatcher.CurrentDispatcher).AsSelf().SingleInstance();
         
         _builder.RegisterType<MainWindow>().AsSelf().SingleInstance();
+        
+        _builder.RegisterType<InstallsEditorViewModel>().AsSelf().SingleInstance();
+        _builder.RegisterType<InstallsEditorWindow>().AsSelf().SingleInstance();
     }
 }

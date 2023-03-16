@@ -9,7 +9,7 @@ namespace WindowsSetupAssistant.UI.WindowResources;
 public static class ControlHelpers
 {
     /// <summary>
-    /// Handles the MainWindow scrolling with mouse wheel for Available Installs list
+    /// Handles the MainWindow scrolling with mouse wheel for any scrollviewers with listviews inside them
     /// </summary>
     /// <param name="sender">ListView to be scrolled</param>
     /// <param name="e">Mouse wheel args</param>

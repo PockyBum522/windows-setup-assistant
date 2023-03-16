@@ -8,17 +8,18 @@ namespace WindowsSetupAssistant.UI.WindowResources.MainWindow.SettingsSections;
 /// <summary>
 /// Creates the section in MainWindow relating to the time settings
 /// </summary>
-public class TaskbarSettingsSectionBuilder
+public class ApplicationsSettingsSectionBuilder
 {
-    private readonly TaskbarHelper _taskbarHelper;
+    private readonly WindowsStoreApplicationsUninstaller _windowsStoreApplicationsUninstaller;
 
     /// <summary>
     /// Constructor for dependency injection
     /// </summary>
-    /// <param name="taskbarHelper">Injected Taskbar Helper</param>
-    public TaskbarSettingsSectionBuilder(TaskbarHelper taskbarHelper)
+    /// <param name="windowsStoreApplicationsUninstaller">Injected WindowsStoreApplicationsUninstaller</param>
+    public ApplicationsSettingsSectionBuilder(
+        WindowsStoreApplicationsUninstaller windowsStoreApplicationsUninstaller)
     {
-        _taskbarHelper = taskbarHelper;
+        _windowsStoreApplicationsUninstaller = windowsStoreApplicationsUninstaller;
     }
     
     /// <summary>
@@ -29,29 +30,19 @@ public class TaskbarSettingsSectionBuilder
     {
         var parentSection = new SettingsSection()
         {
-            DisplayName = "Taskbar"
+            DisplayName = "Applications"
         };
 
-        var taskbarSearchToHidden = new OptionInternalMethod()
+        var uninstallWindowsStoreSpotify = new OptionInternalMethod()
         {
-            DisplayName = "Set Taskbar Search to Hidden",
+            DisplayName = "Uninstall Windows Store version of spotify",
             ExecuteSetting = () =>
             {
-                _taskbarHelper.CollapseSearchOnTaskbarToHidden();
+                _windowsStoreApplicationsUninstaller.UninstallApplication("Spotify");
             }
         };
         
-        var taskbarSearchToIcon = new OptionInternalMethod()
-        {
-            DisplayName = "Collapse Taskbar Search to Just Icon",
-            ExecuteSetting = () =>
-            {
-                _taskbarHelper.CollapseSearchOnTaskbarToIcon();
-            }
-        };
-        
-        parentSection.Settings.Add(taskbarSearchToHidden);
-        parentSection.Settings.Add(taskbarSearchToIcon);
+        parentSection.Settings.Add(uninstallWindowsStoreSpotify);
 
         return parentSection;
     }

@@ -1,0 +1,153 @@
+﻿<Window x:Class="WindowsSetupAssistant.UI.WindowResources.InstallsEditorWindow.InstallsEditorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:installsEditorWindow="clr-namespace:WindowsSetupAssistant.UI.WindowResources.InstallsEditorWindow"
+        mc:Ignorable="d"
+        Title="InstallsEditorWindow" Height="700" Width="800"
+        d:DataContext="{d:DesignInstance Type=installsEditorWindow:InstallsEditorViewModel, IsDesignTimeCreatable=True}"
+        Background="#222222"
+        Style="{StaticResource StandardWindow}"
+        Closing="InstallsEditorWindow_OnClosing">
+
+    <Grid>
+        <!-- Define the rows of the Grid -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5*" />
+            <RowDefinition Height="4*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="60" />
+        </Grid.RowDefinitions>
+
+        <Grid.Resources>
+            <Style x:Key="IndentedMarginStyle" TargetType="{x:Type StackPanel}">
+                <Setter Property="Margin" Value="20,3,0,5" />
+            </Style>
+        </Grid.Resources>
+
+        <!-- Row 0: List view and add/remove buttons -->
+        <DockPanel Grid.Row="0">
+            <DockPanel DockPanel.Dock="Right">
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" Margin="5">
+                    <Button Content="+"  Command="{Binding AddInstallerCommand}" Width="30" Height="30" Margin="0,0,5,0" />
+                    <Button Content="-"  Command="{Binding RemoveSelectedInstallerCommand}" Width="30" Height="30" />
+                </StackPanel>
+
+                <!-- Row 1: Radio buttons -->
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="10">
+                    <RadioButton Content="Chocolatey Install" GroupName="InstallerType"
+                                 IsChecked="{Binding IsChocolateyInstallerChecked, Mode=TwoWay }" Background="#333333"
+                                 Margin="5" />
+                    <RadioButton Content="Executable Install" GroupName="InstallerType"
+                                 IsChecked="{Binding IsExecutableInstallerChecked, Mode=TwoWay }" Background="#333333"
+                                 Margin="5" />
+                    <RadioButton Content="Portable Application Install" GroupName="InstallerType"
+                                 IsChecked="{Binding IsPortableApplicationInstallerChecked, Mode=TwoWay }"
+                                 Background="#333333" Margin="5" />
+                    <RadioButton Content="Archive Install" GroupName="InstallerType"
+                                 IsChecked="{Binding IsArchiveInstallerChecked, Mode=TwoWay }" Background="#333333"
+                                 Margin="5" />
+                </StackPanel>
+            </DockPanel>
+
+            <ListView DockPanel.Dock="Left" 
+                      ItemsSource="{Binding AvailableInstallersInJson}" 
+                      SelectedItem="{Binding SelectedInstaller}"
+                      Background="#333333" Margin="5" >
+                
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding DisplayName}"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                
+            </ListView>
+        </DockPanel>
+
+        <ScrollViewer Grid.Row="1" Margin="5">
+            <StackPanel>
+                <DockPanel Visibility="{Binding IsChocolateyInstallerVisible}">
+
+                    <TextBlock Text="Chocolatey Installer Details" DockPanel.Dock="Top" Margin="0,0,0,5" />
+
+                    <StackPanel Style="{StaticResource IndentedMarginStyle}">
+                        <TextBlock Text="Display name" Margin="5" />
+                        <TextBox Text="{Binding TextDisplayName}" Margin="5" />
+
+                        <TextBlock Text="Chocolatey id" Margin="5" />
+                        <TextBox Text="{Binding TextChocolateyId}" Margin="5" />
+
+                        <TextBlock Text="Arguments" Margin="5" />
+                        <TextBox Text="{Binding TextChocolateyArguments}" Margin="5" />
+
+                        <TextBlock Text="Parameters" Margin="5" />
+                        <TextBox Text="{Binding TextChocolateyParameters}" Margin="5" />
+                    </StackPanel>
+                </DockPanel>
+
+                <DockPanel Visibility="{Binding IsExecutableInstallerVisible}">
+
+                    <TextBlock Text="Executable Installer Details" DockPanel.Dock="Top" Margin="0,0,0,5" />
+
+                    <StackPanel Style="{StaticResource IndentedMarginStyle}">
+                        <TextBlock Text="Display name" Margin="5" />
+                        <TextBox Text="{Binding TextDisplayName}" Margin="5" />
+
+                        <TextBlock Text="File name (With .exe on the end)" Margin="5" />
+                        <TextBox Text="{Binding TextExecutableInstallerFileName}" Margin="5" />
+
+                        <TextBlock Text="Arguments" Margin="5" />
+                        <TextBox Text="{Binding TextExecutableInstallerArguments}" Margin="5" />
+                    </StackPanel>
+                </DockPanel>
+
+                <DockPanel Visibility="{Binding IsPortableApplicationInstallerVisible}">
+
+                    <TextBlock Text="Portable Application Installer Details" DockPanel.Dock="Top" Margin="0,0,0,5" />
+
+                    <StackPanel Style="{StaticResource IndentedMarginStyle}">
+                        <TextBlock Text="Display name" Margin="5" />
+                        <TextBox Text="{Binding TextDisplayName}" Margin="5" />
+
+                        <TextBlock Text="Folder name" Margin="5" />
+                        <TextBox Text="{Binding TextPortableInstallerFolderName}" Margin="5" />
+
+                        <TextBlock Text="Destination path" Margin="5" />
+                        <TextBox Text="{Binding TextPortableInstallerDestinationPath}" Margin="5" />
+                    </StackPanel>
+                </DockPanel>
+
+                <DockPanel Visibility="{Binding IsArchiveInstallerVisible}">
+
+                    <TextBlock Text="Archive Installer Details" DockPanel.Dock="Top" Margin="0,0,0,5" />
+
+                    <StackPanel Style="{StaticResource IndentedMarginStyle}">
+                        <TextBlock Text="Display name" Margin="5" />
+                        <TextBox Text="{Binding TextDisplayName}" Margin="5" />
+
+                        <TextBlock Text="Archive filename (With .7z or .zip on the end)" Margin="5" />
+                        <TextBox Text="{Binding TextArchiveInstallerFileName}" Margin="5" />
+
+                        <TextBlock Text="Destination full path" Margin="5" />
+                        <TextBox Text="{Binding TextArchiveInstallerDestinationPath}" Margin="5" />
+                    </StackPanel>
+                </DockPanel>
+            </StackPanel>
+        </ScrollViewer>
+
+        <DockPanel Grid.Row="2" Margin="250,0,0,5">
+            <!-- Installer save and Cancel buttons -->
+            <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+                <Button Content="Save Details" Command="{Binding SaveCurrentlySelectedInstallerDataCommand}"  Width="100" Margin="5" />
+                <Button Content="Cancel Editing" Command="{Binding CancelEditingInstallerDataCommand}" Width="100" Margin="5" />
+            </StackPanel>
+
+            <!-- Window save and Cancel buttons -->
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+                <Button Content="Save All" Click="SaveAll_OnClick" Width="100" Margin="5" />
+                <Button Content="Cancel" Click="Cancel_OnClick" Width="100" Margin="5" />
+            </StackPanel>
+        </DockPanel>
+    </Grid>
+</Window>

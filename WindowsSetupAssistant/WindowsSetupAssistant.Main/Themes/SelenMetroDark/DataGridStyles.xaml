@@ -71,7 +71,7 @@
                                     <Setter TargetName="SortArrow" Property="Visibility" Value="Visible"/>
                                 </Trigger>
                                 <Trigger Property="DisplayIndex" Value="0">
-                                    <Setter Property="Visibility" Value="Collapsed" TargetName="PART_LeftHeaderGripper"></Setter>
+                                    <Setter Property="Visibility" Value="Collapsed" TargetName="PART_LeftHeaderGripper" />
                                 </Trigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>

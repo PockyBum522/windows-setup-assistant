@@ -24,7 +24,7 @@ public class FinalCleanupHelper
     /// <summary>
     /// Used to clean up files once setup assistant is done running
     /// </summary>
-    public void DeleteSavedChoicesAndStageOnDisk()
+    public void DeleteSavedStateFileOnDisk()
     {
         _logger.Information("Running {ThisName}", System.Reflection.MethodBase.GetCurrentMethod()?.Name);
 

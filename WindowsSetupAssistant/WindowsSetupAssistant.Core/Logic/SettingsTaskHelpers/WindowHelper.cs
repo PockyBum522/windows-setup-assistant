@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Runtime.Versioning;
 using Microsoft.Win32;
 using Serilog;
 
@@ -26,6 +27,7 @@ public class WindowHelper
     /// Changes Windows theme, title bars, and accent color to dark
     /// </summary>
     /// <exception cref="NullReferenceException">Throws if registry access error</exception>
+    [SupportedOSPlatform("Windows7.0")]
     public void ChangeWindowsThemeToDark()
     {
         _logger.Information("Running {ThisName}", System.Reflection.MethodBase.GetCurrentMethod()?.Name);
@@ -60,6 +62,7 @@ public class WindowHelper
     /// Changes Windows to disabled transparency
     /// </summary>
     /// <exception cref="NullReferenceException">Throws if registry access error</exception>
+    [SupportedOSPlatform("Windows7.0")]
     public void DisableWindowTransparency()
     {
         _logger.Information("Running {ThisName}", System.Reflection.MethodBase.GetCurrentMethod()?.Name);
@@ -75,6 +78,7 @@ public class WindowHelper
     /// Sets active and inactive window title bars to dark colors
     /// </summary>
     /// <exception cref="NullReferenceException">Throws if registry access error</exception>
+    [SupportedOSPlatform("Windows7.0")]
     public void BlackActiveAndInactiveTitleBars()
     {
         _logger.Information("Running {ThisName}", System.Reflection.MethodBase.GetCurrentMethod()?.Name);
@@ -96,36 +100,6 @@ public class WindowHelper
         accentKey.SetValue("ColorizationAfterglow", BitConverter.ToInt32(BitConverter.GetBytes(0xc44c4a48u), 0), RegistryValueKind.DWord);
         accentKey.SetValue("ColorizationColor", BitConverter.ToInt32(BitConverter.GetBytes(0xc44c4a48u), 0), RegistryValueKind.DWord);
         accentKey.SetValue("AccentColor", BitConverter.ToInt32(BitConverter.GetBytes(0xff484a4cu), 0), RegistryValueKind.DWord);
-    }
-
-    /// <summary>
-    /// Collapses the search in taskbar to just an icon 
-    /// </summary>
-    /// <exception cref="NullReferenceException">Throws on registry access error</exception>
-    public void CollapseSearchOnTaskbarToIcon()
-    {
-        _logger.Information("Running {ThisName}", System.Reflection.MethodBase.GetCurrentMethod()?.Name);
-        
-        using var key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Search", true);
-        
-        if (key == null) throw new NullReferenceException();
-        
-        key.SetValue("SearchboxTaskbarMode", 1);
-    }
-    
-    /// <summary>
-    /// Collapses the search in taskbar to completely hidden 
-    /// </summary>
-    /// <exception cref="NullReferenceException">Throws on registry access error</exception>
-    public void CollapseSearchOnTaskbarToHidden()
-    {
-        _logger.Information("Running {ThisName}", System.Reflection.MethodBase.GetCurrentMethod()?.Name);
-        
-        using var key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Search", true);
-        
-        if (key == null) throw new NullReferenceException();
-        
-        key.SetValue("SearchboxTaskbarMode", 0);
     }
     
     /// <summary>

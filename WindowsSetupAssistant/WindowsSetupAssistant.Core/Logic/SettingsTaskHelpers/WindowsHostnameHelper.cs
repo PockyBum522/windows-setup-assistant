@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Management;
+using System.Runtime.Versioning;
 using Microsoft.Win32;
 using Serilog;
 
@@ -26,6 +27,7 @@ public class WindowsHostnameHelper
     /// </summary>
     /// <param name="newHostName">The new host name</param>
     /// <exception cref="Exception">If new name cannot be set</exception>
+    [SupportedOSPlatform("Windows7.0")]
     public void ChangeHostName(string newHostName)
     {
         _logger.Information("Changing hostname to: {NewHostName}", newHostName);
@@ -33,21 +35,20 @@ public class WindowsHostnameHelper
         const string registryComputerNameKey = @"SYSTEM\CurrentControlSet\Control\ComputerName\ComputerName";
     
         var compPath= "Win32_ComputerSystem.Name='" + Environment.MachineName + "'";
+
+        using var mo = new ManagementObject(new ManagementPath(compPath));
         
-        using (var mo = new ManagementObject(new ManagementPath(compPath)))
+        var inputArgs = mo.GetMethodParameters("Rename");
+            
+        inputArgs["Name"] = newHostName;
+            
+        var output = mo.InvokeMethod("Rename", inputArgs, new InvokeMethodOptions());
+            
+        var retValue = (uint)Convert.ChangeType(output.Properties["ReturnValue"].Value, typeof(uint));
+            
+        if (retValue != 0)
         {
-            var inputArgs = mo.GetMethodParameters("Rename");
-            
-            inputArgs["Name"] = newHostName;
-            
-            var output = mo.InvokeMethod("Rename", inputArgs, new InvokeMethodOptions());
-            
-            var retValue = (uint)Convert.ChangeType(output.Properties["ReturnValue"].Value, typeof(uint));
-            
-            if (retValue != 0)
-            {
-                throw new Exception("Computer could not be changed due to unknown reason.");
-            }
+            throw new Exception("Computer could not be changed due to unknown reason.");
         }
 
         var computerName = Registry.LocalMachine.OpenSubKey(registryComputerNameKey);

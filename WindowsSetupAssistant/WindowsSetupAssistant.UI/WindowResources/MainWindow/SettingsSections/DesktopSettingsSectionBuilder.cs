@@ -1,4 +1,5 @@
-﻿using WindowsSetupAssistant.Core.Logic.SettingsTaskHelpers;
+﻿using System.Runtime.Versioning;
+using WindowsSetupAssistant.Core.Logic.SettingsTaskHelpers;
 using WindowsSetupAssistant.Core.Models.ISelectableSettings;
 using WindowsSetupAssistant.Core.Models.ISelectableSettings.ISelectableSettings;
 
@@ -10,19 +11,25 @@ namespace WindowsSetupAssistant.UI.WindowResources.MainWindow.SettingsSections;
 public class DesktopSettingsSectionBuilder
 {
     private readonly DesktopHelper _desktopHelper;
+    private readonly DisplayHelper _displayHelper;
 
     /// <summary>
     /// Constructor for dependency injection
     /// </summary>
     /// <param name="desktopHelper">Injected TimeHelper</param>
-    public DesktopSettingsSectionBuilder(DesktopHelper desktopHelper)
+    /// <param name="displayHelper">Injected DisplayHelper</param>
+    public DesktopSettingsSectionBuilder(
+        DesktopHelper desktopHelper,
+        DisplayHelper displayHelper)
     {
         _desktopHelper = desktopHelper;
+        _displayHelper = displayHelper;
     }
     
     /// <summary>
     /// Creates the section in MainWindow relating to the time settings
     /// </summary>
+    [SupportedOSPlatform("Windows7.0")]
     public SettingsSection MakeSection()
     {
         var parentSection = new SettingsSection()
@@ -57,9 +64,19 @@ public class DesktopSettingsSectionBuilder
             }
         };
         
+        var allMonitorsFullScaling = new OptionInternalMethod()
+        {
+            DisplayName = "Set all monitors to 100% scaling",
+            ExecuteSetting = () =>
+            {
+                _displayHelper.SetDpiValueToZeroForAllMonitors();
+            }
+        };
+        
         parentSection.Settings.Add(taskbarSearchToHidden);
         parentSection.Settings.Add(taskbarSearchToIcon);
         parentSection.Settings.Add(wallpaperToDarkImage);
+        parentSection.Settings.Add(allMonitorsFullScaling);
 
         return parentSection;
     }

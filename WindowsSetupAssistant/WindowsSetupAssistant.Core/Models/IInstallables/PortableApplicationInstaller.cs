@@ -44,8 +44,8 @@ public partial class PortableApplicationInstaller : ObservableObject, IInstallab
         var searchInPath =
             Path.Join(
                 ApplicationPaths.SetupAssistantRootDir,
-                "WindowsSetupAssistant",
                 "Resources",
+                "Installers",
                 "Portable Applications")
                 .Replace("/", @"\");
 
@@ -56,18 +56,19 @@ public partial class PortableApplicationInstaller : ObservableObject, IInstallab
         
         folderToInstallPath = Path.GetFullPath(folderToInstallPath);
             
-        Directory.CreateDirectory(DestinationPath);
+        Directory.CreateDirectory(
+            Path.Join(DestinationPath, FolderName));
         
         logger.Debug("Copying portable app: {SourceFolderPath}", folderToInstallPath);
-        logger.Debug("To directory: {DestinationFolder}", DestinationPath);
+        logger.Debug("To directory: {DestinationFolder}", Path.Join(DestinationPath, FolderName));
         
-        if (Directory.Exists(folderToInstallPath))
+        if (Directory.Exists(Path.Join(DestinationPath, FolderName)))
         {
-            CopyFolderWithContents(folderToInstallPath, DestinationPath);
+            CopyFolderWithContents(folderToInstallPath, Path.Join(DestinationPath, FolderName), logger);
         }
     }
     
-    private void CopyFolderWithContents(string sourcePath, string destinationPath)
+    private void CopyFolderWithContents(string sourcePath, string destinationPath, ILogger logger)
     {
         //Create all the directories.
         foreach (var directoryPath in Directory.GetDirectories(sourcePath, "*", SearchOption.AllDirectories))
@@ -81,8 +82,14 @@ public partial class PortableApplicationInstaller : ObservableObject, IInstallab
         foreach (var sourceFilePath in Directory.GetFiles(sourcePath, "*.*", SearchOption.AllDirectories))
         {
             var newPath = sourceFilePath.Replace(sourcePath, destinationPath);
+
+            try
+            {
+                File.Copy(sourceFilePath, newPath, true);    
+            }
+            catch (IOException)
+            {logger.Warning("Could not copy file to: {newPath}", newPath);}
             
-            File.Copy(sourceFilePath, newPath, true);
         }
     }
 }

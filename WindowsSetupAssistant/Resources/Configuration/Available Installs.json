@@ -47,7 +47,7 @@
     "Arguments": "",
     "Parameters": "",
     "DisplayName": "Google Chrome",
-    "IsSelected": true
+    "IsSelected": false
   },
   {
     "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
@@ -84,7 +84,7 @@
     "Arguments": "",
     "Parameters": "",
     "DisplayName": "Visual Studio Code",
-    "IsSelected": true
+    "IsSelected": false
   },
   {
     "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
@@ -128,7 +128,7 @@
     "Arguments": "",
     "Parameters": "",
     "DisplayName": ".NET 5 Desktop Runtime",
-    "IsSelected": true
+    "IsSelected": false
   },
   {
     "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
@@ -390,7 +390,7 @@
     "Arguments": "",
     "AutoHotkeyMacro": "",
     "DisplayName": "Synergy Software KVM",
-    "IsSelected": true
+    "IsSelected": false
   },
   {
     "$type": "WindowsSetupAssistant.Core.Models.IInstallables.SeparatorForInstallersList, WindowsSetupAssistant.Core",
@@ -551,7 +551,7 @@
     "ArchiveFilename": "Yubico Authenticator.7z",
     "DestinationPath": "C:\\PortableApplications\\",
     "DisplayName": "Yubico Authenticator (Modified)",
-    "IsSelected": true
+    "IsSelected": false
   },
   {
     "$type": "WindowsSetupAssistant.Core.Models.IInstallables.PortableApplicationInstaller, WindowsSetupAssistant.Core",

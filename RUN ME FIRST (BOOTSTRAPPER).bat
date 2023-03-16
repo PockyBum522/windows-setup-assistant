@@ -173,7 +173,7 @@ if "%1" neq "ELEV" (
 	"C:\Program Files\dotnet\dotnet.exe" build "%~dp0WindowsSetupAssistant\WindowsSetupAssistant.Main\WindowsSetupAssistant.Main.csproj"
 
 	echo .
-	echo Running: "%~dp0WindowsSetupAssistant\WindowsSetupAssistant.Main\bin\Debug\net7.0-windows\WindowsSetupAssistant.Main.exe"
+	echo Running: "%~dp0WindowsSetupAssistant\WindowsSetupAssistant.Main\bin\x64\net7.0-windows\WindowsSetupAssistant.Main.exe"
     echo .
 	
 	"%~dp0WindowsSetupAssistant\WindowsSetupAssistant.Main\bin\Debug\net7.0-windows\WindowsSetupAssistant.Main.exe"

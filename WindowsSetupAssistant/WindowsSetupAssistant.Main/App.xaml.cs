@@ -35,10 +35,8 @@ namespace WindowsSetupAssistant.Main
             
             _mainWindow = _scope.Resolve<MainWindow>();
             _mainWindow.DataContext = _scope.Resolve<MainWindowPersistentState>();
+            
             _mainWindow.Show();
-
-            var installsEditorWindow = new InstallsEditorWindow();
-            installsEditorWindow.Show();
         }
     }
 }

@@ -463,46 +463,46 @@
 		"DisplayName": "Spotify",
 		"IsSelected": false
 	},
-    {
-        "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ExecutableInstaller, WindowsSetupAssistant.Core",
-        "FileName": "truelaunchbar8-free.exe",
-        "Arguments": "",
-        "AutoHotkeyMacro": "",
-        "DisplayName": "True Launch Bar",
-        "IsSelected": false
-    },
-    {
-        "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
+	{
+		"$type": "WindowsSetupAssistant.Core.Models.IInstallables.ExecutableInstaller, WindowsSetupAssistant.Core",
+		"FileName": "truelaunchbar8-free.exe",
+		"Arguments": "",
+		"AutoHotkeyMacro": "",
+		"DisplayName": "True Launch Bar",
+		"IsSelected": false
+	},
+	{
+		"$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
 		"ChocolateyId": "discord",
 		"Arguments": "",
 		"Parameters": "",
 		"DisplayName": "Discord",
-        "IsSelected": false
-    },
-    {
-        "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
-        "ChocolateyId": "ripcord",
-        "Arguments": "",
-        "Parameters": "",
-        "DisplayName": "Ripcord",
-        "IsSelected": false
-    },
-    {
-        "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
-        "ChocolateyId": "pia",
-        "Arguments": "",
-        "Parameters": "",
-        "DisplayName": "PIA VPN Client",
-        "IsSelected": false
-    },
-    {
-        "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
-        "ChocolateyId": "brave",
-        "Arguments": "",
-        "Parameters": "",
-        "DisplayName": "Brave Browser",
-        "IsSelected": false
-    },
+		"IsSelected": false
+	},
+	{
+		"$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
+		"ChocolateyId": "ripcord",
+		"Arguments": "",
+		"Parameters": "",
+		"DisplayName": "Ripcord",
+		"IsSelected": false
+	},
+	{
+		"$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
+		"ChocolateyId": "pia",
+		"Arguments": "",
+		"Parameters": "",
+		"DisplayName": "PIA VPN Client",
+		"IsSelected": false
+	},
+	{
+		"$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
+		"ChocolateyId": "brave",
+		"Arguments": "",
+		"Parameters": "",
+		"DisplayName": "Brave Browser",
+		"IsSelected": false
+	},
 	{
 		"$type": "WindowsSetupAssistant.Core.Models.IInstallables.PortableApplicationInstaller, WindowsSetupAssistant.Core",
 		"FolderName": "Registry State Diff",

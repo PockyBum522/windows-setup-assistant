@@ -26,6 +26,7 @@ public partial class MainWindow
 {
     private readonly ILogger _logger;
     private readonly MainWindowPersistentState _mainWindowPersistentState;
+    private readonly InstallsEditorWindow.InstallsEditorWindow _installsEditorWindow;
     private readonly StateHandler _stateHandler;
     private readonly SystemRebooter _systemRebooter;
     private readonly StartupScriptWriter _startupScriptWriter;
@@ -61,12 +62,14 @@ public partial class MainWindow
     /// <param name="desktopSettingsSectionBuilder">Desktop settings section builder</param>
     /// <param name="windowSettingsSectionBuilder">Window settings section builder</param>
     /// <param name="mainWindowPersistentState">The main state of the application and user's choices that persists after a reboot</param>
+    /// <param name="installsEditorWindow">Injected Installs editor window</param>
     /// <param name="finalCleanupHelper">Injected to clean up all files on disk when application is finished</param>
     /// <param name="profileHandler">Injected to save/load profiles for this window</param>
     /// <param name="stateHandler">Injected to handle state loading and saving, and profile loading and saving</param>
     public MainWindow(
         ILogger logger,
         MainWindowPersistentState mainWindowPersistentState,
+        InstallsEditorWindow.InstallsEditorWindow installsEditorWindow,
         FinalCleanupHelper finalCleanupHelper,
         ProfileHandler profileHandler,
         StateHandler stateHandler,
@@ -85,6 +88,7 @@ public partial class MainWindow
     {
         _logger = logger;
         _mainWindowPersistentState = mainWindowPersistentState;
+        _installsEditorWindow = installsEditorWindow;
         _finalCleanupHelper = finalCleanupHelper;
         _profileHandler = profileHandler;
         _stateHandler = stateHandler;
@@ -405,4 +409,16 @@ public partial class MainWindow
     }
 
     private void AvailableInstallsListView_OnPreviewMouseWheel(object sender, MouseWheelEventArgs e) => ControlHelpers.OnPreviewMouseWheelMove(sender, e);
+
+    private void ShowInstallerEditorWindow_OnClick(object sender, RoutedEventArgs e)
+    {
+        _installsEditorWindow.Show();
+        
+        ((InstallsEditorWindow.InstallsEditorViewModel)_installsEditorWindow.DataContext).DeserializeInstallersJson();
+    }
+
+    private void ReloadInstallerList_OnClick(object sender, RoutedEventArgs e)
+    {
+        _availableApplicationsJsonLoader.LoadAvailableInstallersFromJsonFile();
+    }
 }

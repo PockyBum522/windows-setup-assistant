@@ -12,6 +12,7 @@ using WindowsSetupAssistant.Core.Logic.Application;
 using WindowsSetupAssistant.Core.Logic.MainWindowLoaders;
 using WindowsSetupAssistant.Core.Logic.SettingsTaskHelpers;
 using WindowsSetupAssistant.Core.Models;
+using WindowsSetupAssistant.UI.WindowResources.InstallsEditorWindow;
 using WindowsSetupAssistant.UI.WindowResources.MainWindow;
 using WindowsSetupAssistant.UI.WindowResources.MainWindow.SettingsSections;
 
@@ -216,5 +217,8 @@ public class DiContainerBuilder
         _builder.RegisterInstance(Dispatcher.CurrentDispatcher).AsSelf().SingleInstance();
         
         _builder.RegisterType<MainWindow>().AsSelf().SingleInstance();
+        
+        _builder.RegisterType<InstallsEditorViewModel>().AsSelf().SingleInstance();
+        _builder.RegisterType<InstallsEditorWindow>().AsSelf().SingleInstance();
     }
 }

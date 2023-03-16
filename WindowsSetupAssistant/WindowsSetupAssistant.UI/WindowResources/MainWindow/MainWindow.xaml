@@ -255,7 +255,7 @@
 
 
         <!-- Install Applications -->
-        <DockPanel Grid.Row="1" Grid.Column="3">
+        <DockPanel Grid.Row="1" Grid.Column="3" Margin="0,0,0,30">
 
             <DockPanel>
 
@@ -263,6 +263,11 @@
 
                 <Border BorderBrush="Gray" BorderThickness="1" Padding="2">
                     <DockPanel>
+                        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button Content="Edit Installers" Click="ShowInstallerEditorWindow_OnClick" Height="35" Margin="5" Width="120" />
+                            <Button Content="Reload Installers" Click="ReloadInstallerList_OnClick" Height="35" Margin="5" Width="120" />
+                        </StackPanel>
+                        
                         <ScrollViewer>
 
                             <ListView ItemsSource="{Binding AvailableInstalls}"

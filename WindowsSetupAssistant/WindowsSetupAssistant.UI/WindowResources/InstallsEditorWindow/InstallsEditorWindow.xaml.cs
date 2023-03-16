@@ -1,31 +1,43 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Windows;
 
 namespace WindowsSetupAssistant.UI.WindowResources.InstallsEditorWindow;
 
+/// <summary>
+/// The Installs Editor Window
+/// </summary>
 public partial class InstallsEditorWindow : Window
 {
-    public InstallsEditorWindow()
+    /// <summary>
+    /// Codebehind for the Installs Editor Window
+    /// </summary>
+    public InstallsEditorWindow(InstallsEditorViewModel installsEditorViewModel)
     {
+        DataContext = installsEditorViewModel;
+
         InitializeComponent();
     }
 
-    private void AddInstaller_OnClick(object sender, RoutedEventArgs e)
+    private void InstallsEditorWindow_OnClosing(object? sender, CancelEventArgs e)
     {
-        throw new System.NotImplementedException();
-    }
-
-    private void RemoveInstaller_OnClick(object sender, RoutedEventArgs e)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    private void SaveInstallers_OnClick(object sender, RoutedEventArgs e)
-    {
-        throw new System.NotImplementedException();
+        Hide();
+        
+        e.Cancel = true;
+        
+        ((InstallsEditorViewModel)DataContext).DeserializeInstallersJson();
     }
 
     private void Cancel_OnClick(object sender, RoutedEventArgs e)
     {
-        throw new System.NotImplementedException();
+        Hide();
+        
+        ((InstallsEditorViewModel)DataContext).DeserializeInstallersJson();
+    }
+
+    private void SaveAll_OnClick(object sender, RoutedEventArgs e)
+    {
+        Hide();
+        
+        ((InstallsEditorViewModel)DataContext).SaveAllEditedInstallersToJsonFileCommand.Execute(null);
     }
 }

@@ -1,5 +1,10 @@
 [
   {
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.SeparatorForInstallersList, WindowsSetupAssistant.Core",
+    "DisplayName": "Basics",
+    "IsSelected": false
+  },
+  {
     "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
     "ChocolateyId": "7Zip",
     "Arguments": "",
@@ -16,115 +21,16 @@
     "IsSelected": false
   },
   {
-    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ExecutableInstaller, WindowsSetupAssistant.Core",
-    "FileName": "synergy_windows_x64.msi",
-    "Arguments": "",
-    "AutoHotkeyMacro": "",
-    "DisplayName": "Synergy Software KVM",
-    "IsSelected": false
-  },
-  {
     "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
-    "ChocolateyId": "googlechrome",
+    "ChocolateyId": "everything",
     "Arguments": "",
     "Parameters": "",
-    "DisplayName": "Google Chrome",
+    "DisplayName": "Everything Search",
     "IsSelected": false
   },
   {
-    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ArchiveInstaller, WindowsSetupAssistant.Core",
-    "ArchiveFilename": "Yubico Authenticator.7z",
-    "DestinationPath": "C:\\PortableApplications\\",
-    "DisplayName": "Yubico Authenticator (Modified)",
-    "IsSelected": false
-  },
-  {
-    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.PortableApplicationInstaller, WindowsSetupAssistant.Core",
-    "FolderName": "CLCL",
-    "DestinationPath": "C:\\PortableApplications\\",
-    "DesktopShortcutExePath": "",
-    "StartMenuShortcutExePath": "",
-    "DisplayName": "CLCL",
-    "IsSelected": false
-  },
-  {
-    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
-    "ChocolateyId": "dotnet-5.0-desktopruntime",
-    "Arguments": "",
-    "Parameters": "",
-    "DisplayName": ".NET 5 Desktop Runtime",
-    "IsSelected": false
-  },
-  {
-    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
-    "ChocolateyId": "dotnet-6.0-desktopruntime",
-    "Arguments": "",
-    "Parameters": "",
-    "DisplayName": ".NET 6 Desktop Runtime",
-    "IsSelected": false
-  },
-  {
-    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
-    "ChocolateyId": "vscode",
-    "Arguments": "",
-    "Parameters": "",
-    "DisplayName": "Visual Studio Code",
-    "IsSelected": false
-  },
-  {
-    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.PortableApplicationInstaller, WindowsSetupAssistant.Core",
-    "FolderName": "ngrok",
-    "DestinationPath": "C:\\PortableApplications\\",
-    "DesktopShortcutExePath": "",
-    "StartMenuShortcutExePath": "",
-    "DisplayName": "Ngrok (Sigrok GUI for Logic Analyzers)",
-    "IsSelected": false
-  },
-  {
-    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.PortableApplicationInstaller, WindowsSetupAssistant.Core",
-    "FolderName": "Rufus",
-    "DestinationPath": "C:\\PortableApplications\\",
-    "DesktopShortcutExePath": "",
-    "StartMenuShortcutExePath": "",
-    "DisplayName": "Rufus",
-    "IsSelected": false
-  },
-  {
-    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.PortableApplicationInstaller, WindowsSetupAssistant.Core",
-    "FolderName": "Windows Update Blocker v1.1",
-    "DestinationPath": "C:\\PortableApplications\\",
-    "DesktopShortcutExePath": "",
-    "StartMenuShortcutExePath": "",
-    "DisplayName": "Windows Update Blocker",
-    "IsSelected": false
-  },
-  {
-    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ArchiveInstaller, WindowsSetupAssistant.Core",
-    "ArchiveFilename": "arduino-latest.7z",
-    "DestinationPath": "C:\\PortableApplications\\",
-    "DisplayName": "Arduino IDE",
-    "IsSelected": false
-  },
-  {
-    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ArchiveInstaller, WindowsSetupAssistant.Core",
-    "ArchiveFilename": "Omnidome.7z",
-    "DestinationPath": "C:\\PortableApplications\\",
-    "DisplayName": "Omnidome",
-    "IsSelected": false
-  },
-  {
-    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ArchiveInstaller, WindowsSetupAssistant.Core",
-    "ArchiveFilename": "VeraCrypt.7z",
-    "DestinationPath": "C:\\PortableApplications\\",
-    "DisplayName": "VeraCrypt",
-    "IsSelected": false
-  },
-  {
-    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
-    "ChocolateyId": "python",
-    "Arguments": "",
-    "Parameters": "",
-    "DisplayName": "Python",
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.SeparatorForInstallersList, WindowsSetupAssistant.Core",
+    "DisplayName": "Browsers",
     "IsSelected": false
   },
   {
@@ -137,6 +43,30 @@
   },
   {
     "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
+    "ChocolateyId": "googlechrome",
+    "Arguments": "",
+    "Parameters": "",
+    "DisplayName": "Google Chrome",
+    "IsSelected": true
+  },
+  {
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
+    "ChocolateyId": "opera",
+    "Arguments": "",
+    "Parameters": "",
+    "DisplayName": "Opera Browser",
+    "IsSelected": false
+  },
+  {
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
+    "ChocolateyId": "brave",
+    "Arguments": "",
+    "Parameters": "",
+    "DisplayName": "Brave Browser",
+    "IsSelected": false
+  },
+  {
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
     "ChocolateyId": "microsoft-edge",
     "Arguments": "",
     "Parameters": "",
@@ -144,75 +74,31 @@
     "IsSelected": false
   },
   {
-    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
-    "ChocolateyId": "everything",
-    "Arguments": "",
-    "Parameters": "",
-    "DisplayName": "Everything Search",
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.SeparatorForInstallersList, WindowsSetupAssistant.Core",
+    "DisplayName": "Programming",
     "IsSelected": false
   },
   {
     "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
-    "ChocolateyId": "vlc",
+    "ChocolateyId": "vscode",
     "Arguments": "",
     "Parameters": "",
-    "DisplayName": "VLC",
-    "IsSelected": false
+    "DisplayName": "Visual Studio Code",
+    "IsSelected": true
   },
   {
     "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
-    "ChocolateyId": "audacity",
+    "ChocolateyId": "python",
     "Arguments": "",
     "Parameters": "",
-    "DisplayName": "Audacity",
+    "DisplayName": "Python",
     "IsSelected": false
   },
   {
-    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
-    "ChocolateyId": "audacity-lame",
-    "Arguments": "",
-    "Parameters": "",
-    "DisplayName": "Audacity (LAME Encoder)",
-    "IsSelected": false
-  },
-  {
-    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
-    "ChocolateyId": "audacity-ffmpeg",
-    "Arguments": "",
-    "Parameters": "",
-    "DisplayName": "Audacity (FFmpeg)",
-    "IsSelected": false
-  },
-  {
-    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
-    "ChocolateyId": "handbrake",
-    "Arguments": "",
-    "Parameters": "",
-    "DisplayName": "Handbrake (Video converter)",
-    "IsSelected": false
-  },
-  {
-    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
-    "ChocolateyId": "filezilla",
-    "Arguments": "",
-    "Parameters": "",
-    "DisplayName": "FileZilla",
-    "IsSelected": false
-  },
-  {
-    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
-    "ChocolateyId": "winscp",
-    "Arguments": "",
-    "Parameters": "",
-    "DisplayName": "WinScp",
-    "IsSelected": false
-  },
-  {
-    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
-    "ChocolateyId": "putty",
-    "Arguments": "",
-    "Parameters": "",
-    "DisplayName": "Putty",
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ArchiveInstaller, WindowsSetupAssistant.Core",
+    "ArchiveFilename": "arduino-latest.7z",
+    "DestinationPath": "C:\\PortableApplications\\",
+    "DisplayName": "Arduino IDE",
     "IsSelected": false
   },
   {
@@ -225,6 +111,117 @@
   },
   {
     "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
+    "ChocolateyId": "jetbrainstoolbox",
+    "Arguments": "",
+    "Parameters": "",
+    "DisplayName": "Jetbrains Toolbox",
+    "IsSelected": false
+  },
+  {
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.SeparatorForInstallersList, WindowsSetupAssistant.Core",
+    "DisplayName": "Runtimes",
+    "IsSelected": false
+  },
+  {
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
+    "ChocolateyId": "dotnet-5.0-desktopruntime",
+    "Arguments": "",
+    "Parameters": "",
+    "DisplayName": ".NET 5 Desktop Runtime",
+    "IsSelected": true
+  },
+  {
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
+    "ChocolateyId": "dotnet-6.0-desktopruntime",
+    "Arguments": "",
+    "Parameters": "",
+    "DisplayName": ".NET 6 Desktop Runtime",
+    "IsSelected": false
+  },
+  {
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.SeparatorForInstallersList, WindowsSetupAssistant.Core",
+    "DisplayName": "Office",
+    "IsSelected": false
+  },
+  {
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
+    "ChocolateyId": "libreoffice-fresh",
+    "Arguments": "",
+    "Parameters": "",
+    "DisplayName": "LibreOffice",
+    "IsSelected": false
+  },
+  {
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
+    "ChocolateyId": "foxitreader",
+    "Arguments": "",
+    "Parameters": "",
+    "DisplayName": "FoxitReader",
+    "IsSelected": false
+  },
+  {
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
+    "ChocolateyId": "zoom",
+    "Arguments": "",
+    "Parameters": "",
+    "DisplayName": "Zoom Meeting Client",
+    "IsSelected": false
+  },
+  {
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
+    "ChocolateyId": "greenshot",
+    "Arguments": "",
+    "Parameters": "",
+    "DisplayName": "GreenShot",
+    "IsSelected": false
+  },
+  {
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
+    "ChocolateyId": "cdburnerxp",
+    "Arguments": "",
+    "Parameters": "",
+    "DisplayName": "CDBurnerXP",
+    "IsSelected": false
+  },
+  {
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
+    "ChocolateyId": "dropbox",
+    "Arguments": "",
+    "Parameters": "",
+    "DisplayName": "DropBox",
+    "IsSelected": false
+  },
+  {
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
+    "ChocolateyId": "obsidian",
+    "Arguments": "",
+    "Parameters": "",
+    "DisplayName": "Obsidian",
+    "IsSelected": false
+  },
+  {
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ExecutableInstaller, WindowsSetupAssistant.Core",
+    "FileName": "truelaunchbar8-free.exe",
+    "Arguments": "",
+    "AutoHotkeyMacro": "",
+    "DisplayName": "True Launch Bar",
+    "IsSelected": false
+  },
+  {
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.SeparatorForInstallersList, WindowsSetupAssistant.Core",
+    "DisplayName": "Media",
+    "IsSelected": false
+  },
+  {
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
+    "ChocolateyId": "vlc",
+    "Arguments": "",
+    "Parameters": "",
+    "DisplayName": "VLC",
+    "IsSelected": false
+  },
+  {
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
     "ChocolateyId": "krita",
     "Arguments": "",
     "Parameters": "",
@@ -233,26 +230,10 @@
   },
   {
     "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
-    "ChocolateyId": "blender",
-    "Arguments": "",
-    "Parameters": "",
-    "DisplayName": "Blender",
-    "IsSelected": false
-  },
-  {
-    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
     "ChocolateyId": "paint.net",
     "Arguments": "",
     "Parameters": "",
     "DisplayName": "Paint.net",
-    "IsSelected": false
-  },
-  {
-    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
-    "ChocolateyId": "gimp",
-    "Arguments": "",
-    "Parameters": "",
-    "DisplayName": "GIMP",
     "IsSelected": false
   },
   {
@@ -273,6 +254,54 @@
   },
   {
     "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
+    "ChocolateyId": "spotify",
+    "Arguments": "",
+    "Parameters": "",
+    "DisplayName": "Spotify",
+    "IsSelected": false
+  },
+  {
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
+    "ChocolateyId": "audacity",
+    "Arguments": "",
+    "Parameters": "",
+    "DisplayName": "Audacity",
+    "IsSelected": false
+  },
+  {
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
+    "ChocolateyId": "audacity-ffmpeg",
+    "Arguments": "",
+    "Parameters": "",
+    "DisplayName": "Audacity (FFmpeg)",
+    "IsSelected": false
+  },
+  {
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
+    "ChocolateyId": "audacity-lame",
+    "Arguments": "",
+    "Parameters": "",
+    "DisplayName": "Audacity (LAME Encoder)",
+    "IsSelected": false
+  },
+  {
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
+    "ChocolateyId": "handbrake",
+    "Arguments": "",
+    "Parameters": "",
+    "DisplayName": "Handbrake (Video converter)",
+    "IsSelected": false
+  },
+  {
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
+    "ChocolateyId": "gimp",
+    "Arguments": "",
+    "Parameters": "",
+    "DisplayName": "GIMP",
+    "IsSelected": false
+  },
+  {
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
     "ChocolateyId": "inkscape",
     "Arguments": "",
     "Parameters": "",
@@ -281,34 +310,108 @@
   },
   {
     "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
-    "ChocolateyId": "greenshot",
+    "ChocolateyId": "blender",
     "Arguments": "",
     "Parameters": "",
-    "DisplayName": "GreenShot",
+    "DisplayName": "Blender",
     "IsSelected": false
   },
   {
     "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
-    "ChocolateyId": "foxitreader",
+    "ChocolateyId": "mp3tag",
     "Arguments": "",
     "Parameters": "",
-    "DisplayName": "FoxitReader",
+    "DisplayName": "MP3Tag",
     "IsSelected": false
   },
   {
     "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
-    "ChocolateyId": "libreoffice-fresh",
+    "ChocolateyId": "musicbee",
     "Arguments": "",
     "Parameters": "",
-    "DisplayName": "LibreOffice",
+    "DisplayName": "MusicBee",
+    "IsSelected": false
+  },
+  {
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ArchiveInstaller, WindowsSetupAssistant.Core",
+    "ArchiveFilename": "Omnidome.7z",
+    "DestinationPath": "C:\\PortableApplications\\",
+    "DisplayName": "Omnidome",
+    "IsSelected": false
+  },
+  {
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.SeparatorForInstallersList, WindowsSetupAssistant.Core",
+    "DisplayName": "Networking Utilities",
     "IsSelected": false
   },
   {
     "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
-    "ChocolateyId": "cdburnerxp",
+    "ChocolateyId": "qbittorrent",
     "Arguments": "",
     "Parameters": "",
-    "DisplayName": "CDBurnerXP",
+    "DisplayName": "QBitTorrent",
+    "IsSelected": false
+  },
+  {
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
+    "ChocolateyId": "realvnc",
+    "Arguments": "",
+    "Parameters": "",
+    "DisplayName": "Real VNC",
+    "IsSelected": false
+  },
+  {
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
+    "ChocolateyId": "filezilla",
+    "Arguments": "",
+    "Parameters": "",
+    "DisplayName": "FileZilla",
+    "IsSelected": false
+  },
+  {
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
+    "ChocolateyId": "putty",
+    "Arguments": "",
+    "Parameters": "",
+    "DisplayName": "Putty",
+    "IsSelected": false
+  },
+  {
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
+    "ChocolateyId": "winscp",
+    "Arguments": "",
+    "Parameters": "",
+    "DisplayName": "WinScp",
+    "IsSelected": false
+  },
+  {
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ExecutableInstaller, WindowsSetupAssistant.Core",
+    "FileName": "synergy_windows_x64.msi",
+    "Arguments": "",
+    "AutoHotkeyMacro": "",
+    "DisplayName": "Synergy Software KVM",
+    "IsSelected": true
+  },
+  {
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.SeparatorForInstallersList, WindowsSetupAssistant.Core",
+    "DisplayName": "Administrative Utilities",
+    "IsSelected": false
+  },
+  {
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
+    "ChocolateyId": "powertoys",
+    "Arguments": "",
+    "Parameters": "",
+    "DisplayName": "PowerToys",
+    "IsSelected": false
+  },
+  {
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.PortableApplicationInstaller, WindowsSetupAssistant.Core",
+    "FolderName": "Rufus",
+    "DestinationPath": "C:\\PortableApplications\\",
+    "DesktopShortcutExePath": "",
+    "StartMenuShortcutExePath": "",
+    "DisplayName": "Rufus",
     "IsSelected": false
   },
   {
@@ -328,19 +431,62 @@
     "IsSelected": false
   },
   {
-    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
-    "ChocolateyId": "qbittorrent",
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.PortableApplicationInstaller, WindowsSetupAssistant.Core",
+    "FolderName": "Windows Update Blocker v1.1",
+    "DestinationPath": "C:\\PortableApplications\\",
+    "DesktopShortcutExePath": "",
+    "StartMenuShortcutExePath": "",
+    "DisplayName": "Windows Update Blocker",
+    "IsSelected": false
+  },
+  {
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ExecutableInstaller, WindowsSetupAssistant.Core",
+    "FileName": "SyncBackPro64_Setup.exe",
     "Arguments": "",
-    "Parameters": "",
-    "DisplayName": "QBitTorrent",
+    "AutoHotkeyMacro": "",
+    "DisplayName": "SyncBack Pro",
+    "IsSelected": false
+  },
+  {
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.PortableApplicationInstaller, WindowsSetupAssistant.Core",
+    "FolderName": "Registry State Diff",
+    "DestinationPath": "C:\\PortableApplications\\",
+    "DesktopShortcutExePath": "",
+    "StartMenuShortcutExePath": "",
+    "DisplayName": "Nirsoft Windows Registry State Diff",
+    "IsSelected": false
+  },
+  {
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.SeparatorForInstallersList, WindowsSetupAssistant.Core",
+    "DisplayName": "Security",
     "IsSelected": false
   },
   {
     "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
-    "ChocolateyId": "zoom",
+    "ChocolateyId": "bitwarden",
     "Arguments": "",
     "Parameters": "",
-    "DisplayName": "Zoom Meeting Client",
+    "DisplayName": "BitWarden Desktop",
+    "IsSelected": false
+  },
+  {
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ArchiveInstaller, WindowsSetupAssistant.Core",
+    "ArchiveFilename": "VeraCrypt.7z",
+    "DestinationPath": "C:\\PortableApplications\\",
+    "DisplayName": "VeraCrypt",
+    "IsSelected": false
+  },
+  {
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
+    "ChocolateyId": "pia",
+    "Arguments": "",
+    "Parameters": "",
+    "DisplayName": "PIA VPN Client",
+    "IsSelected": false
+  },
+  {
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.SeparatorForInstallersList, WindowsSetupAssistant.Core",
+    "DisplayName": "Personal",
     "IsSelected": false
   },
   {
@@ -353,22 +499,6 @@
   },
   {
     "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
-    "ChocolateyId": "dropbox",
-    "Arguments": "",
-    "Parameters": "",
-    "DisplayName": "DropBox",
-    "IsSelected": false
-  },
-  {
-    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
-    "ChocolateyId": "obsidian",
-    "Arguments": "",
-    "Parameters": "",
-    "DisplayName": "Obsidian",
-    "IsSelected": false
-  },
-  {
-    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
     "ChocolateyId": "pushbullet",
     "Arguments": "",
     "Parameters": "",
@@ -376,35 +506,12 @@
     "IsSelected": false
   },
   {
-    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
-    "ChocolateyId": "bitwarden",
-    "Arguments": "",
-    "Parameters": "",
-    "DisplayName": "BitWarden Desktop",
-    "IsSelected": false
-  },
-  {
-    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
-    "ChocolateyId": "powertoys",
-    "Arguments": "",
-    "Parameters": "",
-    "DisplayName": "PowerToys",
-    "IsSelected": false
-  },
-  {
-    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
-    "ChocolateyId": "jetbrainstoolbox",
-    "Arguments": "",
-    "Parameters": "",
-    "DisplayName": "Jetbrains Toolbox",
-    "IsSelected": false
-  },
-  {
-    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
-    "ChocolateyId": "mp3tag",
-    "Arguments": "",
-    "Parameters": "",
-    "DisplayName": "MP3Tag",
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.PortableApplicationInstaller, WindowsSetupAssistant.Core",
+    "FolderName": "CLCL",
+    "DestinationPath": "C:\\PortableApplications\\",
+    "DesktopShortcutExePath": "",
+    "StartMenuShortcutExePath": "",
+    "DisplayName": "CLCL",
     "IsSelected": false
   },
   {
@@ -416,59 +523,11 @@
     "IsSelected": false
   },
   {
-    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ExecutableInstaller, WindowsSetupAssistant.Core",
-    "FileName": "SyncBackPro64_Setup.exe",
-    "Arguments": "",
-    "AutoHotkeyMacro": "",
-    "DisplayName": "SyncBack Pro",
-    "IsSelected": false
-  },
-  {
-    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
-    "ChocolateyId": "musicbee",
-    "Arguments": "",
-    "Parameters": "",
-    "DisplayName": "MusicBee",
-    "IsSelected": false
-  },
-  {
     "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
     "ChocolateyId": "displayfusion",
     "Arguments": "",
     "Parameters": "",
     "DisplayName": "DisplayFusion",
-    "IsSelected": false
-  },
-  {
-    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
-    "ChocolateyId": "opera",
-    "Arguments": "",
-    "Parameters": "",
-    "DisplayName": "Opera Browser",
-    "IsSelected": false
-  },
-  {
-    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
-    "ChocolateyId": "realvnc",
-    "Arguments": "",
-    "Parameters": "",
-    "DisplayName": "Real VNC",
-    "IsSelected": false
-  },
-  {
-    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
-    "ChocolateyId": "spotify",
-    "Arguments": "",
-    "Parameters": "",
-    "DisplayName": "Spotify",
-    "IsSelected": false
-  },
-  {
-    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ExecutableInstaller, WindowsSetupAssistant.Core",
-    "FileName": "truelaunchbar8-free.exe",
-    "Arguments": "",
-    "AutoHotkeyMacro": "",
-    "DisplayName": "True Launch Bar",
     "IsSelected": false
   },
   {
@@ -488,28 +547,19 @@
     "IsSelected": false
   },
   {
-    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
-    "ChocolateyId": "pia",
-    "Arguments": "",
-    "Parameters": "",
-    "DisplayName": "PIA VPN Client",
-    "IsSelected": false
-  },
-  {
-    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ChocolateyInstaller, WindowsSetupAssistant.Core",
-    "ChocolateyId": "brave",
-    "Arguments": "",
-    "Parameters": "",
-    "DisplayName": "Brave Browser",
-    "IsSelected": false
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ArchiveInstaller, WindowsSetupAssistant.Core",
+    "ArchiveFilename": "Yubico Authenticator.7z",
+    "DestinationPath": "C:\\PortableApplications\\",
+    "DisplayName": "Yubico Authenticator (Modified)",
+    "IsSelected": true
   },
   {
     "$type": "WindowsSetupAssistant.Core.Models.IInstallables.PortableApplicationInstaller, WindowsSetupAssistant.Core",
-    "FolderName": "Registry State Diff",
+    "FolderName": "ngrok",
     "DestinationPath": "C:\\PortableApplications\\",
     "DesktopShortcutExePath": "",
     "StartMenuShortcutExePath": "",
-    "DisplayName": "Nirsoft Windows Registry State Diff",
+    "DisplayName": "Ngrok (Sigrok GUI for Logic Analyzers)",
     "IsSelected": false
   }
 ]

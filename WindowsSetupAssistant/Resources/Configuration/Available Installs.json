@@ -511,15 +511,5 @@
     "StartMenuShortcutExePath": "",
     "DisplayName": "Nirsoft Windows Registry State Diff",
     "IsSelected": false
-  },
-  {
-    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.SeparatorForInstallersList, WindowsSetupAssistant.Core",
-    "DisplayName": ".NET 6 Desktop Runtime",
-    "IsSelected": false
-  },
-  {
-    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.SeparatorForInstallersList, WindowsSetupAssistant.Core",
-    "DisplayName": "Rufus",
-    "IsSelected": false
   }
 ]

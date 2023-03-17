@@ -25,7 +25,7 @@ public class WindowsStoreApplicationsUninstaller
         // Start the process and wait for it to finish
         process.Start();
         
-        var output = process.StandardOutput.ReadToEnd();
+        //var output = process.StandardOutput.ReadToEnd();
         var errors = process.StandardError.ReadToEnd();
         
         process.WaitForExit();

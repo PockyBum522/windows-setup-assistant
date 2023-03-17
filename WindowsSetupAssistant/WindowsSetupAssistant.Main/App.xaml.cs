@@ -2,7 +2,6 @@
 using System.Windows;
 using Autofac;
 using WindowsSetupAssistant.Core.Logic.Application;
-using WindowsSetupAssistant.Core.Models;
 using WindowsSetupAssistant.UI.WindowResources.MainWindow;
 
 namespace WindowsSetupAssistant.Main
@@ -22,7 +21,7 @@ namespace WindowsSetupAssistant.Main
         /// </summary>
         /// <param name="e">Startup event args</param>
         [SupportedOSPlatform("Windows7.0")]
-        protected override void OnStartup(StartupEventArgs e)
+        protected override async void OnStartup(StartupEventArgs e)
         {
             var dependencyContainer = _mainBuilder.GetBuiltContainer();
             
@@ -32,10 +31,14 @@ namespace WindowsSetupAssistant.Main
             
             exceptionHandler.SetupExceptionHandlingEvents();
             
+            // MainWindow and ViewModel setup
             _mainWindow = _scope.Resolve<MainWindow>();
-            _mainWindow.DataContext = _scope.Resolve<MainWindowPersistentState>();
+            var mainWindowViewModel = _scope.Resolve<MainWindowViewModel>();
+            _mainWindow.DataContext = mainWindowViewModel;
             
             _mainWindow.Show();
+
+            await mainWindowViewModel.ExecuteNextSetupProcessStage();
         }
     }
 }

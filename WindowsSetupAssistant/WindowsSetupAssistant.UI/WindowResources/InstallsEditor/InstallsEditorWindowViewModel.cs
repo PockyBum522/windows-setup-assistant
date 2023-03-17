@@ -11,19 +11,19 @@ using WindowsSetupAssistant.Core;
 using WindowsSetupAssistant.Core.Models.IInstallables;
 using WindowsSetupAssistant.Core.Models.IInstallables.Interfaces;
 
-namespace WindowsSetupAssistant.UI.WindowResources.InstallsEditorWindow;
+namespace WindowsSetupAssistant.UI.WindowResources.InstallsEditor;
 
 /// <summary>
 /// The ViewModel for the InstallsEditorWindow
 /// </summary>
-public partial class InstallsEditorViewModel : ObservableObject
+public partial class InstallsEditorWindowViewModel : ObservableObject
 {
     private readonly ILogger _logger;
 
     /// <summary>
     /// Constructor for dependency injection
     /// </summary>
-    public InstallsEditorViewModel(ILogger logger)
+    public InstallsEditorWindowViewModel(ILogger logger)
     {
         _logger = logger;
 
@@ -45,7 +45,7 @@ public partial class InstallsEditorViewModel : ObservableObject
 
     [ObservableProperty] private string _textArchiveInstallerFileName = "";
     [ObservableProperty] private string _textArchiveInstallerDestinationPath = "";
-
+    
     [RelayCommand]
     private void SaveCurrentlySelectedInstallerData()
     {
@@ -142,17 +142,9 @@ public partial class InstallsEditorViewModel : ObservableObject
         if (string.IsNullOrWhiteSpace(TextDisplayName))
         {
             MessageBox.Show("Display name textbox cannot be blank when adding an installer");
-            return;
         }
-        
-        if (IsChocolateyInstallerChecked)
+        else if (ChocolateyInstallerRequirementsMet())
         {
-            if (string.IsNullOrWhiteSpace(TextChocolateyId))
-            {
-                MessageBox.Show("Chocolatey ID textbox cannot be blank when adding an installer");
-                return;
-            }
-            
             AvailableInstallersInJson.Add(
                 new ChocolateyInstaller()
                 {
@@ -161,16 +153,9 @@ public partial class InstallsEditorViewModel : ObservableObject
                     Arguments = TextChocolateyArguments,
                     Parameters = TextChocolateyParameters
                 });
-        }
-        
-        if (IsExecutableInstallerChecked)
+        } 
+        else if (ExecutableInstallerRequirementsMet())
         {
-            if (string.IsNullOrWhiteSpace(TextExecutableInstallerFileName))
-            {
-                MessageBox.Show("File name textbox cannot be blank when adding an installer");
-                return;
-            }
-            
             AvailableInstallersInJson.Add(
                 new ExecutableInstaller()
                 {
@@ -179,21 +164,8 @@ public partial class InstallsEditorViewModel : ObservableObject
                     FileName = TextExecutableInstallerFileName
                 });
         }
-        
-        if (IsPortableApplicationInstallerChecked)
+        else if (PortableApplicationInstallerRequirementsMet())
         {
-            if (string.IsNullOrWhiteSpace(TextPortableInstallerFolderName))
-            {
-                MessageBox.Show("Folder name textbox cannot be blank when adding an installer");
-                return;
-            }
-            
-            if (string.IsNullOrWhiteSpace(TextPortableInstallerDestinationPath))
-            {
-                MessageBox.Show("Destination path textbox cannot be blank when adding an installer");
-                return;
-            }
-            
             AvailableInstallersInJson.Add(
                 new PortableApplicationInstaller()
                 {
@@ -202,21 +174,8 @@ public partial class InstallsEditorViewModel : ObservableObject
                     FolderName = TextPortableInstallerFolderName
                 });
         }
-        
-        if (IsArchiveInstallerChecked)
+        else if (ArchiveInstallerRequirementsMet())
         {
-            if (string.IsNullOrWhiteSpace(TextArchiveInstallerFileName))
-            {
-                MessageBox.Show("File name textbox cannot be blank when adding an installer");
-                return;
-            }
-            
-            if (string.IsNullOrWhiteSpace(TextArchiveInstallerDestinationPath))
-            {
-                MessageBox.Show("Destination path textbox cannot be blank when adding an installer");
-                return;
-            }
-            
             AvailableInstallersInJson.Add(
                 new ArchiveInstaller()
                 {
@@ -225,8 +184,7 @@ public partial class InstallsEditorViewModel : ObservableObject
                     ArchiveFilename = TextArchiveInstallerFileName
                 });
         }
-        
-        if (IsAddSeparatorChecked)
+        else if (IsAddSeparatorChecked)
         {           
             if (SelectedInstaller is null) return;
             
@@ -236,6 +194,10 @@ public partial class InstallsEditorViewModel : ObservableObject
                 {
                     DisplayName = TextDisplayName
                 });
+        }
+        else
+        {
+            MessageBox.Show("One or more required textboxes (Textboxes marked with a *) are blank when trying to add this installer");
         }
     }
 
@@ -432,5 +394,40 @@ public partial class InstallsEditorViewModel : ObservableObject
             
             AvailableInstallersInJson.Add(availableInstall);
         }
+    }
+    
+    [RelayCommand]
+    private void CloseEditorWindow(object parameter)
+    {
+        if (parameter is Window window)
+        {
+            window.Close();
+        }
+    }
+    
+    private bool ArchiveInstallerRequirementsMet()
+    {
+        return IsArchiveInstallerChecked &&
+               !string.IsNullOrWhiteSpace(TextArchiveInstallerFileName) &&
+               !string.IsNullOrWhiteSpace(TextArchiveInstallerDestinationPath);
+    }
+
+    private bool PortableApplicationInstallerRequirementsMet()
+    {
+        return IsPortableApplicationInstallerChecked &&
+               string.IsNullOrWhiteSpace(TextPortableInstallerFolderName) &&
+               string.IsNullOrWhiteSpace(TextPortableInstallerDestinationPath);
+    }
+
+    private bool ExecutableInstallerRequirementsMet()
+    {
+        return IsExecutableInstallerChecked &&
+               !string.IsNullOrWhiteSpace(TextExecutableInstallerFileName);
+    }
+
+    private bool ChocolateyInstallerRequirementsMet()
+    {
+        return IsChocolateyInstallerChecked &&
+               !string.IsNullOrWhiteSpace(TextChocolateyId);
     }
 }

@@ -14,18 +14,18 @@ namespace WindowsSetupAssistant.Core.Logic.MainWindowLoaders;
 public class AvailableApplicationsJsonLoader
 {
     private readonly ILogger _logger;
-    private readonly MainWindowPersistentState _mainWindowPersistentState;
+    private readonly SessionPersistentState _sessionPersistentState;
 
     /// <summary>
     /// Constructor for dependency injection
     /// </summary>
     public AvailableApplicationsJsonLoader(
         ILogger logger,
-        MainWindowPersistentState mainWindowPersistentState
+        SessionPersistentState sessionPersistentState
         )
     {
         _logger = logger;
-        _mainWindowPersistentState = mainWindowPersistentState;
+        _sessionPersistentState = sessionPersistentState;
     }
     
     /// <summary>
@@ -49,13 +49,13 @@ public class AvailableApplicationsJsonLoader
         if (availableInstalls is null) throw new NullReferenceException();
 
         _logger.Information("Clearing MainWindowPartialViewModel.AvailableInstalls");
-        _mainWindowPersistentState.AvailableInstalls.Clear();
+        _sessionPersistentState.AvailableInstalls.Clear();
 
         foreach (var availableInstall in availableInstalls)
         {
             _logger.Information("Got {InstallName} in deserialization, adding install to MainWindowPartialViewModel.AvailableInstalls", availableInstall.DisplayName);
             
-            _mainWindowPersistentState.AvailableInstalls.Add(availableInstall);
+            _sessionPersistentState.AvailableInstalls.Add(availableInstall);
         }
     }
 }

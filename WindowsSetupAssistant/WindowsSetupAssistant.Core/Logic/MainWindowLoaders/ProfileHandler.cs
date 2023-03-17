@@ -15,19 +15,19 @@ namespace WindowsSetupAssistant.Core.Logic.MainWindowLoaders;
 public class ProfileHandler
 {
     private readonly StateHandler _stateHandler;
-    private readonly MainWindowPersistentState _mainWindowPersistentState;
+    private readonly SessionPersistentState _sessionPersistentState;
 
     /// <summary>
     /// Constructor for dependency injection
     /// </summary>
     /// <param name="stateHandler">Injected</param>
-    /// <param name="mainWindowPersistentState">The main state of the application and user's choices that persists after a reboot</param>
+    /// <param name="sessionPersistentState">The main state of the application and user's choices that persists after a reboot</param>
     public ProfileHandler(
         StateHandler stateHandler,
-        MainWindowPersistentState mainWindowPersistentState)
+        SessionPersistentState sessionPersistentState)
     {
         _stateHandler = stateHandler;
-        _mainWindowPersistentState = mainWindowPersistentState;
+        _sessionPersistentState = sessionPersistentState;
     }
     
     /// <summary>
@@ -92,21 +92,21 @@ public class ProfileHandler
             }
         }
 
-        _mainWindowPersistentState.IsCheckedUpdateWindows = loadedProfileState.IsCheckedUpdateWindows;
+        _sessionPersistentState.IsCheckedUpdateWindows = loadedProfileState.IsCheckedUpdateWindows;
         
-        _mainWindowPersistentState.TextHostname = loadedProfileState.TextHostname;
+        _sessionPersistentState.TextHostname = loadedProfileState.TextHostname;
 
-        _mainWindowPersistentState.TextMonitorTimeoutOnAc = loadedProfileState.TextMonitorTimeoutOnAc;
-        _mainWindowPersistentState.TextMonitorTimeoutOnBattery = loadedProfileState.TextMonitorTimeoutOnBattery;
-        _mainWindowPersistentState.TextStandbyTimeoutOnAc = loadedProfileState.TextStandbyTimeoutOnAc;
-        _mainWindowPersistentState.TextStandbyTimeoutOnBattery = loadedProfileState.TextStandbyTimeoutOnBattery;
-        _mainWindowPersistentState.TextHibernateTimeoutOnAc = loadedProfileState.TextHibernateTimeoutOnAc;
-        _mainWindowPersistentState.TextHibernateTimeoutOnBattery = loadedProfileState.TextHibernateTimeoutOnBattery;
+        _sessionPersistentState.TextMonitorTimeoutOnAc = loadedProfileState.TextMonitorTimeoutOnAc;
+        _sessionPersistentState.TextMonitorTimeoutOnBattery = loadedProfileState.TextMonitorTimeoutOnBattery;
+        _sessionPersistentState.TextStandbyTimeoutOnAc = loadedProfileState.TextStandbyTimeoutOnAc;
+        _sessionPersistentState.TextStandbyTimeoutOnBattery = loadedProfileState.TextStandbyTimeoutOnBattery;
+        _sessionPersistentState.TextHibernateTimeoutOnAc = loadedProfileState.TextHibernateTimeoutOnAc;
+        _sessionPersistentState.TextHibernateTimeoutOnBattery = loadedProfileState.TextHibernateTimeoutOnBattery;
     }
     
     private IInstallable GetInstallInListByDisplayName(string displayName)
     {
-        foreach (var install in _mainWindowPersistentState.AvailableInstalls)
+        foreach (var install in _sessionPersistentState.AvailableInstalls)
         {
             if (displayName == install.DisplayName)
                 return install;
@@ -118,7 +118,7 @@ public class ProfileHandler
     
     private ISelectableSetting GetSettingInListByDisplayName(string displayName)
     {
-        foreach (var section in _mainWindowPersistentState.SettingsSections)
+        foreach (var section in _sessionPersistentState.SettingsSections)
         {
             foreach (var setting in section.Settings)
             {

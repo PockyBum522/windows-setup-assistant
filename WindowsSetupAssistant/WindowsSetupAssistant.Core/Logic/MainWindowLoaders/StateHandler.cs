@@ -12,19 +12,19 @@ namespace WindowsSetupAssistant.Core.Logic.MainWindowLoaders;
 public class StateHandler
 {
     private readonly ILogger _logger;
-    private MainWindowPersistentState _mainWindowPersistentState;
+    private SessionPersistentState _sessionPersistentState;
 
     /// <summary>
     /// Constructor for dependency injection
     /// </summary>
     /// <param name="logger">Injected ILogger to use</param>
-    /// <param name="mainWindowPersistentState">The main state of the application and user's choices that persists after a reboot</param>
+    /// <param name="sessionPersistentState">The main state of the application and user's choices that persists after a reboot</param>
     public StateHandler(
         ILogger logger,
-        MainWindowPersistentState mainWindowPersistentState)
+        SessionPersistentState sessionPersistentState)
     {
         _logger = logger;
-        _mainWindowPersistentState = mainWindowPersistentState;
+        _sessionPersistentState = sessionPersistentState;
     }
     
     /// <summary>
@@ -45,13 +45,13 @@ public class StateHandler
         
         using var jsonStateWriter = new JsonTextWriter(jsonStateFileWriter) { Formatting = Formatting.Indented };
         
-        serializer.Serialize(jsonStateWriter, _mainWindowPersistentState);
+        serializer.Serialize(jsonStateWriter, _sessionPersistentState);
     }
     
     /// <summary>
     /// Saves the current state to disk at location specified by StatePath
     /// </summary>
-    public MainWindowPersistentState GetStateFromJson(string profileJsonFilePath)
+    public SessionPersistentState GetStateFromJson(string profileJsonFilePath)
     {
         var settings = new JsonSerializerSettings
         {
@@ -64,7 +64,7 @@ public class StateHandler
         var jsonStateRaw = File.ReadAllText(profileJsonFilePath);
 
         var newMainWindowPartialViewModel =
-            JsonConvert.DeserializeObject<MainWindowPersistentState>(jsonStateRaw, settings);
+            JsonConvert.DeserializeObject<SessionPersistentState>(jsonStateRaw, settings);
 
         if (newMainWindowPartialViewModel is null) throw new NullReferenceException();
 
@@ -81,6 +81,6 @@ public class StateHandler
         
         
         _logger.Debug("Loaded current state from disk into persistent state instance");
-        _logger.Debug("Stage in LoadStateFromJsonIntoPersistentState() is: {Stage}", _mainWindowPersistentState.ScriptStage);
+        _logger.Debug("Stage in LoadStateFromJsonIntoPersistentState() is: {Stage}", _sessionPersistentState.ScriptStage);
     }
 }

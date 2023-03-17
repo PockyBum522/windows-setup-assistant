@@ -34,9 +34,9 @@
                 </DataTemplate>
 
                 <!-- Custom DataTemplateSelector -->
-                <wpfHelpers:IInstallableListDataTemplateSelector x:Key="InstallableListDataTemplateSelector"
+                <wpfHelpers:DataTemplateSelectorIInstallableList x:Key="InstallableListDataTemplateSelector"
                                                              SeparatorDisplayTemplate="{StaticResource SeparatorDisplayTemplate}"
-                                                             IInstallableDisplayTemplate="{StaticResource IInstallableDisplayTemplate}" />
+                                                             DisplayTemplateIInstallable="{StaticResource IInstallableDisplayTemplate}" />
         
                 </ResourceDictionary>
                 

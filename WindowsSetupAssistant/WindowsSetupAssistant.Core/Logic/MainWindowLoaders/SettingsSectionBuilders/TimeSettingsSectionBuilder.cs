@@ -3,22 +3,22 @@ using WindowsSetupAssistant.Core.Logic.SettingsTaskHelpers;
 using WindowsSetupAssistant.Core.Models.ISelectableSettings;
 using WindowsSetupAssistant.Core.Models.ISelectableSettings.ISelectableSettings;
 
-namespace WindowsSetupAssistant.UI.WindowResources.MainWindow.SettingsSections;
+namespace WindowsSetupAssistant.Core.Logic.MainWindowLoaders.SettingsSectionBuilders;
 
 /// <summary>
 /// Creates the section in MainWindow relating to the time settings
 /// </summary>
-public class TaskbarSettingsSectionBuilder
+public class TimeSettingsSectionBuilder
 {
-    private readonly TaskbarHelper _taskbarHelper;
+    private readonly TimeHelper _timeHelper;
 
     /// <summary>
     /// Constructor for dependency injection
     /// </summary>
-    /// <param name="taskbarHelper">Injected Taskbar Helper</param>
-    public TaskbarSettingsSectionBuilder(TaskbarHelper taskbarHelper)
+    /// <param name="timeHelper">Injected TimeHelper</param>
+    public TimeSettingsSectionBuilder(TimeHelper timeHelper)
     {
-        _taskbarHelper = taskbarHelper;
+        _timeHelper = timeHelper;
     }
     
     /// <summary>
@@ -29,29 +29,29 @@ public class TaskbarSettingsSectionBuilder
     {
         var parentSection = new SettingsSection()
         {
-            DisplayName = "Taskbar"
+            DisplayName = "System Time"
         };
 
-        var taskbarSearchToHidden = new OptionInternalMethod()
+        var timeSyncOption = new OptionInternalMethod()
         {
-            DisplayName = "Set Taskbar Search to Hidden",
+            DisplayName = "Synchronize System Time with NTP",
             ExecuteSetting = () =>
             {
-                _taskbarHelper.CollapseSearchOnTaskbarToHidden();
+                _timeHelper.SyncSystemTime();
             }
         };
         
-        var taskbarSearchToIcon = new OptionInternalMethod()
+        var timeZoneSetToEasternOption = new OptionInternalMethod()
         {
-            DisplayName = "Collapse Taskbar Search to Just Icon",
+            DisplayName = "Set Timezone to (-5) EST",
             ExecuteSetting = () =>
             {
-                _taskbarHelper.CollapseSearchOnTaskbarToIcon();
+                _timeHelper.SetSystemTimeZone("Eastern Standard Time");
             }
         };
         
-        parentSection.Settings.Add(taskbarSearchToHidden);
-        parentSection.Settings.Add(taskbarSearchToIcon);
+        parentSection.Settings.Add(timeSyncOption);
+        parentSection.Settings.Add(timeZoneSetToEasternOption);
 
         return parentSection;
     }

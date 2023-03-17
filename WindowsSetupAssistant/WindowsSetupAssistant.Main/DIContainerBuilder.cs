@@ -9,15 +9,15 @@ using Newtonsoft.Json;
 using Serilog;
 using WindowsSetupAssistant.Core;
 using WindowsSetupAssistant.Core.Logic.Application;
+using WindowsSetupAssistant.Core.Logic.MainProcessExecutors;
 using WindowsSetupAssistant.Core.Logic.MainWindowLoaders;
+using WindowsSetupAssistant.Core.Logic.MainWindowLoaders.SettingsSectionBuilders;
 using WindowsSetupAssistant.Core.Logic.SettingsTaskHelpers;
 using WindowsSetupAssistant.Core.Models;
-using WindowsSetupAssistant.UI.WindowResources.InstallsEditorWindow;
+using WindowsSetupAssistant.UI.WindowResources.InstallsEditor;
 using WindowsSetupAssistant.UI.WindowResources.MainWindow;
-using WindowsSetupAssistant.UI.WindowResources.MainWindow.SettingsSections;
 
 namespace WindowsSetupAssistant.Main;
-
 
 /// <summary>
 /// Builds the container for the local application dependencies. This is then passed to TeakTools.Common
@@ -32,6 +32,9 @@ public class DiContainerBuilder
     [SupportedOSPlatform("Windows7.0")]
     public DiContainerBuilder()
     {
+        // This has to be done here because DeserializeObject creates another object in memory if there's already
+        // a new() object in _mainWindowPersistentState that was causing problems, so we'll just do it 
+        // in the constructor.
         var settings = new JsonSerializerSettings
         {
             TypeNameHandling = TypeNameHandling.Auto
@@ -41,17 +44,17 @@ public class DiContainerBuilder
         {
             var jsonStateRaw = File.ReadAllText(ApplicationPaths.StatePath);
 
-            _mainWindowPersistentState = JsonConvert.DeserializeObject<MainWindowPersistentState>(jsonStateRaw, settings) ?? new MainWindowPersistentState();
+            _sessionPersistentState = JsonConvert.DeserializeObject<SessionPersistentState>(jsonStateRaw, settings) ?? new SessionPersistentState();
         }
         else
         {
-            _mainWindowPersistentState = new();
+            _sessionPersistentState = new();
         }
     }
     
     private readonly ContainerBuilder _builder = new ();
     private ILogger? _logger;
-    private MainWindowPersistentState _mainWindowPersistentState;
+    private SessionPersistentState _sessionPersistentState;
     
     //private ISettingsApplicationLocal _settingsApplicationLocal;
 
@@ -103,11 +106,11 @@ public class DiContainerBuilder
             // Otherwise:
             var jsonStateRaw = File.ReadAllText(ApplicationPaths.StatePath);
 
-            _mainWindowPersistentState = JsonConvert.DeserializeObject<MainWindowPersistentState>(jsonStateRaw, settings) ?? throw new NullReferenceException();
+            _sessionPersistentState = JsonConvert.DeserializeObject<SessionPersistentState>(jsonStateRaw, settings) ?? throw new NullReferenceException();
         }
         else
         {
-            _mainWindowPersistentState = new MainWindowPersistentState();
+            _sessionPersistentState = new SessionPersistentState();
         }
     }
 
@@ -166,16 +169,19 @@ public class DiContainerBuilder
     [SupportedOSPlatform("Windows7.0")]
     private void RegisterMainDependencies()
     {
-        _builder.RegisterInstance(_mainWindowPersistentState).As<MainWindowPersistentState>().SingleInstance();
+        _builder.RegisterInstance(_sessionPersistentState).As<SessionPersistentState>().SingleInstance();
         
         if (_logger is not null)
-            _logger.Debug("Deserialized JSON: {ToString}", _mainWindowPersistentState.ToString());
+            _logger.Debug("Deserialized JSON: {ToString}", _sessionPersistentState.ToString());
         
         _builder.RegisterType<ExceptionHandler>().AsSelf().SingleInstance();
         _builder.RegisterType<StartupScriptWriter>().AsSelf().SingleInstance();
         _builder.RegisterType<SystemRebooter>().AsSelf().SingleInstance();
         _builder.RegisterType<StateHandler>().AsSelf().SingleInstance();
         _builder.RegisterType<FinalCleanupHelper>().AsSelf().SingleInstance();
+        
+        _builder.RegisterType<SelectedSettingsExecutor>().AsSelf().SingleInstance();
+        _builder.RegisterType<MainSetupProcessExecutor>().AsSelf().SingleInstance();
     }
     
     [SupportedOSPlatform("Windows7.0")]
@@ -190,6 +196,8 @@ public class DiContainerBuilder
         _builder.RegisterType<WindowsUpdater>().AsSelf();
         _builder.RegisterType<DisplayHelper>().AsSelf();
         _builder.RegisterType<WindowsStoreApplicationsUninstaller>().AsSelf();
+        
+        _builder.RegisterType<ApplicationInstallExecutor>().AsSelf();
     }
 
     [SupportedOSPlatform("Windows7.0")]
@@ -199,6 +207,8 @@ public class DiContainerBuilder
         _builder.RegisterType<AvailableApplicationsJsonLoader>().AsSelf();
         _builder.RegisterType<ProfileHandler>().AsSelf();
         _builder.RegisterType<StateHandler>().AsSelf();
+        
+        _builder.RegisterType<SettingsSectionsController>().AsSelf();
     }
 
     [SupportedOSPlatform("Windows7.0")]
@@ -216,9 +226,10 @@ public class DiContainerBuilder
     {
         _builder.RegisterInstance(Dispatcher.CurrentDispatcher).AsSelf().SingleInstance();
         
+        _builder.RegisterType<MainWindowViewModel>().AsSelf().SingleInstance();
         _builder.RegisterType<MainWindow>().AsSelf().SingleInstance();
         
-        _builder.RegisterType<InstallsEditorViewModel>().AsSelf().SingleInstance();
+        _builder.RegisterType<InstallsEditorWindowViewModel>().AsSelf().SingleInstance();
         _builder.RegisterType<InstallsEditorWindow>().AsSelf().SingleInstance();
     }
 }

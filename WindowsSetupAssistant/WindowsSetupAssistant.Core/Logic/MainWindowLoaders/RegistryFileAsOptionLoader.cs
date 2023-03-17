@@ -14,19 +14,19 @@ namespace WindowsSetupAssistant.Core.Logic.MainWindowLoaders;
 public class RegistryFileAsOptionLoader
 {
     private readonly ILogger _logger;
-    private readonly MainWindowPersistentState _mainWindowPersistentState;
+    private readonly SessionPersistentState _sessionPersistentState;
 
     /// <summary>
     /// Constructor for dependency injection
     /// </summary>
     /// <param name="logger">Injected ILogger to use</param>
-    /// <param name="mainWindowPersistentState">The main state of the application and user's choices that persists after a reboot</param>
+    /// <param name="sessionPersistentState">The main state of the application and user's choices that persists after a reboot</param>
     public RegistryFileAsOptionLoader(
         ILogger logger,
-        MainWindowPersistentState mainWindowPersistentState)
+        SessionPersistentState sessionPersistentState)
     {
         _logger = logger;
-        _mainWindowPersistentState = mainWindowPersistentState;
+        _sessionPersistentState = sessionPersistentState;
     }
     
     /// <summary>
@@ -69,7 +69,7 @@ public class RegistryFileAsOptionLoader
         
         var foundSection = false;
         
-        foreach (var section in _mainWindowPersistentState.SettingsSections)
+        foreach (var section in _sessionPersistentState.SettingsSections)
         {
             if (section.DisplayName != parentFolderName) continue;
             
@@ -88,6 +88,6 @@ public class RegistryFileAsOptionLoader
             
         newSection.Settings.Add(newOption);
         
-        _mainWindowPersistentState.SettingsSections.Add(newSection);
+        _sessionPersistentState.SettingsSections.Add(newSection);
     }
 }

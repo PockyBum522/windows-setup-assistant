@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Versioning;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -14,6 +15,7 @@ using WindowsSetupAssistant.Core.Models;
 using WindowsSetupAssistant.Core.Models.Enums;
 using WindowsSetupAssistant.Core.Models.IInstallables;
 using WindowsSetupAssistant.UI.WindowResources.MainWindow.SettingsSections;
+using WindowsSetupAssistant.UI.WpfHelpers;
 
 namespace WindowsSetupAssistant.UI.WindowResources.MainWindow;
 
@@ -110,10 +112,13 @@ public partial class MainWindow
     }
 
     [SupportedOSPlatform("Windows7.0")]
-    private void MainWindow_OnLoaded(object sender, RoutedEventArgs e) => CheckStageAndWork();
-    
+    private async void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
+    {
+        await CheckStageAndWork();
+    }
+
     [SupportedOSPlatform("Windows7.0")]
-    private void CheckStageAndWork()
+    private async Task CheckStageAndWork()
     {
         TextBlockUserName.Text = $"Running As DomainUser: {Environment.UserDomainName} | User: {Environment.UserName}";
         
@@ -154,7 +159,7 @@ public partial class MainWindow
                     _mainWindowPersistentState.ScriptStage = ScriptStageEnum.WindowsHasBeenUpdatedFully;
                     _stateHandler.SaveCurrentStateAsJson(ApplicationPaths.StatePath);
 
-                    CheckStageAndWork();
+                    await CheckStageAndWork();
                 }
 
                 break;
@@ -182,24 +187,39 @@ public partial class MainWindow
                 break;
 
             case ScriptStageEnum.WindowsHasBeenUpdatedFully:
-
+                
+                _mainWindowPersistentState.ScriptStage = ScriptStageEnum.RunFinalSettings;
+                _stateHandler.SaveCurrentStateAsJson(ApplicationPaths.StatePath);
+                
                 if (_mainWindowPersistentState.IsCheckedUpdateWindows)
                 {
                     _windowsUpdater.UpdateWindows();
                 }
-
-                _finalCleanupHelper.DeleteSavedStateFileOnDisk();
                 
-                WorkAllApplicationInstallCheckboxes();
+                WorkAllNonInteractiveApplicationInstalls();
 
                 if (!string.IsNullOrWhiteSpace(_mainWindowPersistentState.TextHostname))
                 {
                     _windowsHostnameHelper.ChangeHostName(_mainWindowPersistentState.TextHostname);
                 }
+                
+                _systemRebooter.RebootComputerAndExit();
 
+                break;
+            
+            case ScriptStageEnum.RunFinalSettings:
+
+                _finalCleanupHelper.DeleteSavedStateFileOnDisk();
+                
+                // Some settings here need to be re-run at the end to take effect.
+                // Not to mention some have to be run at the end by their nature, such as desktop clean up
+                ExecuteSelectedSettingsInAllSections();
+                
+                WorkInteractiveApplicationInstalls();
+                
                 SetPowerSettingsToUserChoicesAtStart();
                 
-                _systemRebooter.PromptToRebootComputerAndExit();
+                await _systemRebooter.PromptToRebootComputerAndExit();
 
                 break;
         }
@@ -252,11 +272,11 @@ public partial class MainWindow
     }
 
     [SupportedOSPlatform("Windows7.0")]
-    private void StartExecution_OnClick(object sender, RoutedEventArgs e)
+    private async void StartExecution_OnClick(object sender, RoutedEventArgs e)
     {
         _mainWindowPersistentState.ScriptStage = ScriptStageEnum.FirstRun;
         
-        CheckStageAndWork();   
+        await CheckStageAndWork();   
     }
     
     [SupportedOSPlatform("Windows7.0")]
@@ -385,7 +405,7 @@ public partial class MainWindow
 
     // ReSharper disable once CognitiveComplexity because it's extremely linear and it's fine
     [SupportedOSPlatform("Windows7.0")]
-    private void WorkAllApplicationInstallCheckboxes()
+    private void WorkAllNonInteractiveApplicationInstalls()
     {
         // Install 7zip no matter what because we need it later for the portable apps
         new ChocolateyInstaller() { ChocolateyId = "7Zip" }.ExecuteInstall(_logger);
@@ -401,9 +421,20 @@ public partial class MainWindow
                 installer.ExecuteInstall(_logger);
         }
 
-        // Do the executableInstallers last
+    }
+    
+    // ReSharper disable once CognitiveComplexity because it's extremely linear and it's fine
+    [SupportedOSPlatform("Windows7.0")]
+    private void WorkInteractiveApplicationInstalls()
+    {
+        // Install 7zip no matter what because we need it later for the portable apps
+        new ChocolateyInstaller() { ChocolateyId = "7Zip" }.ExecuteInstall(_logger);
+
+        // Run non-executable installers and get them out of the way first since they require no user interaction
         foreach (var installer in _mainWindowPersistentState.AvailableInstalls)
         {
+            _logger.Information("Checking installer: {DisplayName} which IsSelected? {IsSelected}", installer.DisplayName, installer.IsSelected);
+            
             if (!installer.IsSelected) continue;
 
             if (installer is ExecutableInstaller)
@@ -411,7 +442,7 @@ public partial class MainWindow
         }
     }
 
-    private void AvailableInstallsListView_OnPreviewMouseWheel(object sender, MouseWheelEventArgs e) => ControlHelpers.OnPreviewMouseWheelMove(sender, e);
+    private void AvailableInstallsListView_OnPreviewMouseWheel(object sender, MouseWheelEventArgs e) => ListViewMouseWheelScroller.OnPreviewMouseWheelMove(sender, e);
 
     private void ShowInstallerEditorWindow_OnClick(object sender, RoutedEventArgs e)
     {

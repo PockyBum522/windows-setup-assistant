@@ -28,5 +28,10 @@ public enum ScriptStageEnum
     /// <summary>
     /// After we have run windows update three times, this is also the stage where we finally install applications
     /// </summary>
-    WindowsHasBeenUpdatedFully
+    WindowsHasBeenUpdatedFully,
+    
+    /// <summary>
+    /// One more reboot and then we just handle 
+    /// </summary>
+    RunFinalSettings
 }

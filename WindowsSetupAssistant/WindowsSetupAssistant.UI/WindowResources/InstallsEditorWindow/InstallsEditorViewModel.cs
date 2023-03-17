@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.Metrics;
 using System.IO;
 using System.Runtime.Versioning;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.VisualBasic;
 using Newtonsoft.Json;
 using Serilog;
 using WindowsSetupAssistant.Core;
@@ -52,6 +49,8 @@ public partial class InstallsEditorViewModel : ObservableObject
     [RelayCommand]
     private void SaveCurrentlySelectedInstallerData()
     {
+        if (SelectedInstaller is null) return;
+        
         SelectedInstaller.DisplayName = TextDisplayName;
 
         if (SelectedInstaller is ChocolateyInstaller)
@@ -229,6 +228,8 @@ public partial class InstallsEditorViewModel : ObservableObject
         
         if (IsAddSeparatorChecked)
         {           
+            if (SelectedInstaller is null) return;
+            
             AvailableInstallersInJson.Insert(
                 AvailableInstallersInJson.IndexOf(SelectedInstaller),
                 new SeparatorForInstallersList()
@@ -243,46 +244,10 @@ public partial class InstallsEditorViewModel : ObservableObject
     {
         for (var i = 0; i < AvailableInstallersInJson.Count; i++)
         {
-            if (SelectedInstaller.DisplayName != AvailableInstallersInJson[i].DisplayName) continue;
+            if (SelectedInstaller?.DisplayName != AvailableInstallersInJson[i].DisplayName) continue;
             
             // Otherwise:
             AvailableInstallersInJson.RemoveAt(i);
-            break;
-        }
-    }
-    
-    [RelayCommand]
-    private void MoveSelectedInstallerUp()
-    {
-        for (var i = 0; i < AvailableInstallersInJson.Count; i++)
-        {
-            if (SelectedInstaller.DisplayName != AvailableInstallersInJson[i].DisplayName) continue;
-            
-            // Otherwise:
-
-            var newPosition = i - 1;
-            
-            if (newPosition >= 0)
-                AvailableInstallersInJson.Move(i, newPosition);
-            
-            break;
-        }
-    }
-    
-    [RelayCommand]
-    private void MoveSelectedInstallerDown()
-    {
-        for (var i = 0; i < AvailableInstallersInJson.Count; i++)
-        {
-            if (SelectedInstaller.DisplayName != AvailableInstallersInJson[i].DisplayName) continue;
-            
-            // Otherwise:
-            
-            var newPosition = i + 1;
-            
-            if (newPosition < AvailableInstallersInJson.Count)
-                AvailableInstallersInJson.Move(i, newPosition);
-            
             break;
         }
     }
@@ -360,12 +325,15 @@ public partial class InstallsEditorViewModel : ObservableObject
     /// <summary>
     /// Bound to the ArchiveInstaller radio button
     /// </summary>
-    public IInstallable SelectedInstaller
+    public IInstallable? SelectedInstaller
     {
         get => _selectedInstaller;
         set
         {
             OnPropertyChanging();
+            
+            if (value is null) return;
+            
             _selectedInstaller = value;
             SetTextBoxesToInstallerProperties(value);
             OnPropertyChanged();
@@ -376,11 +344,9 @@ public partial class InstallsEditorViewModel : ObservableObject
     {
         if (installable is null || installable is SeparatorForInstallersList)
         {
-            CancelEditingInstallerData();
+            TextDisplayName = "";
             return;
         }
-
-        TextDisplayName = installable.DisplayName;
 
         if (installable is ChocolateyInstaller)
         {
@@ -388,6 +354,7 @@ public partial class InstallsEditorViewModel : ObservableObject
             
             var convertedInstaller = (ChocolateyInstaller)installable;
 
+            TextDisplayName = installable.DisplayName;
             TextChocolateyId = convertedInstaller.ChocolateyId;
             TextChocolateyArguments = convertedInstaller.Arguments;
             TextChocolateyParameters = convertedInstaller.Parameters;
@@ -398,7 +365,8 @@ public partial class InstallsEditorViewModel : ObservableObject
             IsExecutableInstallerChecked = true;
             
             var convertedInstaller = (ExecutableInstaller)installable;
-
+            
+            TextDisplayName = installable.DisplayName;
             TextExecutableInstallerFileName = convertedInstaller.FileName;
             TextExecutableInstallerArguments = convertedInstaller.Arguments;
         }
@@ -409,6 +377,7 @@ public partial class InstallsEditorViewModel : ObservableObject
             
             var convertedInstaller = (PortableApplicationInstaller)installable;
 
+            TextDisplayName = installable.DisplayName;
             TextPortableInstallerFolderName = convertedInstaller.FolderName;
             TextPortableInstallerDestinationPath = convertedInstaller.DestinationPath;
         }
@@ -419,6 +388,7 @@ public partial class InstallsEditorViewModel : ObservableObject
             
             var convertedInstaller = (ArchiveInstaller)installable;
 
+            TextDisplayName = installable.DisplayName;
             TextArchiveInstallerFileName = convertedInstaller.ArchiveFilename;
             TextArchiveInstallerDestinationPath = convertedInstaller.DestinationPath;
         }

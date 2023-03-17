@@ -32,7 +32,7 @@ public class PowerHelper
         int monitorOffAfterXMinutesOnAc = 250, 
         int monitorOffAfterXMinutesOnBattery = 5,
         
-        int standbyTimeOutMinutesOnAc = 300,
+        int standbyTimeOutMinutesOnAc = 400,
         int standbyTimeOutMinutesOnBattery = 10,
         
         int hibernateTimeOutMinutesOnAc = 0)

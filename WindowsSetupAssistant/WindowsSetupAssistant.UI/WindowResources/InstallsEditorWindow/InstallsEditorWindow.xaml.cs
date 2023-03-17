@@ -14,7 +14,8 @@ public partial class InstallsEditorWindow : Window
     public InstallsEditorWindow(InstallsEditorViewModel installsEditorViewModel)
     {
         DataContext = installsEditorViewModel;
-
+     
+        
         InitializeComponent();
     }
 

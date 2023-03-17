@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.Versioning;
-using Microsoft.Win32;
 using Serilog;
 
 namespace WindowsSetupAssistant.Core.Logic.SettingsTaskHelpers;
@@ -28,20 +27,22 @@ public class DisplayHelper
     [SupportedOSPlatform("windows7.0")]
     public void SetDpiValueToZeroForAllMonitors()
     {
-        using var baseKey = Registry.CurrentUser.OpenSubKey(@"Control Panel\Desktop\PerMonitorSettings", writable: true);
-            
-        if (baseKey is null)
-        {
-            throw new InvalidOperationException("The registry key could not be found.");
-        }
-
-        foreach (var subKeyName in baseKey.GetSubKeyNames())
-        {
-            using var monitorKey = baseKey.OpenSubKey(subKeyName, writable: true);
-                
-            if (monitorKey is null) throw new InvalidOperationException("The registry key could not be found.");
-                
-            monitorKey.SetValue("DpiValue", 0, RegistryValueKind.DWord);
-        }
+        // This key does not exist until you open display settings and change DPI. Great. Find a way to generate it.
+        
+        // using var baseKey = Registry.CurrentUser.OpenSubKey(@"Control Panel\Desktop\PerMonitorSettings", writable: true);
+        //     
+        // if (baseKey is null)
+        // {
+        //     throw new InvalidOperationException("The registry key could not be found.");
+        // }
+        //
+        // foreach (var subKeyName in baseKey.GetSubKeyNames())
+        // {
+        //     using var monitorKey = baseKey.OpenSubKey(subKeyName, writable: true);
+        //         
+        //     if (monitorKey is null) throw new InvalidOperationException("The registry key could not be found.");
+        //         
+        //     monitorKey.SetValue("DpiValue", 0, RegistryValueKind.DWord);
+        // }
     }
 }

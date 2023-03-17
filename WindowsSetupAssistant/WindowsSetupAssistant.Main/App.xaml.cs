@@ -3,7 +3,6 @@ using System.Windows;
 using Autofac;
 using WindowsSetupAssistant.Core.Logic.Application;
 using WindowsSetupAssistant.Core.Models;
-using WindowsSetupAssistant.UI.WindowResources.InstallsEditorWindow;
 using WindowsSetupAssistant.UI.WindowResources.MainWindow;
 
 namespace WindowsSetupAssistant.Main

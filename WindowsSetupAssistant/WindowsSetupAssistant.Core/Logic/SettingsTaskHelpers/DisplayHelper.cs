@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.Versioning;
-using Microsoft.Win32;
 using Serilog;
 
 namespace WindowsSetupAssistant.Core.Logic.SettingsTaskHelpers;

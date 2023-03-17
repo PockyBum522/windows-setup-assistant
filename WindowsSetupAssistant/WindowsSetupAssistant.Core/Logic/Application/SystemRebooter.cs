@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace WindowsSetupAssistant.Core.Logic.Application;
@@ -32,7 +33,7 @@ public class SystemRebooter
     /// <summary>
     /// Prompts the user, asking if they are ready to reboot the PC
     /// </summary>
-    public void PromptToRebootComputerAndExit()
+    public async Task PromptToRebootComputerAndExit()
     {
         var message = @"ONLY CLICK YES IF YOU HAVE CLICKED THROUGH ALL VISIBLE INSTALLERS AND THEY HAVE FINISHED!!!
 
@@ -42,6 +43,8 @@ Are you ready to reboot the computer?";
         
         if (MessageBox.Show(message, "WARNING: Okay to Reboot?", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
         {
+            await Task.Delay(2000);
+            
             // User clicked no
             Environment.Exit(0);
         }
@@ -52,11 +55,8 @@ Are you ready to reboot the computer?";
     
             Process.Start("powershell", "-C shutdown /r /t 5");
         
-            while (Process.GetProcessesByName("powershell").Length < 1)
-            {
-                Thread.Sleep(1000);    
-            }
-        
+            await Task.Delay(2000);
+            
             Environment.Exit(0);
         }
     }

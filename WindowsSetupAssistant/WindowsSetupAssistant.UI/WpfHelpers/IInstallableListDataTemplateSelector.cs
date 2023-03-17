@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using WindowsSetupAssistant.Core.Models.IInstallables;
 
-namespace WindowsSetupAssistant.UI.WindowResources;
+namespace WindowsSetupAssistant.UI.WpfHelpers;
 
 /// <summary>
 /// Selector to template separators differently from other IInstallables when displaying in listViews 

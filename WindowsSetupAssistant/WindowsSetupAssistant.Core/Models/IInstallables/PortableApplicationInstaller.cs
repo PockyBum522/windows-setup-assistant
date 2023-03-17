@@ -88,7 +88,7 @@ public partial class PortableApplicationInstaller : ObservableObject, IInstallab
                 File.Copy(sourceFilePath, newPath, true);    
             }
             catch (IOException)
-            {logger.Warning("Could not copy file to: {newPath}", newPath);}
+            {logger.Warning("Could not copy file to: {NewPath}", newPath);}
             
         }
     }

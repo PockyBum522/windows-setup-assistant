@@ -1,12 +1,12 @@
 ﻿using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace WindowsSetupAssistant.UI.WindowResources;
+namespace WindowsSetupAssistant.UI.WpfHelpers;
 
 /// <summary>
 /// Helpers for WPF controls
 /// </summary>
-public static class ControlHelpers
+public static class ListViewMouseWheelScroller
 {
     /// <summary>
     /// Handles the MainWindow scrolling with mouse wheel for any scrollviewers with listviews inside them

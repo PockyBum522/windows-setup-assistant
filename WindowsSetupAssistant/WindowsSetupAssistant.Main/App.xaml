@@ -1,8 +1,8 @@
 ﻿<Application x:Class="WindowsSetupAssistant.Main.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:global="clr-namespace:;assembly=WindowsSetupAssistant.UI"
-             xmlns:windowResources="clr-namespace:WindowsSetupAssistant.UI.WindowResources;assembly=WindowsSetupAssistant.UI">
+             xmlns:wpfHelpers="clr-namespace:WindowsSetupAssistant.UI.WpfHelpers;assembly=WindowsSetupAssistant.UI"
+             xmlns:interfaces="clr-namespace:WindowsSetupAssistant.Core.Models.IInstallables.Interfaces;assembly=WindowsSetupAssistant.Core">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -10,9 +10,9 @@
                     Source="Themes\SelenMetroDark\Styles.xaml"/>
                 
                 
-                <ResourceDictionary>
+                <ResourceDictionary >
                 <!-- DataTemplate for Separators In Installers List -->
-                <DataTemplate x:Key="SeparatorDisplayTemplate">
+                <DataTemplate x:Key="SeparatorDisplayTemplate" DataType="{x:Type interfaces:IInstallable}">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="-----========== " Foreground="Green"/>
                         <TextBlock Text="{Binding DisplayName}" Foreground="Green"/>
@@ -21,7 +21,7 @@
                 </DataTemplate>
 
                 <!-- DataTemplate for IInstallables In Installers List -->
-                <DataTemplate x:Key="IInstallableDisplayTemplate">
+                <DataTemplate x:Key="IInstallableDisplayTemplate" DataType="{x:Type interfaces:IInstallable}">
                   
                     <StackPanel Orientation="Horizontal">
 
@@ -34,7 +34,7 @@
                 </DataTemplate>
 
                 <!-- Custom DataTemplateSelector -->
-                <windowResources:IInstallableListDataTemplateSelector x:Key="InstallableListDataTemplateSelector"
+                <wpfHelpers:IInstallableListDataTemplateSelector x:Key="InstallableListDataTemplateSelector"
                                                              SeparatorDisplayTemplate="{StaticResource SeparatorDisplayTemplate}"
                                                              IInstallableDisplayTemplate="{StaticResource IInstallableDisplayTemplate}" />
         

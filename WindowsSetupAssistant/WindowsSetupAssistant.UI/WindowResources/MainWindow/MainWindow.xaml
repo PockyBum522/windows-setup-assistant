@@ -4,16 +4,21 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=PresentationFramework"
-        xmlns:models="clr-namespace:WindowsSetupAssistant.Core.Models;assembly=WindowsSetupAssistant.Core"
         xmlns:iSelectableSettings="clr-namespace:WindowsSetupAssistant.Core.Models.ISelectableSettings;assembly=WindowsSetupAssistant.Core"
-        d:DataContext="{d:DesignInstance Type=models:MainWindowPersistentState, IsDesignTimeCreatable=True}"
+        xmlns:mainWindow="clr-namespace:WindowsSetupAssistant.UI.WindowResources.MainWindow"
+        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+        d:DataContext="{d:DesignInstance Type=mainWindow:MainWindowViewModel, IsDesignTimeCreatable=True}"
         mc:Ignorable="d"
         Style="{StaticResource StandardWindow}"
         Title="MainWindow" Height="980" Width="1820"
-        Background="#222222"
-        Loaded="MainWindow_OnLoaded"
-        Closed="MainWindow_OnClosed">
-
+        Background="#222222">
+    
+    <b:Interaction.Triggers>
+        <b:EventTrigger EventName="Loaded">
+            <b:InvokeCommandAction Command="{ Binding ExecuteNextSetupProcessStageCommand }" PassEventArgsToCommand="False" />
+        </b:EventTrigger>
+    </b:Interaction.Triggers>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="10" />
@@ -106,7 +111,7 @@
                     <StackPanel>
 
                         <CheckBox DockPanel.Dock="Top"
-                                  IsChecked="{Binding IsCheckedUpdateWindows}"
+                                  IsChecked="{Binding LocalSessionPersistentState.IsCheckedUpdateWindows}"
                                   Content="Update Windows"
                                   Margin="2,2,0,0" />
 
@@ -125,7 +130,7 @@
                     <StackPanel>
 
                         <TextBox DockPanel.Dock="Top"
-                                 Text="{Binding TextHostname}"
+                                 Text="{Binding LocalSessionPersistentState.TextHostname}"
                                  Height="26"
                                  Margin="3" />
 
@@ -153,7 +158,7 @@
                                            Margin="0,8,5,0"
                                            DockPanel.Dock="Left" />
 
-                                <TextBox Text="{Binding TextMonitorTimeoutOnAc}"
+                                <TextBox Text="{Binding LocalSessionPersistentState.TextMonitorTimeoutOnAc}"
                                          HorizontalAlignment="Right"
                                          Height="26"
                                          Width="100"
@@ -167,7 +172,7 @@
                                 <TextBlock Text="Monitor Timeout (minutes) on Battery:"
                                            Margin="0,8,5,0" />
 
-                                <TextBox Text="{Binding TextMonitorTimeoutOnBattery}"
+                                <TextBox Text="{Binding LocalSessionPersistentState.TextMonitorTimeoutOnBattery}"
                                          HorizontalAlignment="Right"
                                          Height="26"
                                          Width="100"
@@ -180,7 +185,7 @@
                                 <TextBlock Text="System Standby Timeout (minutes) on AC:"
                                            Margin="0,8,5,0" />
 
-                                <TextBox Text="{Binding TextStandbyTimeoutOnAc}"
+                                <TextBox Text="{Binding LocalSessionPersistentState.TextStandbyTimeoutOnAc}"
                                          HorizontalAlignment="Right"
                                          Height="26"
                                          Width="100"
@@ -194,7 +199,7 @@
                                 <TextBlock Text="System Standby Timeout (minutes) on Battery:"
                                            Margin="0,8,5,0" />
 
-                                <TextBox Text="{Binding TextStandbyTimeoutOnBattery}"
+                                <TextBox Text="{Binding LocalSessionPersistentState.TextStandbyTimeoutOnBattery}"
                                          HorizontalAlignment="Right"
                                          Height="26"
                                          Width="100"
@@ -208,7 +213,7 @@
                                            Margin="0,8,5,0"
                                            DockPanel.Dock="Left" />
 
-                                <TextBox Text="{Binding TextHibernateTimeoutOnAc}"
+                                <TextBox Text="{Binding LocalSessionPersistentState.TextHibernateTimeoutOnAc}"
                                          HorizontalAlignment="Right"
                                          Height="26"
                                          Width="100"
@@ -223,7 +228,7 @@
                                            Margin="0,8,5,0"
                                            DockPanel.Dock="Left" />
 
-                                <TextBox Text="{Binding TextHibernateTimeoutOnBattery}"
+                                <TextBox Text="{Binding LocalSessionPersistentState.TextHibernateTimeoutOnBattery}"
                                          HorizontalAlignment="Right"
                                          Height="26"
                                          Width="100"
@@ -247,7 +252,7 @@
                 <DockPanel>
                     <ScrollViewer>
                         <StackPanel>
-                            <ItemsControl ItemsSource="{Binding SettingsSections}"
+                            <ItemsControl ItemsSource="{Binding LocalSessionPersistentState.SettingsSections }"
                                           ItemTemplate="{StaticResource SettingsSectionTemplate}"
                                           Padding="0" Margin="0" />
 
@@ -268,15 +273,22 @@
                 <Border BorderBrush="Gray" BorderThickness="1" Padding="2">
                     <DockPanel>
                         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
-                            <Button Content="Edit Installers" Click="ShowInstallerEditorWindow_OnClick" Height="35" Margin="5" Width="120" />
-                            <Button Content="Reload Installers" Click="ReloadInstallerList_OnClick" Height="35" Margin="5" Width="120" />
+                            <Button Content="Edit Installers" Command="{Binding ShowInstallerEditorWindowCommand}" Height="35" Margin="5" Width="120" />
+                            <Button Content="Reload Installers" Command="{Binding ReloadInstallerListCommand}" Height="35" Margin="5" Width="120" />
                         </StackPanel>
                         
                         <ScrollViewer>
 
-                            <ListView ItemsSource="{Binding AvailableInstalls}"
-                                      ItemTemplateSelector="{StaticResource InstallableListDataTemplateSelector}"
-                                      PreviewMouseWheel="AvailableInstallsListView_OnPreviewMouseWheel" />
+                            <ListView ItemsSource="{Binding LocalSessionPersistentState.AvailableInstalls}"
+                                      ItemTemplateSelector="{StaticResource InstallableListDataTemplateSelector}" >
+                                
+                                <b:Interaction.Triggers>
+                                    <b:EventTrigger EventName="PreviewMouseWheel">
+                                        <b:InvokeCommandAction Command="{ Binding HandleAvailableInstallsListViewMouseWheelCommand }" PassEventArgsToCommand="True" />
+                                    </b:EventTrigger>
+                                </b:Interaction.Triggers>
+                                
+                            </ListView>
                             
                         </ScrollViewer>
                     </DockPanel>
@@ -288,14 +300,14 @@
         <DockPanel Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center">
 
             <Button Content="Load Profile"
-                    Click="LoadProfile_OnClick"
+                    Command="{Binding LoadProfileCommand}"
                     Padding="10"
                     Margin="5"
                     Width="100" />
 
 
             <Button Content="Save Profile"
-                    Click="SaveProfile_OnClick"
+                    Command="{Binding SaveProfileCommand}"
                     Padding="10"
                     Margin="5"
                     Width="100" />
@@ -305,13 +317,13 @@
         <DockPanel Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center">
 
             <Button Content="Select All"
-                    Click="SelectAll_OnClick"
+                    Command="{Binding SelectAllSettingsAndInstallersCommand}"
                     Padding="10"
                     Margin="5"
                     Width="100" />
 
             <Button Content="Clear"
-                    Click="ClearAll_OnClick"
+                    Command="{Binding ClearAllCommand}"
                     Padding="10"
                     Margin="5"
                     Width="100" />
@@ -321,9 +333,9 @@
         <DockPanel Grid.Row="2" Grid.Column="3" HorizontalAlignment="Center">
 
             <Button Content="Start Execution"
+                    Command="{Binding StartMainSetupProcessCommand}"
                     DockPanel.Dock="Right"
                     Width="200"
-                    Click="StartExecution_OnClick"
                     Padding="10"
                     Margin="5" />
 
@@ -331,7 +343,7 @@
         
         <DockPanel Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left">
 
-            <TextBlock Name="TextBlockUserName" />
+            <TextBlock Text="{Binding TextRunningAsUsernameMessage}" />
 
         </DockPanel>
 

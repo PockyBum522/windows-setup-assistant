@@ -10,7 +10,7 @@ namespace WindowsSetupAssistant.Core.Models;
 /// <summary>
 /// This holds our main window checkboxes state and available installers loaded from json
 /// </summary>
-public partial class MainWindowPersistentState : ObservableObject
+public partial class SessionPersistentState : ObservableObject
 {
     // Settings sections
     [ObservableProperty] private ObservableCollection<SettingsSection> _settingsSections = new();

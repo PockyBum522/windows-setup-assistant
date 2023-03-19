@@ -25,7 +25,15 @@
     "ChocolateyId": "everything",
     "Arguments": "",
     "Parameters": "",
-    "DisplayName": "Everything Search",
+    "DisplayName": "Everything Search 1.4",
+    "IsSelected": false
+  },  
+  {
+    "$type": "WindowsSetupAssistant.Core.Models.IInstallables.ExecutableInstaller, WindowsSetupAssistant.Core",
+    "FileName": "Everything-1.5.0.1340a.x64-Setup.exe",
+    "Arguments": "",
+    "AutoHotkeyMacro": "",
+    "DisplayName": "Everything 1.5 Alpha (Won't interfere with 1.4)",
     "IsSelected": false
   },
   {

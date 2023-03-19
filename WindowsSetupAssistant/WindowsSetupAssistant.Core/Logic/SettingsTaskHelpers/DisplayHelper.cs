@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.Versioning;
-using Serilog;
 
 namespace WindowsSetupAssistant.Core.Logic.SettingsTaskHelpers;
 
@@ -9,15 +8,14 @@ namespace WindowsSetupAssistant.Core.Logic.SettingsTaskHelpers;
 /// </summary>
 public class DisplayHelper
 {
-    private readonly ILogger _logger;
+    //private readonly ILogger _logger;
 
     /// <summary>
     /// Constructor for dependency injection
     /// </summary>
-    /// <param name="logger">Injected ILogger to use</param>
-    public DisplayHelper(ILogger logger)
+    public DisplayHelper() //ILogger logger)
     {
-        _logger = logger;
+        //_logger = logger;
     }
 
     /// <summary>

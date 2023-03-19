@@ -68,12 +68,25 @@ public partial class ArchiveInstaller : ObservableObject, IInstallable
         if (!File.Exists(archiveToInstallPath))
             throw new FileNotFoundException($"Could not find archive specified: {archiveToInstallPath}");
         
-        var processStartInfo = new ProcessStartInfo()
-        {
-            Arguments = arguments,
-            FileName = sevenZipExecutablePath
-        };
-    
-        Process.Start(processStartInfo)?.WaitForExit();
+        var installProcess = new Process();
+
+        installProcess.StartInfo.FileName = sevenZipExecutablePath;
+        installProcess.StartInfo.Arguments = arguments;
+        installProcess.StartInfo.UseShellExecute = false;
+        installProcess.StartInfo.RedirectStandardOutput = true;
+        installProcess.StartInfo.RedirectStandardError = true;
+        
+        installProcess.Start();
+        
+        var stdOutput = installProcess.StandardOutput.ReadToEnd();
+        
+        var errorOutput = installProcess.StandardError.ReadToEnd();
+        
+        installProcess.WaitForExit();
+        
+        logger.Debug("Archive installer standard output: {StdOutput}", stdOutput);
+        
+        if (!string.IsNullOrWhiteSpace(errorOutput))
+            logger.Warning("Archive installer ERROR output: {ErrorOutput}", errorOutput);
     }
 }

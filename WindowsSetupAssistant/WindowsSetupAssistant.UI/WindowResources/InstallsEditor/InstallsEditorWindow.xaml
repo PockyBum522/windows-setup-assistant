@@ -1,17 +1,15 @@
-﻿<Window x:Class="WindowsSetupAssistant.UI.WindowResources.InstallsEditorWindow.InstallsEditorWindow"
+﻿<Window x:Class="WindowsSetupAssistant.UI.WindowResources.InstallsEditor.InstallsEditorWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:installsEditorWindow="clr-namespace:WindowsSetupAssistant.UI.WindowResources.InstallsEditorWindow"
-        xmlns:global="clr-namespace:"
         xmlns:wpfHelpers="clr-namespace:WindowsSetupAssistant.UI.WpfHelpers"
+        xmlns:installsEditor="clr-namespace:WindowsSetupAssistant.UI.WindowResources.InstallsEditor"
         mc:Ignorable="d"
         Title="InstallsEditorWindow" Height="700" Width="800"
-        d:DataContext="{d:DesignInstance Type=installsEditorWindow:InstallsEditorViewModel, IsDesignTimeCreatable=True}"
+        d:DataContext="{d:DesignInstance Type=installsEditor:InstallsEditorWindowViewModel, IsDesignTimeCreatable=True}"
         Background="#222222"
-        Style="{StaticResource StandardWindow}"
-        Closing="InstallsEditorWindow_OnClosing">
+        Style="{StaticResource StandardWindow}" >
 
     <Grid>
         <!-- Define the rows of the Grid -->
@@ -84,10 +82,10 @@
                     <TextBlock Text="Chocolatey Installer Details" DockPanel.Dock="Top" Margin="0,0,0,5" />
 
                     <StackPanel Style="{StaticResource IndentedMarginStyle}">
-                        <TextBlock Text="Display name" Margin="5" />
+                        <TextBlock Text="Display name*" Margin="5" />
                         <TextBox Text="{Binding TextDisplayName}" Margin="5" />
 
-                        <TextBlock Text="Chocolatey id" Margin="5" />
+                        <TextBlock Text="Chocolatey id*" Margin="5" />
                         <TextBox Text="{Binding TextChocolateyId}" Margin="5" />
 
                         <TextBlock Text="Arguments" Margin="5" />
@@ -103,10 +101,10 @@
                     <TextBlock Text="Executable Installer Details" DockPanel.Dock="Top" Margin="0,0,0,5" />
 
                     <StackPanel Style="{StaticResource IndentedMarginStyle}">
-                        <TextBlock Text="Display name" Margin="5" />
+                        <TextBlock Text="Display name*" Margin="5" />
                         <TextBox Text="{Binding TextDisplayName}" Margin="5" />
 
-                        <TextBlock Text="File name (With .exe on the end)" Margin="5" />
+                        <TextBlock Text="File name (With .exe on the end)*" Margin="5" />
                         <TextBox Text="{Binding TextExecutableInstallerFileName}" Margin="5" />
 
                         <TextBlock Text="Arguments" Margin="5" />
@@ -119,13 +117,13 @@
                     <TextBlock Text="Portable Application Installer Details" DockPanel.Dock="Top" Margin="0,0,0,5" />
 
                     <StackPanel Style="{StaticResource IndentedMarginStyle}">
-                        <TextBlock Text="Display name" Margin="5" />
+                        <TextBlock Text="Display name*" Margin="5" />
                         <TextBox Text="{Binding TextDisplayName}" Margin="5" />
 
-                        <TextBlock Text="Folder name" Margin="5" />
+                        <TextBlock Text="Folder name*" Margin="5" />
                         <TextBox Text="{Binding TextPortableInstallerFolderName}" Margin="5" />
 
-                        <TextBlock Text="Destination path" Margin="5" />
+                        <TextBlock Text="Destination path*" Margin="5" />
                         <TextBox Text="{Binding TextPortableInstallerDestinationPath}" Margin="5" />
                     </StackPanel>
                 </DockPanel>
@@ -135,13 +133,13 @@
                     <TextBlock Text="Archive Installer Details" DockPanel.Dock="Top" Margin="0,0,0,5" />
 
                     <StackPanel Style="{StaticResource IndentedMarginStyle}">
-                        <TextBlock Text="Display name" Margin="5" />
+                        <TextBlock Text="Display name*" Margin="5" />
                         <TextBox Text="{Binding TextDisplayName}" Margin="5" />
 
-                        <TextBlock Text="Archive filename (With .7z or .zip on the end)" Margin="5" />
+                        <TextBlock Text="Archive filename (With .7z or .zip on the end)*" Margin="5" />
                         <TextBox Text="{Binding TextArchiveInstallerFileName}" Margin="5" />
 
-                        <TextBlock Text="Destination full path" Margin="5" />
+                        <TextBlock Text="Destination full path*" Margin="5" />
                         <TextBox Text="{Binding TextArchiveInstallerDestinationPath}" Margin="5" />
                     </StackPanel>
                 </DockPanel>
@@ -151,7 +149,7 @@
                     <TextBlock Text="Separator Details" DockPanel.Dock="Top" Margin="0,0,0,5" />
 
                     <StackPanel Style="{StaticResource IndentedMarginStyle}">
-                        <TextBlock Text="Display name (Without decoration)" Margin="5" />
+                        <TextBlock Text="Display name (Without decoration)*" Margin="5" />
                         <TextBox Text="{Binding TextDisplayName}" Margin="5" />
                     </StackPanel>
                 </DockPanel>
@@ -167,8 +165,8 @@
 
             <!-- Window save and Cancel buttons -->
             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
-                <Button Content="Save All" Click="SaveAll_OnClick" Width="100" Margin="5" />
-                <Button Content="Cancel" Click="Cancel_OnClick" Width="100" Margin="5" />
+                <Button Content="Save All" Command="{Binding SaveAllEditedInstallersToJsonFileCommand}" Width="100" Margin="5" />
+                <Button Content="Cancel" Command="{Binding CloseEditorWindowCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" Width="100" Margin="5" />
             </StackPanel>
         </DockPanel>
     </Grid>

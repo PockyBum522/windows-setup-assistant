@@ -39,14 +39,29 @@ public partial class ExecutableInstaller : ObservableObject, IInstallable
             FileSearcher.ReverseWalkDirectoriesFind(ApplicationPaths.ThisApplicationRunFromDirectoryPath, FileName, 8);
         
         logger.Information("Installing: {Path}", executableInstallerPath);
-
-        var executableInstallerStartInfo = new ProcessStartInfo()
-        {
-            Arguments = "Arguments",
-            CreateNoWindow = true,
-            FileName = executableInstallerPath
-        };
         
-        Task.Run(() => Process.Start(executableInstallerStartInfo));
+        var installProcess = new Process();
+
+        installProcess.StartInfo.FileName = executableInstallerPath;
+        installProcess.StartInfo.Arguments = Arguments;
+        installProcess.StartInfo.UseShellExecute = false;
+        installProcess.StartInfo.RedirectStandardOutput = true;
+        installProcess.StartInfo.RedirectStandardError = true;
+
+        Task.Run(() =>
+        {
+            installProcess.Start();
+        
+            var stdOutput = installProcess.StandardOutput.ReadToEnd();
+        
+            var errorOutput = installProcess.StandardError.ReadToEnd();
+        
+            installProcess.WaitForExit();
+        
+            logger.Debug("Executable installer standard output: {StdOutput}", stdOutput);
+        
+            if (!string.IsNullOrWhiteSpace(errorOutput))
+                logger.Warning("Executable installer ERROR output: {ErrorOutput}", errorOutput);
+        });
     }
 }

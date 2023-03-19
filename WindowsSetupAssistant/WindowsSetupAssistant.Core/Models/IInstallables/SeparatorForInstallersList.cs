@@ -18,8 +18,5 @@ public partial class SeparatorForInstallersList : ObservableObject, IInstallable
     /// Does nothing. This is a separator. For visual organization only 
     /// </summary>
     /// <param name="logger"></param>
-    public void ExecuteInstall(ILogger logger)
-    {        
-    
-    }
+    public void ExecuteInstall(ILogger logger) { }
 }

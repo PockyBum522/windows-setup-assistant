@@ -63,7 +63,7 @@ public partial class ChocolateyInstaller : ObservableObject, IInstallable
         
         installProcess.WaitForExit();
         
-        logger.Information("Chocolatey installer standard output: {StdOutput}", stdOutput);
+        logger.Debug("Chocolatey installer standard output: {StdOutput}", stdOutput);
         
         if (!string.IsNullOrWhiteSpace(errorOutput))
             logger.Warning("Chocolatey installer ERROR output: {ErrorOutput}", errorOutput);

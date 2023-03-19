@@ -117,7 +117,7 @@ public class MainSetupProcessExecutor
             case ScriptStageEnum.WindowsHasBeenUpdatedTwice:
 
                 OnNextBootResumeAtStage(ScriptStageEnum.WindowsHasBeenUpdatedFully);
-
+                
                 await UpdateWindowsAndReboot();
 
                 break;
@@ -125,6 +125,10 @@ public class MainSetupProcessExecutor
             case ScriptStageEnum.WindowsHasBeenUpdatedFully:
                 
                 OnNextBootResumeAtStage(ScriptStageEnum.RunFinalSettings);
+                
+                // Some settings here need to be re-run at the end to take effect.
+                // Not to mention some have to be run at the end by their nature, such as desktop clean up
+                _selectedSettingsExecutor.ExecuteSelectedSettingsInAllSections();
                 
                 if (_sessionPersistentState.IsCheckedUpdateWindows) _windowsUpdater.UpdateWindows();
                 
@@ -141,12 +145,15 @@ public class MainSetupProcessExecutor
                 
                 _finalCleanupHelper.DeleteSavedStateFileOnDisk();
                 
+                _applicationInstallExecutor.WorkInteractiveApplicationInstalls();
+
                 // Some settings here need to be re-run at the end to take effect.
                 // Not to mention some have to be run at the end by their nature, such as desktop clean up
                 _selectedSettingsExecutor.ExecuteSelectedSettingsInAllSections();
                 
-                _applicationInstallExecutor.WorkInteractiveApplicationInstalls();
-                
+                // Two minutes for any processing the settings need
+                await Task.Delay(120 * 1000);
+
                 await HandleFinalRebootByInteractiveInstallsCount();
 
                 break;

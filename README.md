@@ -331,6 +331,8 @@ Use ninite? (I love ninite. Great product. I used the paid version for years.)
 
 Use X, Y, or Z?
 
+(Sysprep? You think your mother could use sysprep easily?)
+
 Mostly because I wanted to make something that's useful and usable by everyone! I wanted it to be simple to configure, powerful enough to be useful, and help real people save time. Since this application just pops up a window asking you what you'd like to install or configure, that seems pretty simple and usable to me! 
 
 Up to this point, I have done lots of research and have never been able to find something that will let you do Windows settings, application installs, and custom configuration of those things all in one place. I aim to fix that.

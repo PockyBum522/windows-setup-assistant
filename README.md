@@ -17,10 +17,6 @@
 
 [![.NET Core](https://github.com/PockyBum522/windows-setup-assistant/actions/workflows/dotnet.yml/badge.svg)](https://github.com/PockyBum522/windows-setup-assistant/actions/workflows/dotnet.yml)
 
-[![Build history](https://buildstats.info/appveyor/chart/PockyBum522/windows-setup-assistant)](https://ci.appveyor.com/project/PockyBum522/windows-setup-assistant/history)
-
-[![GitHub stars](https://img.shields.io/github/stars/PockyBum522/windows-setup-assistant.svg?style=social&label=Star&maxAge=2592000)](https://GitHub.com/PockyBum522/windows-setup-assistant/stargazers/)
-
 ### What it does
 
 Takes the pain out of new Windows 10 installations, by installing new software and configuring settings for you, all unattended.

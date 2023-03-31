@@ -11,19 +11,21 @@ namespace WindowsSetupAssistant.Core.Logic.MainWindowLoaders.SettingsSectionBuil
 public class DesktopSettingsSectionBuilder
 {
     private readonly DesktopHelper _desktopHelper;
-    private readonly DisplayHelper _displayHelper;
+    
+    // Commenting out for release
+    //private readonly DisplayHelper _displayHelper;
 
     /// <summary>
     /// Constructor for dependency injection
     /// </summary>
     /// <param name="desktopHelper">Injected TimeHelper</param>
-    /// <param name="displayHelper">Injected DisplayHelper</param>
     public DesktopSettingsSectionBuilder(
-        DesktopHelper desktopHelper,
-        DisplayHelper displayHelper)
+        DesktopHelper desktopHelper)
     {
         _desktopHelper = desktopHelper;
-        _displayHelper = displayHelper;
+        
+        // Commenting out for release
+        // _displayHelper = displayHelper;
     }
     
     /// <summary>
@@ -64,19 +66,22 @@ public class DesktopSettingsSectionBuilder
             }
         };
         
-        var allMonitorsFullScaling = new OptionInternalMethod()
-        {
-            DisplayName = "Set all monitors to 100% scaling",
-            ExecuteSetting = () =>
-            {
-                _displayHelper.SetDpiValueToZeroForAllMonitors();
-            }
-        };
+        // Commenting out for release
+        // var allMonitorsFullScaling = new OptionInternalMethod()
+        // {
+        //     DisplayName = "Set all monitors to 100% scaling",
+        //     ExecuteSetting = () =>
+        //     {
+        //         _displayHelper.SetDpiValueToZeroForAllMonitors();
+        //     }
+        // };
         
         parentSection.Settings.Add(taskbarSearchToHidden);
         parentSection.Settings.Add(taskbarSearchToIcon);
         parentSection.Settings.Add(wallpaperToDarkImage);
-        parentSection.Settings.Add(allMonitorsFullScaling);
+        
+        // Commenting out for release
+        //parentSection.Settings.Add(allMonitorsFullScaling);
 
         return parentSection;
     }

@@ -1,11 +1,11 @@
 # Index
 
-* [What it does](https://github.com/PockyBum522/windows-setup-assistant#windows-post-setup-assistant)
+* [What it does](https://github.com/PockyBum522/windows-setup-assistant#what-it-does)
 * [Features and Roadmap](https://github.com/PockyBum522/windows-setup-assistant#features-and-roadmap)
 * [Prerequisites](https://github.com/PockyBum522/windows-setup-assistant#prerequisites)
 * [Usage](https://github.com/PockyBum522/windows-setup-assistant#usage)
-* [Objectives](https://github.com/PockyBum522/windows-setup-assistant#extensible-configuration---installers)
-* [Extensible Configuration - Installers](https://github.com/PockyBum522/windows-setup-assistant#custom-configuration)
+* [Objectives](https://github.com/PockyBum522/windows-setup-assistant#objectives)
+* [Extensible Configuration - Installers](https://github.com/PockyBum522/windows-setup-assistant#extensible-configuration---installers)
 * [Extensible Configuration - Windows Settings](https://github.com/PockyBum522/windows-setup-assistant#extensible-configuration---windows-settings)
 
 * [Detailed Breakdown of What's Going On in the Batch File Bootstrapper](https://github.com/PockyBum522/windows-setup-assistant#detailed-breakdown-of-whats-going-on-in-the-batch-file-bootstrapper)
@@ -16,6 +16,12 @@
 # Windows Setup Assistant
 
 [![.NET Core](https://github.com/PockyBum522/windows-setup-assistant/actions/workflows/dotnet.yml/badge.svg)](https://github.com/PockyBum522/windows-setup-assistant/actions/workflows/dotnet.yml)
+
+<a href="documentation/img/getting-started/MainWindow.png">
+    <img src="documentation/img/getting-started/MainWindow.png"
+        alt="Picture of the Main Window of the application, where settings are set and applications can be selected for install" 
+        width=300 />
+</a>
 
 ### What it does
 
@@ -29,7 +35,7 @@ You should be able to:
 5. Answer a few questions about how you want your system configured, or load a profile you made previously with all that information
 6. Walk away
 
-In a few hours, depending on your internet speed and system speed, you should reurn to find that:
+In about an hour, depending on your internet speed and system speed, you should reurn to find that:
 
 * Your new Windows install has all settings set how you like them
 * Your Windows install is completely up to date (If you selected the "Update Windows" option)
@@ -37,11 +43,14 @@ In a few hours, depending on your internet speed and system speed, you should re
 * Any necessary reboots are handled automatically, with the program resuming on next boot.
 * Your computer has been renamed to your chosen hostname
 
-Through the use of AutoLogon64 from Microsoft SysInternals, you can make the whole process happen completely unattended.
+Through the optional use of AutoLogon64 from Microsoft SysInternals, which the bootstrapper script will set up for you, you can make the whole process happen completely unattended. If you have security concerns, you can simply type in the user's password each time the script needs to reboot and resume. Temporarily disabling UAC is also completely optional, though you will need to do both to make the process unattended.
 
 
 # Features and Roadmap
 
+* See also: [Objectives](https://github.com/PockyBum522/windows-setup-assistant#objectives)
+
+* 100% tested and working settings for all Windows settings checkboxes - Almost!
 * Basic application installation - Complete!
 * Unattended Application Installation/Settings Apply/Windows Update with reboots - Complete! 
 * Profile load/save - Complete!
@@ -56,6 +65,8 @@ We are aiming to add more settings as the project progresses. We are still in th
 
 * A Windows 10 installation that is not configured with your preferred settings or applications.
 
+* A user account on said machine with administrator priveleges
+
 * Internet on said machine
 
 
@@ -65,15 +76,15 @@ For the end user, there are a few things you should know:
 
 First off, if you just want to try it, download the latest release and then just double click "RUN ME FIRST (BOOTSTRAPPER).bat"
 
-This will set up a few things necessary for unattended install, like prompting you to disable UAC prompts (You can re-enable them after the application is finished configuring your computer) and setting up Automatic Logon to your user with Microsoft's AutoLogon.
+This will set up a few things necessary for unattended install, like prompting you to disable UAC prompts (You can re-enable them after the application is finished configuring your computer) and setting up Automatic Logon to your user with Microsoft's AutoLogon. (You can disable it after the install by running sysinternals autologon again. Both of these steps are optional, but required for a fully unattended process)
 
-After the batch file runs, it should build the main application with .NET 7 SDK, which will be installed automatically. 
+After the batch file runs, it should build the main application with the latest .NET 7 SDK, which will be installed automatically. 
 
 Once you see the main window:
 
 <a href="documentation/img/getting-started/MainWindow.png">
     <img src="documentation/img/getting-started/MainWindow.png"
-        alt="Picture of the Main Window of the application, where almost all of the settings are set and applications can be selected for install" 
+        alt="Picture of the Main Window of the application, where settings are set and applications can be selected for install" 
         width=300 />
 </a>
 
@@ -82,7 +93,7 @@ You are ready to go. Pick what applications you'd like to have installed, and wh
 
 When finished, click "Start Execution" and then you can sit back and relax or walk away. Everything from here on out will be taken care of without user interaction.
 
-If you have chosen to install standard .exe or .msi installers, they will be saved for the last part of the process.
+If you have chosen to install standard .exe or .msi installers, they will be saved for the last part of the process, so that everything else can happen unattended.
 
 
 # Objectives 
@@ -93,17 +104,17 @@ If you have chosen to install standard .exe or .msi installers, they will be sav
 
 * Move work to be async, although that will mean needing to disable changes to the Main Window controls during the process. Not a big deal, though.
 
-* Application settings able to be set, not just Windows settings
+* Application settings would be nice to be able to be set, not just Windows settings - This will be more difficult to set up since I can't just index .reg files for some of those
 
 * Better logging and failure recovery
 
-* Considering: Integration of AutoHotKey scripts for both program installation/installation automation as well as changing settings
+* Considering: Integration of AutoHotKey scripts for attended installers automation as well as changing settings
 
 * Making desktop and start menu shortcuts if specified for PortableApplicationInstaller and ArchiveInstaller.
 
 ### Long-Term
 
-* Windows 11 Support
+* Windows 11 Support (Has not yet been tested at all)
 
 
 # Extensible Configuration - Installers
@@ -249,7 +260,7 @@ When you double click on "RUN ME FIRST (BOOTSTRAPPER).bat" a few things happen:
 
 * The batch file then notifies the user they should disable UAC prompts and set up AutoLogin. 
 
-This is for unattended capability, both of these things can be re-enabled/disabled once the application finishes running and the computer reboots for the last time. 
+This is for unattended capability, both of these things can be re-enabled/disabled once the application finishes running and the computer reboots for the last time. Both of these are optional, but required for the whole process being unattended.
 
 * The batch file then installs Chocolatey, which we'll be using to install things
 
@@ -273,20 +284,20 @@ This is deleted once the application has run through its complete process.
 
 * If you selected to update windows, a CLI windows update handler will be installed, and windows will be updated as far as it will allow without a reboot. 
 
-* The application then marks that it has gotten through the first stage by writing to another file in C:\Users\Public\Documents\
+* The application then updates the JSON file in C:\Users\Public\Documents\ and saves what stage of the installation process/that it has gotten through the first stage
 
-* When the computer is done rebooting to apply the windows updates, the batch file launches because it's in the public startup folder, and re-runs the application.
+* When the computer is done rebooting to apply the windows updates, the batch file in the public startup folder launches, and re-runs the application.
 
 * Upon re-launch, the application checks the settings it saved at the beginning, and what stage of the process it's on. 
 
-It does any necessary work, and then if necessary, updates the stage and reboots the computer. The first few reboots are just to install windows updates, reboot, then see if there are any more updates and install them.
+It does any necessary work, and then if necessary, updates the stage and reboots the computer. The first few reboots are just to install windows updates, reboot, then see if there are any more updates and install them. This only happens if you checked the "Update Windows" checkbox.
 
 * Once it's done updating windows, it will start installing selected applications. It handles all the selected 
 ChocolateyInstallers, ArchiveInstallers, and PortableApplicationInstallers first, since those don't require user interaction. Once those are finished, it runs all ExecutableInstallers.
 
-It will then load a warning dialog telling you to proceed through any ExecutableInstallers that may be on the screen, then once you are finished, press yes to reboot the computer.
+It will then load a warning dialog telling you to proceed through any user-interactive ExecutableInstallers that may be on the screen, then once you are finished, press yes to reboot the computer.
 
-This is the last reboot, and at this point the process is finished. The application will clean up the files it was using to save the current stage of the process it was in, the user options that were selected at the beginning, and the bat file in Public Startup.
+This is the last reboot, and at this point the process is finished. The application will clean up the files it was using to save the current stage of the process it was in, which are: The JSON file with stage info and the user options that were selected at the beginning, and the bat file in Public Startup.
 
 # Helping With Development
 
@@ -298,7 +309,7 @@ For now, there's several things that would be helpful until I get a better idea 
 
 * Windows Settings
 
-If you want a setting added and can get a .reg file or C# code to do what you want, send it over! I'll add it. Soon, I hope to have it so that you can just drop them in \windows-setup-assistant\WindowsSetupAssistant\Resources\Configuration\Registry Files\ and they will be indexed and become a selectable option, allowing for better customization by the end users in this area.
+If you want a setting added and can get a .reg file or C# code to do what you want, send it over!
 
 * New Installs
 
@@ -318,17 +329,23 @@ I am self taught, and in addition to that, I don't know what I don't know.
 
 If you see a better way to do something, or structure things, or anything, please talk to me about it. File an issue and use the "question" tag. I would love to have a conversation with you!
 
+* Security Review
+
+See above. I don't know what I don't know. 
+
+The good news is this application isn't running on the open internet, it's running on your local machine. It also does not phone home or connect to anywhere other than chocolatey's servers/whatever servers the chocolatey installs pull from. The bad news is it needs admin priveleges for a lot of the process. Protect your configuration files. Nasty stuff could be replicated on any machines that you use this on should something get compromised. However, the same holds true if you were just carrying around a thumbdrive with a bunch of .exe's to install and one of those became compromised. Also, fair warning, some of the preconfigured chocolatey installs are community packages. Update those to be only official packages if you want better security checks on that side.
+
 
 # Why didn't you just...?
 
 Use group policy?
 
-Use ninite? (I love ninite. Great product. I used the paid version for years.)
+Use ninite? (I love ninite. Great product. I used the paid version for a long while.)
 
 Use X, Y, or Z?
 
 (Sysprep? You think your mother could use sysprep easily?)
 
-Mostly because I wanted to make something that's useful and usable by everyone! I wanted it to be simple to configure, powerful enough to be useful, and help real people save time. Since this application just pops up a window asking you what you'd like to install or configure, that seems pretty simple and usable to me! 
+Mostly because I wanted to make something that's useful and usable by everyone! I wanted it to be simple to configure, powerful enough to be useful, and help real people save time. Since this application just pops up a window asking you what you'd like to install or configure, that seems pretty simple to me! 
 
-Up to this point, I have done lots of research and have never been able to find something that will let you do Windows settings, application installs, and custom configuration of those things all in one place. I aim to fix that.
+Up to this point, I have done lots of research and have never been able to find something that will let you do Windows settings, application installs, and custom configuration of those things all in one place. This aims to fix that.

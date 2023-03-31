@@ -176,6 +176,13 @@ public partial class MainWindowViewModel : ObservableObject
     {
         ListViewMouseWheelScroller.OnPreviewMouseWheelMove((MouseWheelEventArgs)mouseWheelEventArgs);
     }
+    
+    [RelayCommand]
+    private void MainWindowOnClosing()
+    {
+        // Clean up editor window
+        _installsEditorWindow.Close();
+    }
         
 
     [RelayCommand] 

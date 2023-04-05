@@ -7,6 +7,7 @@
 * [Objectives](https://github.com/PockyBum522/windows-setup-assistant#objectives)
 * [Extensible Configuration - Installers](https://github.com/PockyBum522/windows-setup-assistant#extensible-configuration---installers)
 * [Extensible Configuration - Windows Settings](https://github.com/PockyBum522/windows-setup-assistant#extensible-configuration---windows-settings)
+* [Extensible Configuration - Powershell Scripts](https://github.com/PockyBum522/windows-setup-assistant#extensible-configuration---powershell-scripts)
 
 * [Detailed Breakdown of What's Going On in the Batch File Bootstrapper](https://github.com/PockyBum522/windows-setup-assistant#detailed-breakdown-of-whats-going-on-in-the-batch-file-bootstrapper)
 * [Detailed Breakdown of What's Going On in the Main Application](https://github.com/PockyBum522/windows-setup-assistant#detailed-breakdown-of-whats-going-on-in-the-main-application)
@@ -245,6 +246,20 @@ Right now there can only be one level deeper than the "Registry Files" folder. (
 If the folder name in the "Registry Files" folder (XYZ above) matches an existing header in panel in main window, then the registry file will show up as a selectable option in that panel. The name of the option will be the registry file's name (Without the .reg extension)
 
 If no section matches the folder name, a new section will be created in the main window and the registry file name (Minus the .reg extension) will show up in that new panel/section. 
+
+# Extensible Configuration - Powershell Scripts
+
+End users can easily add additional settings change functionality in the form of standard *.ps1 (Powershell script) files. To do so, simply add your .ps1 files under \WindowsSetupAssistant\Resources\Configuration\Powershell Scripts\XYZ\Example Setting.ps1
+
+Right now there can only be one level deeper than the "Powershell Scripts" folder. (In the above example, XYZ)
+
+If the folder name in the "Powershell Scripts" folder (XYZ above) matches an existing header in panel in main window, then the script will show up as a selectable option in that panel. The name of the option will be the script's name (Without the .ps1 extension)
+
+If no section matches the folder name, a new section will be created in the main window and the script name (Minus the .ps1 extension) will show up in that new panel/section. 
+
+[Windows 10 Debloater](https://github.com/Sycnex/Windows10Debloater) has been included as an example
+
+Scripts will be run as admin, and execution policy will be set to disabled temporarily just for the script. (It won't affect system powershell execution policy)
 
 # Detailed Breakdown of What's Going On in the Batch File Bootstrapper
 

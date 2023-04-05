@@ -8,8 +8,8 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <Configurations>Debug;Release</Configurations>
         <Platforms>x64</Platforms>
-        <AssemblyVersion>0.02.04</AssemblyVersion>
-        <FileVersion>0.02.04</FileVersion>
+        <AssemblyVersion>0.02.05</AssemblyVersion>
+        <FileVersion>0.02.05</FileVersion>
     </PropertyGroup>
 
     <ItemGroup>

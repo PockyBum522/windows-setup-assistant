@@ -17,9 +17,4 @@ public interface ISelectableSetting
     /// Should we install this when the user clicks execute all installs
     /// </summary>
     public bool IsSelected { get; set; }
-
-    /// <summary>
-    /// Action which when executed will make the option change
-    /// </summary>
-    [JsonIgnore] public Action? ExecuteSetting { get; set; }
 }

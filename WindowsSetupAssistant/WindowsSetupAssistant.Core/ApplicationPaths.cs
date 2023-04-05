@@ -91,6 +91,17 @@ namespace WindowsSetupAssistant.Core
                         "Resources",
                         "Configuration",
                         "Registry Files"));
+            
+            /// <summary>
+            /// Path to the file containing all information about available powershell scripts to show in main window on load
+            /// </summary>
+            public static string ResourceDirectoryPowershellScripts =>
+                Path.GetFullPath(
+                    Path.Join(
+                        SetupAssistantRootDir,
+                        "Resources",
+                        "Configuration",
+                        "Powershell Scripts"));
         }
     }
 }

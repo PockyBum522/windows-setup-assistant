@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
 using Serilog;
 using WindowsSetupAssistant.Core.Models;
@@ -11,7 +12,7 @@ namespace WindowsSetupAssistant.Core.Logic.MainWindowLoaders;
 /// Takes a path to a .reg file, and turns it into an option in the settings section matching its parent folder name
 /// If no matching section name is found, a new section is made with that name
 /// </summary>
-public class RegistryFileAsOptionLoader
+public class PowershellScriptAsOptionLoader
 {
     private readonly ILogger _logger;
     private readonly SessionPersistentState _sessionPersistentState;
@@ -21,7 +22,7 @@ public class RegistryFileAsOptionLoader
     /// </summary>
     /// <param name="logger">Injected ILogger to use</param>
     /// <param name="sessionPersistentState">The main state of the application and user's choices that persists after a reboot</param>
-    public RegistryFileAsOptionLoader(
+    public PowershellScriptAsOptionLoader(
         ILogger logger,
         SessionPersistentState sessionPersistentState)
     {
@@ -30,25 +31,33 @@ public class RegistryFileAsOptionLoader
     }
     
     /// <summary>
-    /// Takes a path to a .reg file, and turns it into an option in the settings section matching its parent folder name
+    /// Takes a path to a .ps1 file, and turns it into an option in the settings section matching its parent folder name
     /// If no matching section name is found, a new section is made with that name
     /// </summary>
-    /// <param name="fullPathToRegistryFile">Full path to the .reg file to add as a selectable option</param>
-    public void AddRegistryFileAsOption(string fullPathToRegistryFile)
+    /// <param name="fullPathToScript">Full path to the .reg file to add as a selectable option</param>
+    public void AddPowershellScriptAsOption(string fullPathToScript)
     {
         var parentFolderName =
             Path.GetFileName(
-            Path.GetDirectoryName(fullPathToRegistryFile));
+            Path.GetDirectoryName(fullPathToScript));
         
         // Make option
-        var displayName = Path.GetFileNameWithoutExtension(fullPathToRegistryFile);
+
+        var displayName = Path.GetFileNameWithoutExtension(fullPathToScript);
         
-        var newOption = new OptionRegistryFile()
+        if (string.IsNullOrEmpty(fullPathToScript))
         {
-            FilePathToReg = fullPathToRegistryFile,
-            DisplayName = displayName
+            throw new ArgumentException("Script path cannot be null or empty.");
+        }
+
+        var newOption = new OptionPowerShellScript
+        {
+            FilePathToScript = fullPathToScript,
+            DisplayName = displayName,
+            // Save all powershell scripts as interactive so they run last just in case until we come up with a better  way to configure them. 
+            IsInteractive = true
         };
-        
+
         var foundSection = false;
         
         foreach (var section in _sessionPersistentState.SettingsSections)

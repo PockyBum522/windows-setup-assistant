@@ -12,6 +12,7 @@ public class SettingsSectionsController
 {
     private readonly SessionPersistentState _sessionPersistentState;
     private readonly RegistryFileAsOptionLoader _registryFileAsOptionLoader;
+    private readonly PowershellScriptAsOptionLoader _powershellScriptAsOptionLoader;
     private readonly TimeSettingsSectionBuilder _timeSettingsSectionBuilder;
     private readonly TaskbarSettingsSectionBuilder _taskbarSettingsSectionBuilder;
     private readonly ApplicationsSettingsSectionBuilder _applicationsSettingsSectionBuilder;
@@ -22,6 +23,7 @@ public class SettingsSectionsController
     /// Constructor for dependency injection
     /// </summary>
     /// <param name="registryFileAsOptionLoader">Loads registry files from disk and turns them into OptionRegistryFile(s)</param>
+    /// <param name="powershellScriptAsOptionLoader">Powershell script option loader</param>
     /// <param name="timeSettingsSectionBuilder">Time settings section builder</param>
     /// <param name="taskbarSettingsSectionBuilder">Taskbar settings section builder</param>
     /// <param name="applicationsSettingsSectionBuilder">Applications settings section builder</param>
@@ -31,6 +33,7 @@ public class SettingsSectionsController
     public SettingsSectionsController(
         SessionPersistentState sessionPersistentState,
         RegistryFileAsOptionLoader registryFileAsOptionLoader,
+        PowershellScriptAsOptionLoader powershellScriptAsOptionLoader,
         TimeSettingsSectionBuilder timeSettingsSectionBuilder,
         TaskbarSettingsSectionBuilder taskbarSettingsSectionBuilder,
         ApplicationsSettingsSectionBuilder applicationsSettingsSectionBuilder,
@@ -39,6 +42,7 @@ public class SettingsSectionsController
     { 
         _sessionPersistentState = sessionPersistentState;
         _registryFileAsOptionLoader = registryFileAsOptionLoader;
+        _powershellScriptAsOptionLoader = powershellScriptAsOptionLoader;
         _timeSettingsSectionBuilder = timeSettingsSectionBuilder;
         _taskbarSettingsSectionBuilder = taskbarSettingsSectionBuilder;
         _applicationsSettingsSectionBuilder = applicationsSettingsSectionBuilder;
@@ -75,6 +79,31 @@ public class SettingsSectionsController
         {
             _registryFileAsOptionLoader.AddRegistryFileAsOption(filePath);
         }
+        
+        var powershellFilePaths = GetAllPowershellScriptFilePathsFromResources();
+
+        foreach (var filePath in powershellFilePaths)
+        {
+            _powershellScriptAsOptionLoader.AddPowershellScriptAsOption(filePath);
+        }
+    }
+
+    private List<string> GetAllPowershellScriptFilePathsFromResources()
+    {
+        var topLevelDirectories =
+            Directory.GetDirectories(ApplicationPaths.ResourcePaths.ResourceDirectoryPowershellScripts);
+
+        var returnPaths = new List<string>();
+        
+        foreach (var directoryPath in topLevelDirectories)
+        {
+            foreach (var filePath in Directory.GetFiles(directoryPath, "*.ps1"))
+            {
+                returnPaths.Add(filePath);
+            }
+        }
+
+        return returnPaths;
     }
 
     [SupportedOSPlatform("Windows7.0")]

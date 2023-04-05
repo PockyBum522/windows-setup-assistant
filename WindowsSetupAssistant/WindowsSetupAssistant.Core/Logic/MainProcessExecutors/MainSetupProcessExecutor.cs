@@ -133,6 +133,8 @@ public class MainSetupProcessExecutor
                 if (_sessionPersistentState.IsCheckedUpdateWindows) _windowsUpdater.UpdateWindows();
                 
                 _applicationInstallExecutor.WorkAllNonInteractiveApplicationInstalls();
+                
+                _selectedSettingsExecutor.WorkAllNonInteractivePowershellScripts();
 
                 if (!string.IsNullOrWhiteSpace(_sessionPersistentState.TextHostname))
                     _windowsHostnameHelper.ChangeHostName(_sessionPersistentState.TextHostname);
@@ -145,11 +147,13 @@ public class MainSetupProcessExecutor
                 
                 _finalCleanupHelper.DeleteSavedStateFileOnDisk();
                 
-                _applicationInstallExecutor.WorkInteractiveApplicationInstalls();
-
+                _applicationInstallExecutor.WorkAllInteractiveApplicationInstalls();
+                
                 // Some settings here need to be re-run at the end to take effect.
                 // Not to mention some have to be run at the end by their nature, such as desktop clean up
                 _selectedSettingsExecutor.ExecuteSelectedSettingsInAllSections();
+                
+                _selectedSettingsExecutor.WorkAllInteractivePowershellScripts();
                 
                 // Two minutes for any processing the settings need
                 await Task.Delay(120 * 1000);

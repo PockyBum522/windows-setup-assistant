@@ -204,6 +204,7 @@ public class DiContainerBuilder
     private void RegisterMainWindowLoaders()
     {
         _builder.RegisterType<RegistryFileAsOptionLoader>().AsSelf();
+        _builder.RegisterType<PowershellScriptAsOptionLoader>().AsSelf();
         _builder.RegisterType<AvailableApplicationsJsonLoader>().AsSelf();
         _builder.RegisterType<ProfileHandler>().AsSelf();
         _builder.RegisterType<StateHandler>().AsSelf();

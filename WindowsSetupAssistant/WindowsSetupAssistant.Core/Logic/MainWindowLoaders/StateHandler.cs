@@ -72,15 +72,4 @@ public class StateHandler
             
         return newMainWindowPartialViewModel;
     }
-    
-    /// <summary>
-    /// Saves the current state to disk at location specified by StatePath
-    /// </summary>
-    public void LoadStateFromJsonIntoPersistentState(string profileJsonFilePath)
-    {
-        
-        
-        _logger.Debug("Loaded current state from disk into persistent state instance");
-        _logger.Debug("Stage in LoadStateFromJsonIntoPersistentState() is: {Stage}", _sessionPersistentState.ScriptStage);
-    }
 }

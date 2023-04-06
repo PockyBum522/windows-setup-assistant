@@ -1,0 +1,8 @@
+Windows Registry Editor Version 5.00
+
+; This registry file disables the "Left Alt + Left Shift" input language switching hotkey in Windows 10.
+
+; Navigate to the Keyboard Layout key or create it if it doesn't exist.
+
+[HKEY_CURRENT_USER\Keyboard Layout]
+"Hotkey"="3"

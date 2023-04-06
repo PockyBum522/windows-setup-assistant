@@ -1,0 +1,53 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\.7z]
+@="7zArchive"
+
+[HKEY_CLASSES_ROOT\.zip]
+@="ZipArchive"
+
+[HKEY_CLASSES_ROOT\.rar]
+@="RarArchive"
+
+[HKEY_CLASSES_ROOT\.tar]
+@="TarArchive"
+
+[HKEY_CLASSES_ROOT\7zArchive]
+@="7z Archive"
+"EditFlags"=hex:00,00,00,00
+
+[HKEY_CLASSES_ROOT\7zArchive\DefaultIcon]
+@="C:\\Program Files\\7-Zip\\7zFM.exe,0"
+
+[HKEY_CLASSES_ROOT\7zArchive\shell\open\command]
+@="\"C:\\Program Files\\7-Zip\\7zFM.exe\" \"%1\""
+
+[HKEY_CLASSES_ROOT\ZipArchive]
+@="ZIP Archive"
+"EditFlags"=hex:00,00,00,00
+
+[HKEY_CLASSES_ROOT\ZipArchive\DefaultIcon]
+@="C:\\Program Files\\7-Zip\\7zFM.exe,0"
+
+[HKEY_CLASSES_ROOT\ZipArchive\shell\open\command]
+@="\"C:\\Program Files\\7-Zip\\7zFM.exe\" \"%1\""
+
+[HKEY_CLASSES_ROOT\RarArchive]
+@="RAR Archive"
+"EditFlags"=hex:00,00,00,00
+
+[HKEY_CLASSES_ROOT\RarArchive\DefaultIcon]
+@="C:\\Program Files\\7-Zip\\7zFM.exe,0"
+
+[HKEY_CLASSES_ROOT\RarArchive\shell\open\command]
+@="\"C:\\Program Files\\7-Zip\\7zFM.exe\" \"%1\""
+
+[HKEY_CLASSES_ROOT\TarArchive]
+@="TAR Archive"
+"EditFlags"=hex:00,00,00,00
+
+[HKEY_CLASSES_ROOT\TarArchive\DefaultIcon]
+@="C:\\Program Files\\7-Zip\\7zFM.exe,0"
+
+[HKEY_CLASSES_ROOT\TarArchive\shell\open\command]
+@="\"C:\\Program Files\\7-Zip\\7zFM.exe\" \"%1\""

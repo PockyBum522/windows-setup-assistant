@@ -1,5 +1,7 @@
 # Index
 
+* [Why didn't you just...?](https://github.com/PockyBum522/windows-setup-assistant#why-didnt-you-just)
+
 * [What it does](https://github.com/PockyBum522/windows-setup-assistant#what-it-does)
 * [Features and Roadmap](https://github.com/PockyBum522/windows-setup-assistant#features-and-roadmap)
 * [Prerequisites](https://github.com/PockyBum522/windows-setup-assistant#prerequisites)
@@ -12,7 +14,6 @@
 * [Detailed Breakdown of What's Going On in the Batch File Bootstrapper](https://github.com/PockyBum522/windows-setup-assistant#detailed-breakdown-of-whats-going-on-in-the-batch-file-bootstrapper)
 * [Detailed Breakdown of What's Going On in the Main Application](https://github.com/PockyBum522/windows-setup-assistant#detailed-breakdown-of-whats-going-on-in-the-main-application)
 * [Helping With Development](https://github.com/PockyBum522/windows-setup-assistant#helping-with-development)
-* [Why didn't you just...?](https://github.com/PockyBum522/windows-setup-assistant#why-didnt-you-just)
 
 # Windows Setup Assistant
 

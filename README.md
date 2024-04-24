@@ -1,3 +1,12 @@
+NOTE: THIS REPO IS LIKELY GOING TO BE UNMAINTAINED AS I AM INTERESTED IN TRYING A BATCH-FILE ORIENTED SOLUTION FOR EASIER CHANGES
+
+Please see:
+https://github.com/PockyBum522/windows-command-line-settings 
+for current progress on that.
+
+I will likely archive this repo once that is up to speed.
+
+
 # Index
 
 * [Why didn't you just...?](https://github.com/PockyBum522/windows-setup-assistant#why-didnt-you-just)
